@@ -298,24 +298,50 @@
 
                 <div id="tab-clientes" class="content max-w-4xl mx-auto">
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-cliente"><i class="fa-solid fa-building"></i> Cadastro de Cliente</h3>
-                        <input type="text" id="c_nome" placeholder="Razão Social" class="input-modern w-full p-4 rounded-xl mb-4">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2" id="titulo-cliente"><i class="fa-solid fa-building"></i> Cadastro de Cliente</h3>
+                            <button onclick="limparFormCliente()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                        </div>
+                        
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm">Dados Principais</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input type="text" id="c_nome" placeholder="Razão Social / Nome Fantasia" class="input-modern w-full p-4 rounded-xl md:col-span-2">
                             <input type="text" id="c_doc" placeholder="CNPJ / CPF" class="input-modern w-full p-4 rounded-xl">
-                            <input type="text" id="c_tel" placeholder="WhatsApp" class="input-modern w-full p-4 rounded-xl">
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input type="text" id="c_tel" placeholder="WhatsApp Principal" class="input-modern w-full p-4 rounded-xl">
                             <input type="text" id="c_contato_nome" placeholder="Nome do Contato Principal" class="input-modern w-full p-4 rounded-xl">
-                            <input type="email" id="c_email" placeholder="E-mail" class="input-modern w-full p-4 rounded-xl">
+                            <input type="email" id="c_email" placeholder="E-mail Principal" class="input-modern w-full p-4 rounded-xl">
                         </div>
-                        <input type="text" id="c_endereco" placeholder="Endereço Completo" class="input-modern w-full p-4 rounded-xl mb-6">
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm mt-4 border-t border-zinc-100 dark:border-zinc-800 pt-4">Endereço</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                            <input type="text" id="c_cep" placeholder="CEP (Apenas números)" class="input-modern w-full p-4 rounded-xl" onblur="buscarCep()" maxlength="9">
+                            <input type="text" id="c_logradouro" placeholder="Logradouro (Rua, Av)" class="input-modern w-full p-4 rounded-xl md:col-span-2">
+                            <input type="text" id="c_numero" placeholder="Número" class="input-modern w-full p-4 rounded-xl">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <input type="text" id="c_bairro" placeholder="Bairro" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="c_cidade" placeholder="Cidade" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="c_estado" placeholder="UF (Ex: PE)" class="input-modern w-full p-4 rounded-xl" maxlength="2">
+                        </div>
                         
                         <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-700 mb-6">
                             <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-address-book text-primary dark:text-emerald-400"></i> Contatos Setoriais (Opcional)</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <input type="text" id="c_comercial" placeholder="Comercial (Nome/Tel)" class="input-modern w-full p-4 rounded-xl">
-                                <input type="text" id="c_financeiro" placeholder="Financeiro (Nome/Tel)" class="input-modern w-full p-4 rounded-xl">
-                                <input type="text" id="c_operacional" placeholder="Operacional (Nome/Tel)" class="input-modern w-full p-4 rounded-xl">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Comercial</label>
+                                    <input type="text" id="c_com_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm">
+                                    <input type="text" id="c_com_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Financeiro</label>
+                                    <input type="text" id="c_fin_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm">
+                                    <input type="text" id="c_fin_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Operacional</label>
+                                    <input type="text" id="c_ope_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm">
+                                    <input type="text" id="c_ope_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm">
+                                </div>
                             </div>
                         </div>
                         <button id="btn-cliente" onclick="salvarCliente()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Cadastrar Cliente</button>
@@ -327,18 +353,63 @@
                 <div id="tab-pdca" class="content max-w-5xl mx-auto"><div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-pdca"><i class="fa-solid fa-clipboard-list"></i> Novo Plano de Ação (PDCA)</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><select id="pdca_cliente" class="input-modern w-full p-4 rounded-xl"></select><input type="text" id="pdca_problema" placeholder="Problema Identificado" class="input-modern w-full p-4 rounded-xl"></div><div class="mb-4"><input type="text" id="pdca_causa" placeholder="Causa Raiz" class="input-modern w-full p-4 rounded-xl"></div><div class="mb-4"><textarea id="pdca_acao" placeholder="Plano de Ação" class="input-modern w-full p-4 rounded-xl h-24"></textarea></div><div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"><input type="text" id="pdca_resp" placeholder="Responsável" class="input-modern w-full p-4 rounded-xl"><input type="date" id="pdca_prazo" class="input-modern w-full p-4 rounded-xl"><select id="pdca_status" class="input-modern w-full p-4 rounded-xl"><option value="Pendente">Status: Pendente</option><option value="Em Andamento">Status: Em Andamento</option><option value="Concluído">Status: Concluído</option></select></div><button id="btn-pdca" onclick="salvarPDCA()" class="w-full bg-primary hover:bg-green-800 text-white font-bold py-4 rounded-xl transition shadow-lg text-lg flex justify-center items-center gap-2"><i class="fa-solid fa-check"></i> Registrar Plano de Ação</button></div><h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300 mb-4">Acompanhamento de Ações</h3><div id="lista-pdca" class="grid grid-cols-1 gap-4"></div></div>
                 <div id="tab-operacao" class="content max-w-4xl mx-auto"><button id="btn-sync" class="hidden w-full bg-accent text-white font-bold py-4 rounded-2xl mb-8 flex justify-center items-center gap-2" onclick="sincronizarOffline()"><i class="fa-solid fa-rotate"></i> Sincronizar Missões (Offline)</button><div id="container-missoes" class="mb-8"><h3 class="text-xl font-bold text-zinc-800 dark:text-white mb-4">Missões Agendadas de Hoje</h3><div id="lista-missoes-pendentes" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div></div><div id="form-execucao" class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-rocket"></i> Check-in Operacional</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><select id="sel-cliente" class="input-modern w-full p-4 rounded-xl"></select><select id="sel-ave" class="input-modern w-full p-4 rounded-xl"></select></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><select id="v_metodologia" class="input-modern w-full p-4 rounded-xl"><option value="Falcoaria e Armadilhamento">Metodologia: Falcoaria e Armadilhamento</option><option value="Falcoaria">Metodologia: Falcoaria</option><option value="Armadilhamento">Metodologia: Armadilhamento</option><option value="Captura Manual">Metodologia: Captura Manual</option></select><select id="v_praga" class="input-modern w-full p-4 rounded-xl"><option value="Pombos (Columba livia)">Alvo: Pombos</option><option value="Pardais">Alvo: Pardais</option><option value="Morcegos">Alvo: Morcegos</option></select></div><div class="grid grid-cols-3 gap-4 mb-8"><div><label class="block text-xs text-zinc-500 mb-1 ml-1">Hora Entrada</label><input type="time" id="h_inicio" class="input-modern w-full p-4 rounded-xl"></div><div><label class="block text-xs text-zinc-500 mb-1 ml-1">Hora Saída</label><input type="time" id="h_fim" class="input-modern w-full p-4 rounded-xl"></div><div><label class="block text-xs text-zinc-500 mb-1 ml-1">Peso Ave (g)</label><input type="number" id="v_peso" placeholder="Peso" class="input-modern w-full p-4 rounded-xl"></div></div><div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700 mb-8"><h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 flex items-center gap-2"><i class="fa-solid fa-calculator text-accent"></i> Contadores de Fauna</h4><div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div><label class="block text-sm text-zinc-600 dark:text-zinc-400 font-bold mb-2">Interações / Voos</label><input type="number" id="v_interacoes" value="0" min="0" class="input-modern w-full p-4 rounded-xl text-center text-xl font-bold text-primary dark:text-emerald-400"></div><div><label class="block text-sm text-zinc-600 dark:text-zinc-400 font-bold mb-2">Capturas Feitas</label><input type="number" id="v_capturas" value="0" min="0" class="input-modern w-full p-4 rounded-xl text-center text-xl font-bold text-primary dark:text-emerald-400"></div><div><label class="block text-sm text-zinc-600 dark:text-zinc-400 font-bold mb-2">Ninhos Destruídos</label><input type="number" id="v_ninhos" value="0" min="0" class="input-modern w-full p-4 rounded-xl text-center text-xl font-bold text-primary dark:text-emerald-400"></div></div></div><div class="mb-8"><h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 flex items-center gap-2"><i class="fa-solid fa-square-check text-accent"></i> Não Conformidades</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl cursor-pointer hover:border-primary transition"><input type="checkbox" id="nc_residuos" class="w-5 h-5 text-primary rounded"><span class="text-sm font-semibold dark:text-zinc-200">Resíduos Expostos</span></label><label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl cursor-pointer hover:border-primary transition"><input type="checkbox" id="nc_doca" class="w-5 h-5 text-primary rounded"><span class="text-sm font-semibold dark:text-zinc-200">Doca Aberta</span></label><label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl cursor-pointer hover:border-primary transition"><input type="checkbox" id="nc_falha" class="w-5 h-5 text-primary rounded"><span class="text-sm font-semibold dark:text-zinc-200">Falha Estrutural</span></label><label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl cursor-pointer hover:border-primary transition"><input type="checkbox" id="nc_pallets" class="w-5 h-5 text-primary rounded"><span class="text-sm font-semibold dark:text-zinc-200">Pallets Mal Acondicionados</span></label><label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl cursor-pointer hover:border-primary transition"><input type="checkbox" id="nc_coletores" class="w-5 h-5 text-primary rounded"><span class="text-sm font-semibold dark:text-zinc-200">Coletores Destampados</span></label><select id="v_infestacao" class="input-modern w-full p-4 rounded-xl cursor-pointer"><option value="Baixo">Infestação: Baixa</option><option value="Médio">Infestação: Média</option><option value="Alto">Infestação: Alta</option></select></div></div><textarea id="v_obs" placeholder="Observações Adicionais" class="input-modern w-full p-4 rounded-xl mb-6 h-24"></textarea><div class="mb-6"><label class="block font-bold text-zinc-700 dark:text-zinc-300 mb-2 flex items-center gap-2"><i class="fa-solid fa-camera"></i> Anexar Fotos</label><input type="file" id="v_fotos" accept="image/*" multiple class="block w-full text-sm text-zinc-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:bg-emerald-50 file:text-emerald-700 cursor-pointer"><div id="preview-fotos" class="flex gap-3 mt-4 overflow-x-auto"></div></div><button id="btn-visita" onclick="iniciarGPS()" class="w-full bg-primary text-white font-bold py-4 rounded-xl text-lg flex justify-center items-center gap-2"><i class="fa-solid fa-location-crosshairs"></i> Finalizar com GPS e Sincronizar</button></div><h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300 mb-4">Histórico Operacional</h3><div id="lista-visitas" class="space-y-4"></div></div>
                 <div id="tab-dashboard" class="content max-w-6xl mx-auto"><div id="container-alertas" class="mb-8 hidden"><div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-6 rounded-2xl shadow-sm"><h3 class="text-lg font-bold text-red-700 dark:text-red-400 flex items-center gap-2 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> Contratos Vencendo</h3><ul id="lista-alertas" class="list-disc pl-8 text-sm text-red-600 dark:text-red-300 font-medium"></ul></div></div><div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8" id="dash-executivo"></div><div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-chart-line"></i> Evolução Biométrica</h3><canvas id="chartPeso" class="w-full max-h-[400px]"></canvas></div></div>
-                <div id="tab-estoque" class="content max-w-4xl mx-auto"><div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-estoque"><i class="fa-solid fa-box-open"></i> Cadastro de Material</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><input type="text" id="est_nome" placeholder="Nome" class="input-modern w-full p-4 rounded-xl"><select id="est_categoria" class="input-modern w-full p-4 rounded-xl"><option value="EPI">EPI</option><option value="Equipamento">Equipamento</option><option value="Consumível">Consumível</option></select></div><input type="number" id="est_qtd" placeholder="Qtd" class="input-modern w-full p-4 rounded-xl mb-6"><button id="btn-estoque" onclick="salvarEstoque()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Material</button></div><h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300 mb-4">Inventário Geral</h3><div id="lista-estoque" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div></div>
+                
+                <div id="tab-estoque" class="content max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2" id="titulo-estoque"><i class="fa-solid fa-box-open"></i> Cadastro de Material</h3>
+                            <button onclick="limparFormEstoque()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input type="text" id="est_nome" placeholder="Nome" class="input-modern w-full p-4 rounded-xl">
+                            <select id="est_categoria" class="input-modern w-full p-4 rounded-xl">
+                                <option value="EPI">EPI</option>
+                                <option value="Equipamento">Equipamento</option>
+                                <option value="Consumível">Consumível</option>
+                            </select>
+                        </div>
+                        <input type="number" id="est_qtd" placeholder="Qtd" class="input-modern w-full p-4 rounded-xl mb-6">
+                        
+                        <div id="campos_epi" class="hidden bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border border-amber-200 dark:border-amber-800 mb-6">
+                            <h4 class="text-sm font-bold text-amber-800 dark:text-amber-400 mb-3 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Dados de Segurança (EPI)</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input type="text" id="est_ca" placeholder="Número do CA" class="input-modern w-full p-3 rounded-xl bg-white dark:bg-zinc-800">
+                                <div>
+                                    <label class="text-xs text-zinc-500 ml-1 font-bold">Validade do CA</label>
+                                    <input type="date" id="est_validade" class="input-modern w-full p-3 rounded-xl bg-white dark:bg-zinc-800 mt-1">
+                                </div>
+                            </div>
+                        </div>
+                        <button id="btn-estoque" onclick="salvarEstoque()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Material</button>
+                    </div>
+                    <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300 mb-4">Inventário Geral</h3>
+                    <div id="lista-estoque" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
                 <div id="tab-agenda" class="content max-w-4xl mx-auto"><div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-calendar-plus"></i> Despachar Missão</h3><div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"><select id="ag_cliente" class="input-modern w-full p-4 rounded-xl"></select><select id="ag_ave" class="input-modern w-full p-4 rounded-xl"></select><input type="date" id="ag_data" class="input-modern w-full p-4 rounded-xl"></div><button id="btn-agenda" onclick="salvarAgendamento()" class="w-full bg-accent text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-calendar-check"></i> Agendar Missão</button></div><h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300 mb-4">Cronograma</h3><div id="lista-agenda-geral" class="space-y-4"></div></div>
                 <div id="tab-financeiro" class="content max-w-5xl mx-auto"><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"><div class="bg-emerald-600 text-white p-6 rounded-3xl text-center"><h4 class="text-sm opacity-90 mb-1">Receitas</h4><h2 id="dash-receita" class="text-3xl font-bold">R$ 0,00</h2></div><div class="bg-red-600 text-white p-6 rounded-3xl text-center"><h4 class="text-sm opacity-90 mb-1">Despesas</h4><h2 id="dash-despesa" class="text-3xl font-bold">R$ 0,00</h2></div><div class="bg-primary text-white p-6 rounded-3xl text-center"><h4 class="text-sm opacity-90 mb-1">Saldo</h4><h2 id="dash-saldo" class="text-3xl font-bold">R$ 0,00</h2></div></div><div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-money-bill-wave"></i> Novo Lançamento</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><select id="f_tipo" class="input-modern w-full p-4 rounded-xl"><option value="Receita">Receita</option><option value="Despesa">Despesa</option></select><select id="f_cliente" class="input-modern w-full p-4 rounded-xl"></select></div><input type="text" id="f_desc" placeholder="Descrição" class="input-modern w-full p-4 rounded-xl mb-4"><div class="grid grid-cols-2 gap-4 mb-6"><input type="number" id="f_valor" placeholder="Valor" class="input-modern w-full p-4 rounded-xl"><input type="date" id="f_venc" class="input-modern w-full p-4 rounded-xl"></div><button id="btn-financeiro" onclick="salvarFinanceiro()" class="w-full bg-accent text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-circle-plus"></i> Adicionar Lançamento</button></div><h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300 mb-4">Contas a Receber e Pagar</h3><div id="lista-financeiro" class="space-y-4"></div></div>
                 <div id="tab-contratos" class="content max-w-4xl mx-auto"><div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-contrato"><i class="fa-solid fa-file-signature"></i> Firmar Contrato</h3><select id="ct_cliente" class="input-modern w-full p-4 rounded-xl mb-4"></select><div class="grid grid-cols-2 gap-4 mb-4"><input type="date" id="ct_inicio" class="input-modern w-full p-4 rounded-xl"><input type="date" id="ct_fim" class="input-modern w-full p-4 rounded-xl"></div><div class="grid grid-cols-2 gap-4 mb-6"><input type="number" id="ct_valor" placeholder="Valor Mensal" class="input-modern w-full p-4 rounded-xl"><input type="number" id="ct_freq" placeholder="Visitas por Semana" class="input-modern w-full p-4 rounded-xl"></div><button id="btn-contrato" onclick="salvarContrato()" class="w-full bg-accent text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Ativar Contrato</button></div><div id="lista-contratos" class="space-y-4"></div></div>
                 
                 <div id="tab-plantel" class="content max-w-4xl mx-auto">
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-ave"><i class="fa-solid fa-feather"></i> Cadastro de Ave</h3>
-                        <div class="grid grid-cols-2 gap-4 mb-4"><input type="text" id="a_nome" placeholder="Nome" class="input-modern w-full p-4 rounded-xl"><input type="text" id="a_especie" placeholder="Espécie" class="input-modern w-full p-4 rounded-xl"></div>
-                        <div class="grid grid-cols-2 gap-4 mb-4"><input type="number" id="a_min" placeholder="Peso Mínimo" class="input-modern w-full p-4 rounded-xl"><input type="number" id="a_max" placeholder="Peso Máximo" class="input-modern w-full p-4 rounded-xl"></div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"><input type="text" id="a_anilha" placeholder="Número da Anilha" class="input-modern w-full p-4 rounded-xl"><input type="text" id="a_historico" placeholder="Histórico Médico (Resumo)" class="input-modern w-full p-4 rounded-xl"></div>
-                        <button id="btn-ave" onclick="salvarAve()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Cadastrar</button>
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2" id="titulo-ave"><i class="fa-solid fa-feather"></i> Cadastro de Ave</h3>
+                            <button onclick="limparFormAve()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <input type="text" id="a_nome" placeholder="Nome" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="a_especie" placeholder="Espécie" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="a_anilha" placeholder="Número da Anilha" class="input-modern w-full p-4 rounded-xl">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <input type="number" id="a_min" placeholder="Peso Mínimo (g)" class="input-modern w-full p-4 rounded-xl">
+                            <input type="number" id="a_max" placeholder="Peso Máximo (g)" class="input-modern w-full p-4 rounded-xl">
+                        </div>
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-4"><i class="fa-solid fa-notes-medical text-primary"></i> Prontuário Médico</h4>
+                        <input type="text" id="a_historico" placeholder="Resumo (ex: Saudável, Alergia X...)" class="input-modern w-full p-4 rounded-xl mb-4">
+                        <textarea id="a_historico_detalhado" placeholder="Detalhamento Completo (Consultas, Medicamentos, Observações de Saúde...)" class="input-modern w-full p-4 rounded-xl h-24 mb-6"></textarea>
+
+                        <button id="btn-ave" onclick="salvarAve()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Cadastrar Ave</button>
                     </div>
                     <div id="lista-aves" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
@@ -600,6 +671,25 @@
         function showTab(tabId) { document.querySelectorAll('.content').forEach(c => c.classList.remove('active')); document.querySelectorAll('.sidebar-link').forEach(d => { d.classList.remove('nav-active'); }); document.getElementById(tabId).classList.add('active'); const btn = document.getElementById('btn-' + tabId); if(btn) btn.classList.add('nav-active'); const titles = { 'tab-operacao': 'Operações no Campo', 'tab-agenda': 'Agenda e Despachos', 'tab-pdca': 'Planos de Ação (PDCA)', 'tab-propostas': 'Funil Comercial', 'tab-estoque': 'Estoque e EPIs', 'tab-financeiro': 'Gestão Financeira', 'tab-contratos': 'Contratos Ativos', 'tab-plantel': 'Plantel de Aves', 'tab-clientes': 'Clientes', 'tab-usuarios': 'Acessos', 'tab-dashboard': 'Dashboard', 'tab-config': 'Configurações Globais', 'tab-perfil': 'Meu Perfil e Preferências' }; document.getElementById('page-title').innerText = titles[tabId] || 'Ártemis'; if(tabId === 'tab-dashboard') carregarGrafico(); if(tabId === 'tab-usuarios') carregarUsuarios(); }
         async function carregarTudo() { carregarConfig(); carregarClientes(); carregarAves(); carregarContratos(); carregarVisitas(); carregarAgendamentos(); carregarEstoque(); carregarPropostas(); carregarPDCA(); if(usuarioLogado.perfil !== 'tecnico') { carregarFinanceiro(); setTimeout(atualizarDashboardExecutivo, 1000); verificarAlertas(); } }
 
+        // --- VIACEP: BUSCA DE ENDEREÇO AUTOMÁTICA ---
+        async function buscarCep() {
+            const cep = document.getElementById('c_cep').value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                try {
+                    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const data = await res.json();
+                    if (!data.erro) {
+                        document.getElementById('c_logradouro').value = data.logradouro;
+                        document.getElementById('c_bairro').value = data.bairro;
+                        document.getElementById('c_cidade').value = data.localidade;
+                        document.getElementById('c_estado').value = data.uf;
+                        document.getElementById('c_numero').focus();
+                        showToast("Endereço preenchido automaticamente.", "success", "tab-clientes");
+                    }
+                } catch (e) { showToast("Erro ao buscar o CEP na base de dados.", "warning"); }
+            }
+        }
+
         function abrirWhatsApp(telefone, mensagem) { if(!telefone || telefone === 'null' || telefone.trim() === '') return showToast('Cliente sem telefone cadastrado.', 'warning'); const numLimpo = telefone.replace(/\D/g, ''); window.open(`https://api.whatsapp.com/send?phone=55${numLimpo}&text=${encodeURIComponent(mensagem)}`, '_blank'); }
         const fotosInput = document.getElementById('v_fotos'); if(fotosInput) { fotosInput.addEventListener('change', function(e) { fotosBase64 = []; document.getElementById('preview-fotos').innerHTML = ''; const files = e.target.files; if(files.length > 3) { showToast("Máximo de 3 fotos permitido.", "warning"); this.value = ''; return; } Array.from(files).forEach(file => { const reader = new FileReader(); reader.onload = function(event) { fotosBase64.push(event.target.result); document.getElementById('preview-fotos').innerHTML += `<img src="${event.target.result}" class="h-24 w-24 object-cover rounded-xl shadow-sm border border-zinc-200">`; }; reader.readAsDataURL(file); }); }); }
         
@@ -647,7 +737,7 @@
         }
 
         function carregarPDCA() { fetch(`${API}/pdca`).then(r => r.json()).then(data => { pdcaGlobal = data; document.getElementById('lista-pdca').innerHTML = data.map(p => { let corBadge = p.status === 'Concluído' ? 'bg-emerald-100 text-emerald-700' : (p.status === 'Em Andamento' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'); return `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-primary shadow-sm flex flex-col card mb-2"><div class="flex justify-between items-start mb-2"><b class="text-lg text-zinc-900 dark:text-white flex items-center gap-2"><i class="fa-solid fa-circle-exclamation text-red-500"></i> ${p.problema}</b> <span class="px-3 py-1 rounded-full text-xs font-bold ${corBadge}">${p.status}</span></div><p class="text-sm text-zinc-600 dark:text-zinc-400 mb-1 flex items-center gap-1"><i class="fa-solid fa-building w-4"></i> Cliente: <b>${p.cliente}</b></p><p class="text-sm text-zinc-600 dark:text-zinc-400 mb-1 flex items-center gap-1"><i class="fa-solid fa-bullseye w-4"></i> Ação: ${p.plano_acao}</p><p class="text-xs text-zinc-500 dark:text-zinc-500 mb-4 flex items-center gap-1"><i class="fa-solid fa-user w-4"></i> Resp: ${p.responsavel} | <i class="fa-solid fa-calendar w-4"></i> Prazo: ${new Date(p.prazo).toLocaleDateString('pt-BR')}</p><div class="flex gap-2"><button onclick="prepararEdicaoPDCA(${p.id}, ${p.cliente_id}, '${p.problema}', '${p.causa}', '${p.plano_acao}', '${p.responsavel}', '${p.prazo.split('T')[0]}', '${p.status}')" class="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-xl text-sm font-bold transition flex-1 flex items-center justify-center gap-1"><i class="fa-solid fa-pen-to-square"></i> Editar</button><button onclick="excluir('pdca',${p.id})" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl text-sm font-bold transition flex-1 flex items-center justify-center gap-1"><i class="fa-solid fa-trash"></i> Excluir</button></div></div>`; }).join(''); }); }
-        function prepararEdicaoPDCA(id, cid, prob, causa, acao, resp, prazo, status) { document.getElementById('pdca_cliente').value = cid; document.getElementById('pdca_problema').value = prob; document.getElementById('pdca_causa').value = causa; document.getElementById('pdca_acao').value = acao; document.getElementById('pdca_resp').value = resp; document.getElementById('pdca_prazo').value = prazo; document.getElementById('pdca_status').value = status; document.getElementById('titulo-pdca').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editando Plano de Ação'; document.getElementById('btn-pdca').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Atualizar Plano de Ação'; document.getElementById('btn-pdca').classList.replace('bg-primary', 'bg-blue-600'); editandoId.pdca = id; window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function prepararEdicaoPDCA(id, cid, prob, causa, acao, resp, prazo, status) { document.getElementById('pdca_cliente').value = cid; document.getElementById('pdca_problema').value = prob; document.getElementById('pdca_causa').value = causa; document.getElementById('pdca_acao').value = acao; document.getElementById('pdca_resp').value = resp; document.getElementById('pdca_prazo').value = prazo; document.getElementById('pdca_status').value = status; document.getElementById('titulo-pdca').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editando Plano de Ação'; document.getElementById('btn-pdca').innerHTML = '<i class="fa-solid fa-check"></i> Registrar Plano de Ação'; document.getElementById('btn-pdca').classList.replace('bg-primary', 'bg-blue-600'); editandoId.pdca = id; window.scrollTo({ top: 0, behavior: 'smooth' }); }
         function salvarPDCA() { const dados = { cliente_id: document.getElementById('pdca_cliente').value, problema: document.getElementById('pdca_problema').value, causa: document.getElementById('pdca_causa').value, plano_acao: document.getElementById('pdca_acao').value, responsavel: document.getElementById('pdca_resp').value, prazo: document.getElementById('pdca_prazo').value, status: document.getElementById('pdca_status').value }; const url = editandoId.pdca ? `${API}/pdca/${editandoId.pdca}` : `${API}/pdca`; const method = editandoId.pdca ? 'PUT' : 'POST'; const p = fetch(url, { method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }).then(() => { document.getElementById('pdca_problema').value = ''; document.getElementById('pdca_causa').value = ''; document.getElementById('pdca_acao').value = ''; document.getElementById('pdca_resp').value = ''; document.getElementById('pdca_prazo').value = ''; document.getElementById('titulo-pdca').innerHTML = '<i class="fa-solid fa-clipboard-list"></i> Novo Plano de Ação (PDCA)'; document.getElementById('btn-pdca').innerHTML = '<i class="fa-solid fa-check"></i> Registrar Plano de Ação'; document.getElementById('btn-pdca').classList.replace('bg-blue-600', 'bg-primary'); editandoId.pdca = null; showToast("PDCA Salvo!", "success", "tab-pdca"); carregarPDCA(); }); animateBtn('btn-pdca', p); }
 
         function atualizarDashboardExecutivo() { const contratosAtivos = contratosGlobal.length; const missoesMes = visitasGlobal.filter(v => new Date(v.data_visita).getMonth() === new Date().getMonth()).length; const avesCadastradas = avesGlobal.length; document.getElementById('dash-executivo').innerHTML = `<div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-file-circle-check text-xl"></i></div><div><p class="text-sm text-zinc-500">Contratos</p><p class="text-2xl font-bold dark:text-white">${contratosAtivos}</p></div></div><div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-circle-check text-xl"></i></div><div><p class="text-sm text-zinc-500">Missões Mês</p><p class="text-2xl font-bold dark:text-white">${missoesMes}</p></div></div><div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-briefcase text-xl"></i></div><div><p class="text-sm text-zinc-500">Propostas</p><p class="text-2xl font-bold dark:text-white">${propostasGlobal.length}</p></div></div><div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-calendar text-xl"></i></div><div><p class="text-sm text-zinc-500">Agenda</p><p class="text-2xl font-bold dark:text-white" id="dash-ag-pendentes">0</p></div></div>`; }
@@ -675,6 +765,19 @@
 
         function carregarClientes() { fetch(`${API}/clientes`).then(r => r.json()).then(data => { clientesGlobal = data; mudarViewClientes(viewModoClientes); const opts = '<option value="">-- Selecione --</option>' + data.map(c => `<option value="${c.id}">${c.nome_razao_social}</option>`).join(''); document.getElementById('sel-cliente').innerHTML = opts; document.getElementById('ct_cliente').innerHTML = opts; document.getElementById('f_cliente').innerHTML = opts; document.getElementById('ag_cliente').innerHTML = opts; document.getElementById('prop_cliente').innerHTML = opts; document.getElementById('pdca_cliente').innerHTML = opts; }); }
         
+        function limparFormCliente() {
+            document.getElementById('c_nome').value = ''; document.getElementById('c_doc').value = ''; document.getElementById('c_tel').value = ''; 
+            document.getElementById('c_contato_nome').value = ''; document.getElementById('c_email').value = ''; 
+            document.getElementById('c_cep').value = ''; document.getElementById('c_logradouro').value = ''; document.getElementById('c_numero').value = ''; 
+            document.getElementById('c_bairro').value = ''; document.getElementById('c_cidade').value = ''; document.getElementById('c_estado').value = ''; 
+            document.getElementById('c_com_nome').value = ''; document.getElementById('c_com_tel').value = ''; 
+            document.getElementById('c_fin_nome').value = ''; document.getElementById('c_fin_tel').value = ''; 
+            document.getElementById('c_ope_nome').value = ''; document.getElementById('c_ope_tel').value = '';
+            document.getElementById('titulo-cliente').innerHTML = '<i class="fa-solid fa-building"></i> Cadastro de Cliente'; 
+            document.getElementById('btn-cliente').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Cadastrar Cliente'; 
+            editandoId.cliente = null;
+        }
+
         function prepararEdicaoCliente(id) { 
             const c = clientesGlobal.find(x => x.id === id);
             if(!c) return;
@@ -683,10 +786,18 @@
             document.getElementById('c_tel').value = c.telefone || ''; 
             document.getElementById('c_contato_nome').value = c.contato_nome || ''; 
             document.getElementById('c_email').value = c.email_contato || ''; 
-            document.getElementById('c_endereco').value = c.endereco || ''; 
-            document.getElementById('c_comercial').value = c.contato_comercial || ''; 
-            document.getElementById('c_financeiro').value = c.contato_financeiro || ''; 
-            document.getElementById('c_operacional').value = c.contato_operacional || ''; 
+            document.getElementById('c_cep').value = c.cep || ''; 
+            document.getElementById('c_logradouro').value = c.logradouro || ''; 
+            document.getElementById('c_numero').value = c.numero || ''; 
+            document.getElementById('c_bairro').value = c.bairro || ''; 
+            document.getElementById('c_cidade').value = c.cidade || ''; 
+            document.getElementById('c_estado').value = c.estado || ''; 
+            document.getElementById('c_com_nome').value = c.comercial_nome || ''; 
+            document.getElementById('c_com_tel').value = c.comercial_tel || ''; 
+            document.getElementById('c_fin_nome').value = c.financeiro_nome || ''; 
+            document.getElementById('c_fin_tel').value = c.financeiro_tel || ''; 
+            document.getElementById('c_ope_nome').value = c.operacional_nome || ''; 
+            document.getElementById('c_ope_tel').value = c.operacional_tel || ''; 
             document.getElementById('titulo-cliente').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editando Cliente'; 
             document.getElementById('btn-cliente').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Atualizar Cliente'; 
             editandoId.cliente = id; 
@@ -700,20 +811,24 @@
                 telefone: document.getElementById('c_tel').value,
                 contato_nome: document.getElementById('c_contato_nome').value,
                 email_contato: document.getElementById('c_email').value,
-                endereco: document.getElementById('c_endereco').value,
-                contato_comercial: document.getElementById('c_comercial').value,
-                contato_financeiro: document.getElementById('c_financeiro').value,
-                contato_operacional: document.getElementById('c_operacional').value
+                cep: document.getElementById('c_cep').value,
+                logradouro: document.getElementById('c_logradouro').value,
+                numero: document.getElementById('c_numero').value,
+                bairro: document.getElementById('c_bairro').value,
+                cidade: document.getElementById('c_cidade').value,
+                estado: document.getElementById('c_estado').value,
+                comercial_nome: document.getElementById('c_com_nome').value,
+                comercial_tel: document.getElementById('c_com_tel').value,
+                financeiro_nome: document.getElementById('c_fin_nome').value,
+                financeiro_tel: document.getElementById('c_fin_tel').value,
+                operacional_nome: document.getElementById('c_ope_nome').value,
+                operacional_tel: document.getElementById('c_ope_tel').value
             }; 
             const url = editandoId.cliente ? `${API}/clientes/${editandoId.cliente}` : `${API}/clientes`; 
             const method = editandoId.cliente ? 'PUT' : 'POST'; 
             const p = fetch(url, { method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }).then(() => { 
-                document.getElementById('c_nome').value = ''; document.getElementById('c_doc').value = ''; document.getElementById('c_tel').value = ''; 
-                document.getElementById('c_contato_nome').value = ''; document.getElementById('c_email').value = ''; document.getElementById('c_endereco').value = '';
-                document.getElementById('c_comercial').value = ''; document.getElementById('c_financeiro').value = ''; document.getElementById('c_operacional').value = '';
-                document.getElementById('btn-cliente').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Cadastrar Cliente'; 
-                editandoId.cliente = null; 
-                showToast("Cliente atualizado no banco de dados.", "success", "tab-clientes"); 
+                limparFormCliente();
+                showToast("Cliente salvo com sucesso.", "success", "tab-clientes"); 
                 carregarClientes(); 
             }); 
             animateBtn('btn-cliente', p); 
@@ -745,13 +860,108 @@
         document.getElementById('cfg_logo').addEventListener('change', function(e) { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = function(event) { configGlobal.logo_base64 = event.target.result; document.getElementById('preview-logo').src = event.target.result; document.getElementById('preview-logo').classList.remove('hidden'); }; reader.readAsDataURL(file); } });
         function salvarConfig() { const dados = { nome_empresa: document.getElementById('cfg_nome').value || 'Silvestre Ambiental', cnpj: document.getElementById('cfg_cnpj').value, endereco: document.getElementById('cfg_end').value, logo_base64: configGlobal.logo_base64 }; const p = fetch(`${API}/config`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }).then(() => { showToast("Perfil Empresarial atualizado!", "success", "tab-config"); carregarConfig(); }); animateBtn('btn-config', p); }
 
-        function carregarEstoque() { fetch(`${API}/estoque`).then(r => r.json()).then(data => { document.getElementById('lista-estoque').innerHTML = data.map(e => { const corQtd = e.quantidade < 5 ? 'text-red-500 bg-red-50' : 'text-emerald-600 bg-emerald-50'; return `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 shadow-sm flex flex-col card"><b class="text-lg dark:text-white">${e.nome_item}</b><span class="text-xs font-bold text-zinc-500 mb-2 uppercase">${e.categoria}</span><p class="text-sm font-bold p-2 rounded-lg w-max mb-6 ${corQtd}">Qtd: ${e.quantidade}</p><div class="mt-auto flex gap-2"><button onclick="prepararEdicaoEstoque(${e.id}, '${e.nome_item}', ${e.quantidade}, '${e.categoria}')" class="flex-1 bg-zinc-100 py-2 rounded-xl text-sm font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-pen-to-square"></i> Editar</button><button onclick="excluir('estoque',${e.id})" class="bg-red-50 text-red-600 px-4 rounded-xl text-sm font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-trash"></i></button></div></div>`; }).join(''); }); }
-        function prepararEdicaoEstoque(id, nome, qtd, cat) { document.getElementById('est_nome').value = nome; document.getElementById('est_qtd').value = qtd; document.getElementById('est_categoria').value = cat; document.getElementById('titulo-estoque').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editando Material'; document.getElementById('btn-estoque').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Atualizar Material'; editandoId.estoque = id; window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        function salvarEstoque() { const dados = { nome_item: document.getElementById('est_nome').value, quantidade: document.getElementById('est_qtd').value || 0, categoria: document.getElementById('est_categoria').value }; const url = editandoId.estoque ? `${API}/estoque/${editandoId.estoque}` : `${API}/estoque`; const method = editandoId.estoque ? 'PUT' : 'POST'; const p = fetch(url, { method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }).then(() => { document.getElementById('btn-estoque').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salvar Material'; editandoId.estoque = null; showToast("Estoque atualizado.", "success", "tab-estoque"); carregarEstoque(); }); animateBtn('btn-estoque', p); }
+        function carregarEstoque() { fetch(`${API}/estoque`).then(r => r.json()).then(data => { document.getElementById('lista-estoque').innerHTML = data.map(e => { const corQtd = e.quantidade < 5 ? 'text-red-500 bg-red-50' : 'text-emerald-600 bg-emerald-50'; const infoEpi = e.categoria === 'EPI' && e.ca_epi ? `<div class="bg-amber-50 dark:bg-amber-900/20 p-2 rounded text-xs text-amber-800 dark:text-amber-400 mb-2 border border-amber-200 dark:border-amber-800"><b>CA:</b> ${e.ca_epi} ${e.validade_epi ? `| <b>Validade:</b> ${new Date(e.validade_epi).toLocaleDateString('pt-BR')}` : ''}</div>` : ''; return `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 shadow-sm flex flex-col card"><b class="text-lg dark:text-white">${e.nome_item}</b><span class="text-xs font-bold text-zinc-500 mb-2 uppercase">${e.categoria}</span>${infoEpi}<p class="text-sm font-bold p-2 rounded-lg w-max mb-6 ${corQtd}">Qtd: ${e.quantidade}</p><div class="mt-auto flex gap-2"><button onclick="prepararEdicaoEstoque(${e.id}, '${e.nome_item}', ${e.quantidade}, '${e.categoria}', '${e.ca_epi || ''}', '${e.validade_epi || ''}')" class="flex-1 bg-zinc-100 py-2 rounded-xl text-sm font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-pen-to-square"></i> Editar</button><button onclick="excluir('estoque',${e.id})" class="bg-red-50 text-red-600 px-4 rounded-xl text-sm font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-trash"></i></button></div></div>`; }).join(''); }); }
+        
+        // --- CONTROLE DE EXIBIÇÃO DOS CAMPOS DE EPI ---
+        document.getElementById('est_categoria').addEventListener('change', function(e) {
+            const camposEPI = document.getElementById('campos_epi');
+            if (e.target.value === 'EPI') {
+                camposEPI.classList.remove('hidden');
+            } else {
+                camposEPI.classList.add('hidden');
+                document.getElementById('est_ca').value = '';
+                document.getElementById('est_validade').value = '';
+            }
+        });
 
-        function carregarAves() { fetch(`${API}/aves`).then(r => r.json()).then(data => { avesGlobal = data; document.getElementById('lista-aves').innerHTML = data.map(a => `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border shadow-sm flex flex-col card"><b class="text-lg dark:text-white flex items-center gap-2"><i class="fa-solid fa-feather"></i> ${a.nome}</b><span class="text-sm text-zinc-500 mb-2">${a.especie}</span>${a.anilha ? `<span class="text-xs font-bold text-zinc-400 mb-4"><i class="fa-solid fa-ring"></i> Anilha: ${a.anilha}</span>` : '<div class="mb-4"></div>'}<div class="mt-auto flex gap-2"><button onclick="prepararEdicaoAve(${a.id}, '${a.nome}', '${a.especie}', ${a.peso_minimo}, ${a.peso_maximo}, '${a.anilha || ''}', '${a.historico_medico || ''}')" class="flex-1 bg-zinc-100 py-2 rounded-xl text-sm font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-pen-to-square"></i> Editar</button><button onclick="excluir('aves',${a.id})" class="bg-red-50 text-red-600 px-4 rounded-xl text-sm font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); const optsA = data.map(a => `<option value="${a.id}">${a.nome}</option>`).join(''); document.getElementById('sel-ave').innerHTML = optsA; document.getElementById('ag_ave').innerHTML = optsA; }); }
-        function prepararEdicaoAve(id, nome, esp, pmin, pmax, anilha, historico) { document.getElementById('a_nome').value = nome; document.getElementById('a_especie').value = esp; document.getElementById('a_min').value = pmin; document.getElementById('a_max').value = pmax; document.getElementById('a_anilha').value = anilha || ''; document.getElementById('a_historico').value = historico || ''; document.getElementById('titulo-ave').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editando Ave'; document.getElementById('btn-ave').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Atualizar'; editandoId.ave = id; window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        function salvarAve() { const dados = { nome: document.getElementById('a_nome').value, especie: document.getElementById('a_especie').value, peso_minimo: document.getElementById('a_min').value, peso_maximo: document.getElementById('a_max').value, anilha: document.getElementById('a_anilha').value, historico_medico: document.getElementById('a_historico').value }; const url = editandoId.ave ? `${API}/aves/${editandoId.ave}` : `${API}/aves`; const method = editandoId.ave ? 'PUT' : 'POST'; const p = fetch(url, { method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }).then(() => { document.getElementById('btn-ave').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Cadastrar'; editandoId.ave = null; document.getElementById('a_anilha').value = ''; document.getElementById('a_historico').value = ''; showToast("Ave registrada no plantel.", "success", "tab-plantel"); carregarAves(); }); animateBtn('btn-ave', p); }
+        function limparFormEstoque() {
+            document.getElementById('est_nome').value = '';
+            document.getElementById('est_qtd').value = '';
+            document.getElementById('est_categoria').value = 'EPI';
+            document.getElementById('est_ca').value = '';
+            document.getElementById('est_validade').value = '';
+            document.getElementById('est_categoria').dispatchEvent(new Event('change'));
+            document.getElementById('titulo-estoque').innerHTML = '<i class="fa-solid fa-box-open"></i> Cadastro de Material'; 
+            document.getElementById('btn-estoque').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salvar Material'; 
+            editandoId.estoque = null;
+        }
+
+        function prepararEdicaoEstoque(id, nome, qtd, cat, ca, validade) { 
+            document.getElementById('est_nome').value = nome; 
+            document.getElementById('est_qtd').value = qtd; 
+            document.getElementById('est_categoria').value = cat; 
+            document.getElementById('est_ca').value = ca || '';
+            document.getElementById('est_validade').value = validade ? validade.split('T')[0] : '';
+            
+            document.getElementById('est_categoria').dispatchEvent(new Event('change'));
+
+            document.getElementById('titulo-estoque').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editando Material'; 
+            document.getElementById('btn-estoque').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Atualizar Material'; 
+            editandoId.estoque = id; 
+            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        }
+
+        function salvarEstoque() { 
+            const dados = { 
+                nome_item: document.getElementById('est_nome').value, 
+                quantidade: document.getElementById('est_qtd').value || 0, 
+                categoria: document.getElementById('est_categoria').value,
+                ca_epi: document.getElementById('est_ca').value,
+                validade_epi: document.getElementById('est_validade').value || null
+            }; 
+            const url = editandoId.estoque ? `${API}/estoque/${editandoId.estoque}` : `${API}/estoque`; 
+            const method = editandoId.estoque ? 'PUT' : 'POST'; 
+            const p = fetch(url, { method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }).then(() => { 
+                limparFormEstoque();
+                showToast("Estoque atualizado.", "success", "tab-estoque"); 
+                carregarEstoque(); 
+            }); 
+            animateBtn('btn-estoque', p); 
+        }
+
+        function limparFormAve() {
+            document.getElementById('a_nome').value = ''; document.getElementById('a_especie').value = ''; document.getElementById('a_min').value = ''; 
+            document.getElementById('a_max').value = ''; document.getElementById('a_anilha').value = ''; document.getElementById('a_historico').value = ''; 
+            document.getElementById('a_historico_detalhado').value = '';
+            document.getElementById('titulo-ave').innerHTML = '<i class="fa-solid fa-feather"></i> Cadastro de Ave'; 
+            document.getElementById('btn-ave').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Cadastrar Ave'; 
+            editandoId.ave = null;
+        }
+
+        function carregarAves() { fetch(`${API}/aves`).then(r => r.json()).then(data => { avesGlobal = data; document.getElementById('lista-aves').innerHTML = data.map(a => `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border shadow-sm flex flex-col card"><b class="text-lg dark:text-white flex items-center gap-2"><i class="fa-solid fa-feather"></i> ${a.nome}</b><span class="text-sm text-zinc-500 mb-2">${a.especie}</span>${a.anilha ? `<span class="text-xs font-bold text-zinc-400 mb-4"><i class="fa-solid fa-ring"></i> Anilha: ${a.anilha}</span>` : '<div class="mb-4"></div>'}<div class="mt-auto flex gap-2"><button onclick="prepararEdicaoAve(${a.id})" class="flex-1 bg-zinc-100 py-2 rounded-xl text-sm font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-pen-to-square"></i> Editar</button><button onclick="excluir('aves',${a.id})" class="bg-red-50 text-red-600 px-4 rounded-xl text-sm font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); const optsA = data.map(a => `<option value="${a.id}">${a.nome}</option>`).join(''); document.getElementById('sel-ave').innerHTML = optsA; document.getElementById('ag_ave').innerHTML = optsA; }); }
+        
+        function prepararEdicaoAve(id) { 
+            const a = avesGlobal.find(x => x.id === id);
+            if(!a) return;
+            document.getElementById('a_nome').value = a.nome || ''; 
+            document.getElementById('a_especie').value = a.especie || ''; 
+            document.getElementById('a_min').value = a.peso_minimo || ''; 
+            document.getElementById('a_max').value = a.peso_maximo || ''; 
+            document.getElementById('a_anilha').value = a.anilha || ''; 
+            document.getElementById('a_historico').value = a.historico_medico || ''; 
+            document.getElementById('a_historico_detalhado').value = a.historico_detalhado || ''; 
+            document.getElementById('titulo-ave').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editando Ave'; 
+            document.getElementById('btn-ave').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Atualizar'; 
+            editandoId.ave = id; 
+            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        }
+        
+        function salvarAve() { 
+            const dados = { 
+                nome: document.getElementById('a_nome').value, especie: document.getElementById('a_especie').value, 
+                peso_minimo: document.getElementById('a_min').value, peso_maximo: document.getElementById('a_max').value, 
+                anilha: document.getElementById('a_anilha').value, historico_medico: document.getElementById('a_historico').value,
+                historico_detalhado: document.getElementById('a_historico_detalhado').value 
+            }; 
+            const url = editandoId.ave ? `${API}/aves/${editandoId.ave}` : `${API}/aves`; 
+            const method = editandoId.ave ? 'PUT' : 'POST'; 
+            const p = fetch(url, { method, headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }).then(() => { 
+                limparFormAve();
+                showToast("Ave registrada no plantel.", "success", "tab-plantel"); 
+                carregarAves(); 
+            }); 
+            animateBtn('btn-ave', p); 
+        }
 
         function carregarContratos() { fetch(`${API}/contratos`).then(r => r.json()).then(data => { contratosGlobal = data; document.getElementById('lista-contratos').innerHTML = data.map(c => `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-accent shadow-sm mb-4 card"><div class="flex justify-between items-start mb-2"><b class="text-lg dark:text-white flex items-center gap-2"><i class="fa-solid fa-building"></i> ${c.cliente}</b><div class="flex gap-2"><button onclick="prepararEdicaoContrato(${c.id}, ${c.cliente_id}, '${c.data_inicio.split('T')[0]}', '${c.data_fim.split('T')[0]}', ${c.valor_mensal}, ${c.frequencia_semanal})" class="bg-zinc-100 px-3 py-2 rounded-xl text-xs font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-pen-to-square"></i></button><button onclick="excluir('contratos',${c.id})" class="bg-red-50 text-red-600 px-3 py-2 rounded-xl text-xs font-bold flex justify-center items-center gap-1"><i class="fa-solid fa-trash"></i></button></div></div><p class="text-zinc-600 text-sm mb-2"><i class="fa-solid fa-dollar-sign"></i> R$ ${c.valor_mensal}</p></div>`).join(''); }); }
         function prepararEdicaoContrato(id, cid, ini, fim, val, freq) { document.getElementById('ct_cliente').value = cid; document.getElementById('ct_inicio').value = ini; document.getElementById('ct_fim').value = fim; document.getElementById('ct_valor').value = val; document.getElementById('ct_freq').value = freq; document.getElementById('titulo-contrato').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editando Contrato'; document.getElementById('btn-contrato').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Atualizar'; editandoId.contrato = id; window.scrollTo({ top: 0, behavior: 'smooth' }); }

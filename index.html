@@ -6,12 +6,19 @@
     <title>Ártemis • Plataforma Integrada</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#14532d">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script>
-        tailwind.config = { darkMode: 'class', safelist: ['translate-x-9', 'bg-emerald-500', 'dark:bg-emerald-500'], theme: { extend: { colors: { primary: '#14532d', accent: '#f59e0b', 'accent-hover': '#d97706' } } } }
+        tailwind.config = { 
+            darkMode: 'class', 
+            safelist: ['translate-x-9', 'bg-emerald-500', 'dark:bg-emerald-500'],
+            theme: { extend: { colors: { primary: '#14532d', accent: '#f59e0b', 'accent-hover': '#d97706' } } } 
+        }
     </script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', system_ui, sans-serif; }
@@ -30,13 +37,18 @@
         .input-modern:focus { box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); border-color: #f59e0b; outline: none; }
         .gradient-bg { background: linear-gradient(135deg, #14532d 0%, #166534 100%); }
         ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
         .cb-label { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e4e4e7; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s; }
         .dark .cb-label { background: #27272a; border-color: #3f3f46; color: white; }
+        .cb-label:hover { border-color: #14532d; }
+        .dark .cb-label:hover { border-color: #4ade80; }
         body.tabela-compacta td, body.tabela-compacta th { padding: 6px 12px !important; font-size: 0.8rem; }
         body.alto-contraste .text-zinc-500 { color: #27272a !important; font-weight: 600; }
         body.alto-contraste.dark .text-zinc-500 { color: #d4d4d8 !important; font-weight: 600; }
+        body.alto-contraste .border-zinc-200 { border-color: #a1a1aa !important; }
+        body.alto-contraste.dark .border-zinc-700 { border-color: #52525b !important; }
     </style>
 </head>
 <body class="bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen flex overflow-hidden">
@@ -48,18 +60,20 @@
             <p class="text-center text-zinc-500 dark:text-zinc-400 mb-10">Manejo Inteligente de Fauna</p>
             <input id="login_email" type="email" value="admin@silvestre.com" placeholder="Seu e-mail" class="input-modern w-full p-4 mb-4 rounded-2xl text-base">
             <input id="login_senha" type="password" value="123456" placeholder="Senha" class="input-modern w-full p-4 mb-8 rounded-2xl text-base">
-            <button onclick="fazerLogin()" class="w-full bg-accent hover:bg-accent-hover text-white font-semibold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">Entrar no Sistema</button>
+            <button onclick="fazerLogin()" class="w-full bg-accent hover:bg-accent-hover text-white font-semibold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2"><i class="fa-solid fa-right-to-bracket"></i> Entrar no Sistema</button>
             <div id="login-erro" class="hidden mt-4 font-bold text-center p-4 rounded-2xl text-sm"></div>
         </div>
     </div>
 
     <div id="sistema-principal" class="hidden h-screen w-full">
+        
         <div id="sidebar" class="w-72 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0">
             <div class="px-8 py-8 flex items-center gap-4 border-b border-zinc-200 dark:border-zinc-800 h-24 overflow-hidden">
                 <img id="sidebar-logo" src="" class="w-11 h-11 object-contain hidden shrink-0">
                 <div id="sidebar-icon" class="w-11 h-11 bg-primary rounded-2xl flex items-center justify-center shadow-inner text-white shrink-0"><i class="fa-solid fa-dove text-xl"></i></div>
                 <div id="sidebar-title" class="font-bold text-3xl tracking-[-1px] text-primary dark:text-emerald-400 transition-opacity">ÁRTEMIS</div>
             </div>
+
             <nav class="flex-1 px-4 py-6 overflow-y-auto space-y-1" id="sidebar-menu">
                 <div onclick="showTab('tab-dashboard')" id="btn-tab-dashboard" class="aba-menu admin comercial sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-chart-column w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Painel de Controle</span></div>
                 <div onclick="showTab('tab-operacao')" id="btn-tab-operacao" class="aba-menu admin tecnico sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-location-dot w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Operação (Campo)</span></div>
@@ -81,10 +95,33 @@
                 <div class="flex items-center gap-6">
                     <h1 id="page-title" class="text-2xl font-bold tracking-tight text-zinc-800 dark:text-white hidden lg:block">Visão Geral</h1>
                     <button onclick="openSearch()" class="flex items-center gap-3 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-transparent dark:border-zinc-700 rounded-xl text-sm font-medium text-zinc-500 dark:text-zinc-400 transition ml-2 cursor-text w-48 sm:w-64">
-                        <i class="fa-solid fa-magnifying-glass"></i><span>Buscar na Plataforma...</span>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Buscar na Plataforma...</span>
                     </button>
                 </div>
+                
                 <div class="flex items-center gap-2 sm:gap-4">
+                    <div class="relative">
+                        <button onclick="toggleNotif()" class="relative p-2 w-10 h-10 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-600 dark:text-zinc-300 focus:outline-none cursor-pointer">
+                            <i class="fa-solid fa-bell text-lg"></i>
+                            <span id="notif-badge" class="absolute top-1 right-1 w-4 h-4 bg-red-500 border-2 border-white dark:border-zinc-900 rounded-full text-[9px] font-bold text-white flex items-center justify-center transition-transform scale-0">0</span>
+                        </button>
+                        
+                        <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-zinc-800 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-700 z-50 overflow-hidden flex flex-col">
+                            <div class="p-4 border-b border-zinc-100 dark:border-zinc-700 flex justify-between items-center bg-zinc-50 dark:bg-zinc-800/80">
+                                <h4 class="font-bold text-zinc-800 dark:text-white flex items-center gap-2"><i class="fa-solid fa-inbox text-primary dark:text-emerald-400"></i> Alertas</h4>
+                                <button onclick="limparNotificacoes()" class="text-xs font-bold text-zinc-500 hover:text-primary transition">Limpar Tudo</button>
+                            </div>
+                            <div id="notif-list" class="max-h-[60vh] overflow-y-auto"></div>
+                            <div id="notif-empty" class="hidden p-8 flex flex-col items-center justify-center text-center">
+                                <div class="w-16 h-16 bg-zinc-100 dark:bg-zinc-700/50 rounded-full flex items-center justify-center mb-3">
+                                    <i class="fa-solid fa-mug-hot text-2xl text-zinc-400 dark:text-zinc-500"></i>
+                                </div>
+                                <p class="font-bold text-zinc-700 dark:text-zinc-300">Tudo limpo!</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <button onclick="toggleDarkMode()" class="relative hidden sm:inline-flex items-center h-8 w-16 mx-1 rounded-full transition-colors duration-300 bg-amber-400 dark:bg-blue-500 focus:outline-none shadow-inner cursor-pointer border border-black/10 dark:border-white/10">
                         <span class="absolute left-2 w-4 text-center text-white/60 text-[11px] z-0"><i class="fa-solid fa-sun"></i></span>
                         <span class="absolute right-2 w-4 text-center text-white/60 text-[11px] z-0"><i class="fa-solid fa-moon"></i></span>
@@ -93,6 +130,7 @@
                             <i class="fa-solid fa-moon text-blue-500 text-[12px] absolute transition-opacity duration-300 opacity-0 dark:opacity-100"></i>
                         </span>
                     </button>
+                    
                     <div class="relative">
                         <button onclick="toggleDropdown()" class="flex items-center gap-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 p-2 rounded-full transition cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700">
                             <div class="text-right hidden sm:block">
@@ -102,7 +140,9 @@
                             <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm border-2 border-white dark:border-zinc-800 overflow-hidden" id="iniciais-logado"></div>
                             <i class="fa-solid fa-chevron-down text-zinc-400 text-xs ml-1 mr-2"></i>
                         </button>
+            
                         <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-700 py-2 z-50">
+                            <button onclick="toggleDarkMode()" class="sm:hidden w-full text-left px-5 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition flex items-center gap-3 font-semibold"><i class="fa-solid fa-circle-half-stroke w-4 text-center"></i> Tema Visual</button>
                             <button onclick="showTab('tab-perfil'); toggleDropdown();" class="w-full text-left px-5 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition flex items-center gap-3 font-semibold"><i class="fa-solid fa-address-card w-4 text-center"></i> Meu Cadastro</button>
                             <div class="h-px bg-zinc-100 dark:bg-zinc-700 my-1"></div>
                             <button onclick="fazerLogout()" class="w-full text-left px-5 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition flex items-center gap-3 font-semibold"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i> Sair</button>
@@ -117,9 +157,12 @@
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
                         <div class="flex items-center gap-6 mb-8 border-b border-zinc-100 dark:border-zinc-800 pb-8">
                             <div class="relative">
-                                <div id="perfil-foto-preview" class="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold shadow-md overflow-hidden"><i class="fa-solid fa-user"></i></div>
+                                <div id="perfil-foto-preview" class="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold shadow-md overflow-hidden">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
                                 <label class="absolute bottom-0 right-0 bg-accent text-white w-8 h-8 rounded-full cursor-pointer shadow-lg hover:bg-accent-hover transition flex items-center justify-center">
-                                    <i class="fa-solid fa-camera text-sm"></i><input type="file" id="p_foto" class="hidden" accept="image/*" onchange="carregarFotoPerfil(event)">
+                                    <i class="fa-solid fa-camera text-sm"></i>
+                                    <input type="file" id="p_foto" class="hidden" accept="image/*" onchange="carregarFotoPerfil(event)">
                                 </label>
                             </div>
                             <div>
@@ -127,6 +170,7 @@
                                 <p class="text-zinc-500 uppercase text-xs font-bold mt-1" id="perfil-cargo-display">Carregando...</p>
                             </div>
                         </div>
+
                         <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm"><i class="fa-solid fa-id-badge text-primary mr-2"></i> Identificação</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">Nome Completo</label><input type="text" id="meu_nome" class="input-modern w-full p-4 rounded-xl"></div>
@@ -135,141 +179,525 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">CPF</label><input type="text" id="meu_cpf" placeholder="000.000.000-00" class="input-modern w-full p-4 rounded-xl cpf-mask" maxlength="14"></div>
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">WhatsApp Pessoal</label><input type="text" id="meu_wpp" placeholder="(00) 00000-0000" class="input-modern w-full p-4 rounded-xl tel-mask" maxlength="15"></div>
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Início das Atividades</label><input type="text" value="Fevereiro/2026" class="input-modern w-full p-4 rounded-xl opacity-60 cursor-not-allowed" disabled></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Código do Funcionário</label><input type="text" value="SILV-2026" class="input-modern w-full p-4 rounded-xl opacity-60 cursor-not-allowed" disabled></div>
                         </div>
+
                         <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-house text-primary mr-2"></i> Endereço Residencial</h4>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                             <input type="text" id="p_cep" placeholder="CEP (00000-000)" class="input-modern w-full p-4 rounded-xl cep-mask" onblur="buscarCepPerfil()" maxlength="9">
-                            <input type="text" id="p_logradouro" placeholder="Logradouro" class="input-modern w-full p-4 rounded-xl md:col-span-2">
-                            <input type="text" id="p_numero" placeholder="Nº" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="p_logradouro" placeholder="Logradouro (Rua, Av)" class="input-modern w-full p-4 rounded-xl md:col-span-2">
+                            <input type="text" id="p_numero" placeholder="Número" class="input-modern w-full p-4 rounded-xl">
                         </div>
-                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-notes-medical text-red-500 mr-2"></i> Prontuário Médico</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                            <input type="text" id="p_bairro" placeholder="Bairro" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="p_cidade" placeholder="Cidade" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="p_estado" placeholder="UF (Ex: PE)" class="input-modern w-full p-4 rounded-xl" maxlength="2">
+                        </div>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-notes-medical text-red-500 mr-2"></i> Prontuário do Colaborador</h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Sangue / Fator RH</label><input type="text" id="p_sangue" placeholder="Ex: O+" class="input-modern w-full p-4 rounded-xl"></div>
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Contato Emergência</label><input type="text" id="p_emergencia_nome" placeholder="Nome familiar" class="input-modern w-full p-4 rounded-xl"></div>
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">WhatsApp Emergência</label><input type="text" id="p_emergencia_tel" placeholder="Telefone" class="input-modern w-full p-4 rounded-xl tel-mask"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Tipo Sanguíneo</label><select id="p_sangue" class="input-modern w-full p-4 rounded-xl"><option value="">Não Informado</option><option value="A">A</option><option value="B">B</option><option value="AB">AB</option><option value="O">O</option></select></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Fator RH</label><select id="p_rh" class="input-modern w-full p-4 rounded-xl"><option value="">Não Informado</option><option value="Positivo (+)">Positivo (+)</option><option value="Negativo (-)">Negativo (-)</option></select></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Alergias / Restrições</label><input type="text" id="p_alergias" placeholder="Ex: Dipirona" class="input-modern w-full p-4 rounded-xl"></div>
                         </div>
-                        <button class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg mt-6" onclick="salvarPerfil()">Salvar Alterações</button>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Nome (Contato de Emergência)</label><input type="text" id="p_emergencia_nome" placeholder="Nome do Contato" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Telefone (Emergência)</label><input type="text" id="p_emergencia_tel" placeholder="(00) 00000-0000" class="input-modern w-full p-4 rounded-xl tel-mask" maxlength="15"></div>
+                        </div>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-lock text-primary mr-2"></i> Alterar Senha</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Nova Senha</label><input type="password" id="p_senha1" placeholder="Deixe em branco para manter" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Confirmar Nova Senha</label><input type="password" id="p_senha2" placeholder="Repita a nova senha" class="input-modern w-full p-4 rounded-xl"></div>
+                        </div>
+
+                        <button id="btn-salvar-perfil" class="w-full bg-primary hover:bg-green-800 text-white font-bold py-4 rounded-xl transition shadow-lg flex justify-center items-center gap-2" onclick="salvarPerfil()">
+                            <i class="fa-solid fa-floppy-disk"></i> Atualizar Meu Cadastro
+                        </button>
                     </div>
 
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Preferências de Sistema</h3>
+                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Minhas Preferências de Sistema</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="flex items-center justify-between p-4 border rounded-2xl bg-zinc-50">
-                                <div><p class="font-bold text-sm">Modo Foco</p></div>
-                                <button onclick="togglePref('focus')" id="tg-focus" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-focus-knob" class="relative z-10 w-6 h-6 bg-white rounded-full transition-transform translate-x-1"></span></button>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
+                                <div><p class="font-bold dark:text-white text-sm">Modo Foco</p><p class="text-[11px] text-zinc-500">Recolhe o menu lateral permanentemente.</p></div>
+                                <button onclick="togglePref('focus')" id="tg-focus" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-focus-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-focus-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-focus-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
-                            <div class="flex items-center justify-between p-4 border rounded-2xl bg-zinc-50">
-                                <div><p class="font-bold text-sm">Speed Dial</p></div>
-                                <button onclick="togglePref('speedDial')" id="tg-speedDial" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-speedDial-knob" class="relative z-10 w-6 h-6 bg-white rounded-full transition-transform translate-x-1"></span></button>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
+                                <div><p class="font-bold dark:text-white text-sm">Speed Dial</p><p class="text-[11px] text-zinc-500">Botão flutuante de ação rápida no canto.</p></div>
+                                <button onclick="togglePref('speedDial')" id="tg-speedDial" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-speedDial-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-speedDial-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-speedDial-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
-                            <div class="flex items-center justify-between p-4 border rounded-2xl bg-zinc-50">
-                                <div><p class="font-bold text-sm">Notificações Toast</p></div>
-                                <button onclick="togglePref('toasts')" id="tg-toasts" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-toasts-knob" class="relative z-10 w-6 h-6 bg-white rounded-full transition-transform translate-x-1"></span></button>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
+                                <div><p class="font-bold dark:text-white text-sm">Notificações Toast</p><p class="text-[11px] text-zinc-500">Avisos dinâmicos e silenciosos de confirmação.</p></div>
+                                <button onclick="togglePref('toasts')" id="tg-toasts" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-toasts-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-toasts-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-toasts-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
-                            <div class="flex items-center justify-between p-4 border rounded-2xl bg-zinc-50">
-                                <div><p class="font-bold text-sm text-amber-600">Auto-Salvar Check-in</p></div>
-                                <button onclick="togglePref('autoSave')" id="tg-autoSave" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-autoSave-knob" class="relative z-10 w-6 h-6 bg-white rounded-full transition-transform translate-x-1"></span></button>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
+                                <div><p class="font-bold dark:text-white text-sm">Microinterações</p><p class="text-[11px] text-zinc-500">Animações nos botões ao salvar dados.</p></div>
+                                <button onclick="togglePref('animacoes')" id="tg-animacoes" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-animacoes-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-animacoes-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-animacoes-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
+                            </div>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
+                                <div><p class="font-bold dark:text-white text-sm">Alto Contraste (Campo)</p><p class="text-[11px] text-zinc-500">Escurece as fontes e as bordas contra o sol.</p></div>
+                                <button onclick="togglePref('altoContraste')" id="tg-altoContraste" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-altoContraste-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-altoContraste-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-altoContraste-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
+                            </div>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
+                                <div><p class="font-bold dark:text-white text-sm">Tabelas Compactas</p><p class="text-[11px] text-zinc-500">Espreme listagens para caber mais na tela.</p></div>
+                                <button onclick="togglePref('tabelas')" id="tg-tabelas" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-tabelas-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-tabelas-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-tabelas-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
+                            </div>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 md:col-span-2">
+                                <div><p class="font-bold dark:text-white text-sm text-amber-600 dark:text-amber-400"><i class="fa-solid fa-shield-cat mr-1"></i> Auto-Salvar Check-in</p><p class="text-[11px] text-zinc-500">Salva o que você digita a cada 10 seg na Operação. (Seguro se o celular desligar).</p></div>
+                                <button onclick="togglePref('autoSave')" id="tg-autoSave" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-autoSave-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-autoSave-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-autoSave-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="tab-dashboard" class="content max-w-6xl mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="dash-kpis">
-                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-file-invoice-dollar text-xl"></i></div><div><p class="text-sm text-zinc-500">Receitas</p><p class="text-2xl font-bold dark:text-white" id="dash-kpi-receita">R$ 0</p></div></div>
-                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-briefcase text-xl"></i></div><div><p class="text-sm text-zinc-500">Propostas</p><p class="text-2xl font-bold dark:text-white" id="dash-kpi-propostas">0</p></div></div>
-                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-helicopter text-xl"></i></div><div><p class="text-sm text-zinc-500">Aves</p><p class="text-2xl font-bold dark:text-white" id="dash-kpi-aves">0</p></div></div>
+                    <div id="container-alertas" class="mb-8 hidden">
+                        <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-6 rounded-2xl shadow-sm">
+                            <h3 class="text-lg font-bold text-red-700 dark:text-red-400 flex items-center gap-2 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> Atenção Necessária</h3>
+                            <ul id="lista-alertas" class="list-disc pl-8 text-sm text-red-600 dark:text-red-300 font-medium"></ul>
+                        </div>
                     </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="dash-executivo">
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-file-invoice-dollar text-xl"></i></div><div><p class="text-sm text-zinc-500">Receitas Pagas</p><p class="text-2xl font-bold dark:text-white" id="dash-kpi-receita">R$ 0</p></div></div>
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-clock-rotate-left text-xl"></i></div><div><p class="text-sm text-zinc-500">A Receber (Pendente)</p><p class="text-2xl font-bold dark:text-white" id="dash-kpi-areceber">R$ 0</p></div></div>
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-briefcase text-xl"></i></div><div><p class="text-sm text-zinc-500">Propostas Abertas</p><p class="text-2xl font-bold dark:text-white" id="dash-kpi-propostas">0</p></div></div>
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center"><i class="fa-solid fa-file-signature text-xl"></i></div><div><p class="text-sm text-zinc-500">Contratos Ativos</p><p class="text-2xl font-bold dark:text-white" id="dash-kpi-contratos">0</p></div></div>
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center"><i class="fa-solid fa-calendar-day text-xl"></i></div><div><p class="text-sm text-zinc-500">Missões Pendentes</p><p class="text-2xl font-bold dark:text-white" id="dash-kpi-agenda">0</p></div></div>
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-helicopter text-xl"></i></div><div><p class="text-sm text-zinc-500">Aves Aptas (Voo)</p><p class="text-2xl font-bold dark:text-white" id="dash-kpi-aves">0</p></div></div>
+                    </div>
+                    
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800">
+                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-chart-area"></i> Evolução de Interações (Campo)</h3>
                         <canvas id="chartEvolucao" class="w-full max-h-[400px]"></canvas>
                     </div>
                 </div>
 
-                <div id="tab-clientes" class="content max-w-5xl mx-auto">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400">Clientes</h3>
-                        <div class="flex bg-zinc-200 p-1 rounded-lg"><button onclick="mudarView('clientes', 'grid')" id="btn-view-grid-clientes" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i></button><button onclick="mudarView('clientes', 'list')" id="btn-view-list-clientes" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i></button></div>
+                <div id="tab-clientes" class="content max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-building"></i> Cadastro de Cliente</h3>
+                            <button onclick="limparFormCli()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                        </div>
+                        
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-6 flex items-start gap-3">
+                            <i class="fa-solid fa-circle-info text-blue-500 mt-1"></i>
+                            <p class="text-sm text-blue-800 dark:text-blue-300"><b>Aviso:</b> Digite o CNPJ ou CEP e clique fora do campo para preencher os dados automaticamente via Integração BrasilAPI.</p>
+                        </div>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm">Dados Principais</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input type="text" id="c_doc" placeholder="CNPJ (00.000.000/0000-00)" class="input-modern w-full p-4 rounded-xl font-bold cnpj-mask" onblur="buscarCnpj()" maxlength="18">
+                            <input type="text" id="c_tel" placeholder="WhatsApp Principal" class="input-modern w-full p-4 rounded-xl tel-mask" maxlength="15">
+                            <input type="text" id="c_nome" placeholder="Razão Social" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="c_fantasia" placeholder="Nome Fantasia" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="c_contato_nome" placeholder="Nome do Contato" class="input-modern w-full p-4 rounded-xl">
+                            <input type="email" id="c_email" placeholder="E-mail Principal" class="input-modern w-full p-4 rounded-xl">
+                        </div>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm mt-4 border-t border-zinc-100 dark:border-zinc-800 pt-4">Endereço</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                            <input type="text" id="c_cep" placeholder="CEP (00000-000)" class="input-modern w-full p-4 rounded-xl cep-mask" onblur="buscarCep()" maxlength="9">
+                            <input type="text" id="c_logradouro" placeholder="Logradouro (Rua, Av)" class="input-modern w-full p-4 rounded-xl md:col-span-2">
+                            <input type="text" id="c_numero" placeholder="Número" class="input-modern w-full p-4 rounded-xl">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <input type="text" id="c_bairro" placeholder="Bairro" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="c_cidade" placeholder="Cidade" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="c_estado" placeholder="UF (Ex: PE)" class="input-modern w-full p-4 rounded-xl" maxlength="2">
+                        </div>
+                        
+                        <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-700 mb-6">
+                            <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-address-book text-primary dark:text-emerald-400"></i> Contatos Setoriais (Opcional)</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Comercial</label><input type="text" id="c_com_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_com_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm tel-mask" maxlength="15"></div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Financeiro</label><input type="text" id="c_fin_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_fin_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm tel-mask" maxlength="15"></div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Operacional</label><input type="text" id="c_ope_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_ope_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm tel-mask" maxlength="15"></div>
+                            </div>
+                        </div>
+                        <button id="btn-cliente" onclick="salvarCliente()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Cliente</button>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Carteira de Clientes</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="relative hidden sm:block">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
+                                <input type="text" onkeyup="filtrarLista('clientes', this.value)" placeholder="Filtrar clientes..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                            </div>
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('clientes', 'grid')" id="btn-view-grid-clientes" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('clientes', 'list')" id="btn-view-list-clientes" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
+                        </div>
                     </div>
                     <div id="lista-clientes"></div>
                 </div>
 
-                <div id="tab-plantel" class="content max-w-5xl mx-auto">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400">Plantel</h3>
-                        <div class="flex bg-zinc-200 p-1 rounded-lg"><button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i></button><button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i></button></div>
+                <div id="tab-plantel" class="content max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-feather"></i> Cadastro de Ave</h3>
+                            <button onclick="limparFormAve()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <input type="text" id="a_nome" placeholder="Nome" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="a_especie" placeholder="Espécie" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="a_anilha" placeholder="Número da Anilha" class="input-modern w-full p-4 rounded-xl">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <input type="number" id="a_min" placeholder="Peso Mínimo (g)" class="input-modern w-full p-4 rounded-xl">
+                            <input type="number" id="a_max" placeholder="Peso Máximo (g)" class="input-modern w-full p-4 rounded-xl">
+                        </div>
+                        <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-700 mb-6">
+                            <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-notes-medical text-primary"></i> Prontuário Médico</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                                <div>
+                                    <label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Status Clínico</label>
+                                    <select id="a_status" class="input-modern w-full p-4 rounded-xl"><option value="Apto para Voo">Apto para Voo</option><option value="Em Tratamento">Em Tratamento</option><option value="Muda de Penas">Muda de Penas (Inapto)</option><option value="Óbito">Óbito</option></select>
+                                </div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Última Avaliação</label><input type="date" id="a_data_aval" class="input-modern w-full p-4 rounded-xl"></div>
+                                <div class="flex items-end pb-1"><label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl cursor-pointer w-full hover:border-primary transition"><input type="checkbox" id="a_vacina" class="w-5 h-5 text-primary rounded" checked><span class="text-sm font-semibold dark:text-zinc-200">Vacinas em Dia</span></label></div>
+                            </div>
+                            <input type="text" id="a_doenca" placeholder="Doenças Preexistentes / Alergias" class="input-modern w-full p-4 rounded-xl mb-4">
+                            <textarea id="a_hist_det" placeholder="Detalhamento Completo (Histórico, Consultas...)" class="input-modern w-full p-4 rounded-xl h-24"></textarea>
+                        </div>
+                        <button id="btn-ave" onclick="salvarAve()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Ave</button>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Plantel Registrado</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="relative hidden sm:block">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
+                                <input type="text" onkeyup="filtrarLista('aves', this.value)" placeholder="Filtrar aves..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                            </div>
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
+                        </div>
                     </div>
                     <div id="lista-aves"></div>
                 </div>
 
-                <div id="tab-operacao" class="content max-w-5xl mx-auto">
-                    <div id="container-missoes" class="mb-8"><div id="lista-missoes-pendentes" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div></div>
-                    <div id="form-execucao" class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                <div id="tab-estoque" class="content max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-box-open"></i> Cadastro de Material</h3>
+                            <button onclick="limparFormEst()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input type="text" id="e_nome" placeholder="Nome do Item" class="input-modern w-full p-4 rounded-xl">
+                            <select id="e_cat" class="input-modern w-full p-4 rounded-xl"><option value="EPI">EPI</option><option value="Equipamento">Equipamento</option><option value="Consumível">Consumível</option></select>
+                        </div>
+                        <input type="number" id="e_qtd" placeholder="Quantidade em Estoque" class="input-modern w-full p-4 rounded-xl mb-6">
+                        
+                        <div id="bloco_epi" class="bg-amber-50 dark:bg-amber-900/20 p-5 rounded-2xl border border-amber-200 dark:border-amber-800 mb-6">
+                            <h4 class="text-sm font-bold text-amber-800 dark:text-amber-400 mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Dados de Segurança (EPI)</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 block mb-1">Número do CA</label><input type="text" id="e_ca" class="input-modern w-full p-4 rounded-xl bg-white dark:bg-zinc-800" placeholder="Ex: 12345"></div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 block mb-1">Validade do CA</label><input type="date" id="e_val" class="input-modern w-full p-4 rounded-xl bg-white dark:bg-zinc-800"></div>
+                            </div>
+                        </div>
+                        <button id="btn-estoque" onclick="salvarEstoque()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Material</button>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Inventário Geral</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="relative hidden sm:block">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
+                                <input type="text" onkeyup="filtrarLista('estoque', this.value)" placeholder="Filtrar itens..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                            </div>
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('estoque', 'grid')" id="btn-view-grid-estoque" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('estoque', 'list')" id="btn-view-list-estoque" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="lista-estoque"></div>
+                </div>
+
+                <div id="tab-propostas" class="content max-w-5xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                        <div class="flex justify-between items-center mb-8">
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-file-circle-plus"></i> Assistente de Proposta</h3>
+                            <button onclick="limparFormProp()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                        </div>
                         <div class="flex items-center mb-10 px-4">
-                            <div id="step-op-dot-1" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold z-10">1</div><div class="flex-1 h-1.5 bg-zinc-200 relative"><div id="step-op-line-1" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
-                            <div id="step-op-dot-2" class="w-10 h-10 rounded-full bg-zinc-200 text-zinc-500 flex items-center justify-center font-bold z-10">2</div><div class="flex-1 h-1.5 bg-zinc-200 relative"><div id="step-op-line-2" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
-                            <div id="step-op-dot-3" class="w-10 h-10 rounded-full bg-zinc-200 text-zinc-500 flex items-center justify-center font-bold z-10">3</div>
+                            <div id="step-dot-1" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md z-10">1</div>
+                            <div class="flex-1 h-1.5 bg-zinc-200 dark:bg-zinc-700 mx-[-4px] relative"><div id="step-line-1" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
+                            <div id="step-dot-2" class="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-500 flex items-center justify-center font-bold z-10">2</div>
+                            <div class="flex-1 h-1.5 bg-zinc-200 dark:bg-zinc-700 mx-[-4px] relative"><div id="step-line-2" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
+                            <div id="step-dot-3" class="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-500 flex items-center justify-center font-bold z-10">3</div>
+                        </div>
+                        <div id="step-content-1" class="space-y-4">
+                            <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2">Dados Iniciais</h4>
+                            <select id="p_cli" class="input-modern w-full p-4 rounded-xl select-cli"></select>
+                            <input type="text" id="p_serv" placeholder="Qual o serviço? (ex: Manejo de Pombos)" class="input-modern w-full p-4 rounded-xl">
+                            <select id="p_status" class="input-modern w-full p-4 rounded-xl"><option value="Lead">Lead</option><option value="Enviada">Enviada</option><option value="Em Negociação">Em Negociação</option><option value="Ganho">Ganho</option><option value="Perdido">Perdido</option></select>
+                            <div class="flex justify-end mt-6"><button type="button" onclick="mudarStep(2)" class="bg-zinc-800 text-white font-bold py-3 px-8 rounded-xl hover:bg-zinc-700 transition">Próximo <i class="fa-solid fa-arrow-right ml-2"></i></button></div>
+                        </div>
+                        <div id="step-content-2" class="space-y-4 hidden">
+                            <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2">Valores</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="text" id="p_freq" placeholder="Frequência Mensal" class="input-modern w-full p-4 rounded-xl"><input type="number" id="p_val" placeholder="Valor Mensal (R$)" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div class="flex justify-between mt-6"><button type="button" onclick="mudarStep(1)" class="bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold py-3 px-8 rounded-xl transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button><button type="button" onclick="mudarStep(3)" class="bg-zinc-800 text-white font-bold py-3 px-8 rounded-xl hover:bg-zinc-700 transition">Próximo <i class="fa-solid fa-arrow-right ml-2"></i></button></div>
+                        </div>
+                        <div id="step-content-3" class="space-y-4 hidden">
+                            <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2">Detalhes Finais</h4>
+                            <textarea id="p_obs" placeholder="Observações Técnicas" class="input-modern w-full p-4 rounded-xl h-24"></textarea>
+                            <textarea id="p_cond" placeholder="Condições de Pagamento" class="input-modern w-full p-4 rounded-xl h-24"></textarea>
+                            <div class="flex justify-between mt-6"><button type="button" onclick="mudarStep(2)" class="bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold py-3 px-8 rounded-xl transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button><button id="btn-proposta" onclick="salvarProposta()" class="bg-accent text-white font-bold py-3 px-8 rounded-xl transition flex items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Proposta</button></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Funil Comercial</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="relative hidden sm:block">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
+                                <input type="text" onkeyup="filtrarLista('propostas', this.value)" placeholder="Filtrar propostas..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                            </div>
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('propostas', 'grid')" id="btn-view-grid-propostas" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('propostas', 'list')" id="btn-view-list-propostas" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="lista-propostas"></div>
+                </div>
+
+                <div id="tab-pdca" class="content max-w-5xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-clipboard-list"></i> Novo Plano de Ação</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><select id="pd_cli" class="input-modern w-full p-4 rounded-xl select-cli"></select><input type="text" id="pd_prob" placeholder="Problema Identificado" class="input-modern w-full p-4 rounded-xl"></div>
+                        <div class="mb-4"><input type="text" id="pd_causa" placeholder="Causa Raiz" class="input-modern w-full p-4 rounded-xl"></div>
+                        <div class="mb-4"><textarea id="pd_acao" placeholder="Ação a ser executada" class="input-modern w-full p-4 rounded-xl h-24"></textarea></div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"><input type="text" id="pd_resp" placeholder="Responsável" class="input-modern w-full p-4 rounded-xl"><input type="date" id="pd_prazo" class="input-modern w-full p-4 rounded-xl"><select id="pd_status" class="input-modern w-full p-4 rounded-xl"><option value="Pendente">Pendente</option><option value="Em Andamento">Em Andamento</option><option value="Concluído">Concluído</option></select></div>
+                        <button id="btn-pdca" onclick="salvarPDCA()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-check"></i> Registrar Ação</button>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Acompanhamento de Melhorias</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="relative hidden sm:block">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
+                                <input type="text" onkeyup="filtrarLista('pdca', this.value)" placeholder="Filtrar ações..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                            </div>
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('pdca', 'grid')" id="btn-view-grid-pdca" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('pdca', 'list')" id="btn-view-list-pdca" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="lista-pdca"></div>
+                </div>
+
+                <div id="tab-operacao" class="content max-w-5xl mx-auto">
+                    <button id="btn-sync" class="hidden w-full bg-accent text-white font-bold py-4 rounded-2xl mb-8 flex justify-center items-center gap-2" onclick="sincronizarOffline()"><i class="fa-solid fa-rotate"></i> Sincronizar Missões (Offline)</button>
+                    <div id="container-missoes" class="mb-8">
+                        <h3 class="text-xl font-bold text-zinc-800 dark:text-white mb-4">Missões de Hoje</h3>
+                        <div id="lista-missoes-pendentes" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    </div>
+                    <div id="form-execucao" class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                        <div class="flex justify-between items-center mb-8">
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-rocket"></i> Check-in Operacional</h3>
+                            <button onclick="limparFormOp()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                        </div>
+                        <div class="flex items-center mb-10 px-4">
+                            <div id="step-op-dot-1" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md z-10">1</div>
+                            <div class="flex-1 h-1.5 bg-zinc-200 dark:bg-zinc-700 mx-[-4px] relative"><div id="step-op-line-1" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
+                            <div id="step-op-dot-2" class="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-500 flex items-center justify-center font-bold z-10">2</div>
+                            <div class="flex-1 h-1.5 bg-zinc-200 dark:bg-zinc-700 mx-[-4px] relative"><div id="step-op-line-2" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
+                            <div id="step-op-dot-3" class="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-500 flex items-center justify-center font-bold z-10">3</div>
                         </div>
                         <div id="step-op-content-1" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><select id="o_cli" class="input-modern w-full p-4 rounded-xl select-cli"></select><select id="o_ave" class="input-modern w-full p-4 rounded-xl select-ave"></select></div>
-                            <div class="grid grid-cols-3 gap-4"><div><label class="text-xs font-bold">Entrada</label><input type="time" id="o_hin" class="input-modern w-full p-4 rounded-xl"></div><div><label class="text-xs font-bold">Saída</label><input type="time" id="o_hout" class="input-modern w-full p-4 rounded-xl"></div><div><label class="text-xs font-bold">Peso(g)</label><input type="number" id="o_peso" class="input-modern w-full p-4 rounded-xl"></div></div>
-                            <button onclick="mudarStepOp(2)" class="w-full bg-zinc-800 text-white font-bold py-4 rounded-xl">Avançar</button>
+                            <div>
+                                <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-3 text-sm">Dados Principais</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><select id="o_cli" class="input-modern w-full p-4 rounded-xl select-cli"></select><select id="o_ave" class="input-modern w-full p-4 rounded-xl select-ave"></select></div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><select id="o_metodo" class="input-modern w-full p-4 rounded-xl"><option value="Falcoaria e Armadilhamento">Metodologia: Falcoaria e Armadilhamento</option><option value="Falcoaria">Metodologia: Falcoaria</option><option value="Armadilhamento">Metodologia: Armadilhamento</option><option value="Captura Manual">Captura Manual</option><option value="Laser">Afugentamento com Laser</option></select><select id="o_praga" class="input-modern w-full p-4 rounded-xl"><option value="Pombos (Columba livia)">Alvo: Pombos</option><option value="Pardais">Alvo: Pardais</option><option value="Morcegos">Alvo: Morcegos</option></select></div>
+                                <div class="grid grid-cols-3 gap-4"><div><label class="block text-xs text-zinc-500 mb-1 ml-1 font-bold">Entrada</label><input type="time" id="o_hin" class="input-modern w-full p-4 rounded-xl"></div><div><label class="block text-xs text-zinc-500 mb-1 ml-1 font-bold">Saída</label><input type="time" id="o_hout" class="input-modern w-full p-4 rounded-xl"></div><div><label class="block text-xs text-zinc-500 mb-1 ml-1 font-bold">Peso(g)</label><input type="number" id="o_peso" class="input-modern w-full p-4 rounded-xl"></div></div>
+                            </div>
+                            <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700">
+                                <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm"><i class="fa-solid fa-clipboard-check text-primary"></i> Atividade Realizada</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                    <label class="cb-label"><input type="checkbox" name="o_ativ" value="Inspeção" class="w-4 h-4 text-primary rounded"><span class="text-sm">Inspeção</span></label><label class="cb-label"><input type="checkbox" name="o_ativ" value="Manutenção de armadilhas" class="w-4 h-4 text-primary rounded"><span class="text-sm">Manutenção armadilhas</span></label><label class="cb-label"><input type="checkbox" name="o_ativ" value="Contagem de aves" class="w-4 h-4 text-primary rounded"><span class="text-sm">Contagem de aves</span></label><label class="cb-label"><input type="checkbox" name="o_ativ" value="Voos de afugentamento" class="w-4 h-4 text-primary rounded"><span class="text-sm">Voos de afugentamento</span></label><label class="cb-label"><input type="checkbox" name="o_ativ" value="Remoção de ninhos" class="w-4 h-4 text-primary rounded"><span class="text-sm">Remoção de ninhos</span></label><label class="cb-label"><input type="checkbox" name="o_ativ" value="Carhawk" class="w-4 h-4 text-primary rounded"><span class="text-sm">Carhawk</span></label><label class="cb-label"><input type="checkbox" name="o_ativ" value="Captura" class="w-4 h-4 text-primary rounded"><span class="text-sm">Captura</span></label><label class="cb-label"><input type="checkbox" name="o_ativ" value="Afugentamento a laser" class="w-4 h-4 text-primary rounded"><span class="text-sm">Afugent. com laser</span></label><label class="cb-label"><input type="checkbox" name="o_ativ" value="Atendimento de ocorrência" class="w-4 h-4 text-primary rounded"><span class="text-sm">Atendimento ocorrência</span></label>
+                                </div>
+                                <input type="text" id="o_ativ_outros" placeholder="Outros (especifique)" class="input-modern w-full p-3 rounded-xl mt-3 text-sm">
+                            </div>
+                            <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700">
+                                <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm"><i class="fa-solid fa-binoculars text-primary"></i> Comportamento das Aves Alvo</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                                    <label class="cb-label"><input type="checkbox" name="o_comp" value="Em pouso" class="w-4 h-4 text-primary rounded"><span class="text-sm">Em pouso</span></label><label class="cb-label"><input type="checkbox" name="o_comp" value="Se alimentando" class="w-4 h-4 text-primary rounded"><span class="text-sm">Se alimentando</span></label><label class="cb-label"><input type="checkbox" name="o_comp" value="Pernoitando" class="w-4 h-4 text-primary rounded"><span class="text-sm">Pernoitando</span></label><label class="cb-label"><input type="checkbox" name="o_comp" value="Em trânsito" class="w-4 h-4 text-primary rounded"><span class="text-sm">Em trânsito</span></label><label class="cb-label"><input type="checkbox" name="o_comp" value="Relutante" class="w-4 h-4 text-primary rounded"><span class="text-sm">Relutante ao afug.</span></label><label class="cb-label"><input type="checkbox" name="o_comp" value="Nidificando" class="w-4 h-4 text-primary rounded"><span class="text-sm">Nidificando</span></label><label class="cb-label"><input type="checkbox" name="o_comp" value="Morta" class="w-4 h-4 text-primary rounded"><span class="text-sm">Morta</span></label>
+                                </div>
+                            </div>
+                            <div class="flex justify-end mt-6"><button type="button" onclick="mudarStepOp(2)" class="bg-zinc-800 text-white font-bold py-3 px-8 rounded-xl hover:bg-zinc-700 transition">Avançar <i class="fa-solid fa-arrow-right ml-2"></i></button></div>
                         </div>
                         <div id="step-op-content-2" class="space-y-6 hidden">
-                            <div><label class="text-sm font-bold">Total de Interações</label><input type="number" id="o_int" value="0" class="input-modern w-full p-4 rounded-xl text-center font-bold text-2xl text-primary"></div>
-                            <div class="grid grid-cols-2 gap-4"><input type="number" id="o_cap" placeholder="Capturas" class="input-modern p-4 rounded-xl"><input type="number" id="o_nin" placeholder="Ninhos" class="input-modern p-4 rounded-xl"></div>
-                            <div class="flex gap-4"><button onclick="mudarStepOp(1)" class="w-1/2 bg-zinc-200 py-4 rounded-xl">Voltar</button><button onclick="mudarStepOp(3)" class="w-1/2 bg-zinc-800 text-white py-4 rounded-xl">Avançar</button></div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700"><h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-net-wired text-accent"></i> Capturas</h4><div class="flex gap-3 mb-3"><div class="w-1/3"><label class="text-xs font-bold text-zinc-500 ml-1 block mb-1">Qtd</label><input type="number" id="o_cap" value="0" min="0" class="input-modern w-full p-3 rounded-xl text-center font-bold text-lg text-primary"></div><div class="w-2/3"><label class="text-xs font-bold text-zinc-500 ml-1 block mb-1">Método</label><select id="o_cap_metodo" class="input-modern w-full p-3 rounded-xl text-sm"><option value="Não houve">Não houve</option><option value="Armadilha">Armadilha</option><option value="Falcoaria">Falcoaria</option><option value="Manual">Manual</option></select></div></div></div>
+                                <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700"><h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-brands fa-pagelines text-accent"></i> Remoção de Ninhos</h4><div class="flex gap-3 mb-3"><div class="w-1/3"><label class="text-xs font-bold text-zinc-500 ml-1 block mb-1">Qtd</label><input type="number" id="o_nin" value="0" min="0" class="input-modern w-full p-3 rounded-xl text-center font-bold text-lg text-primary"></div><div class="w-2/3"><label class="text-xs font-bold text-zinc-500 ml-1 block mb-1">Localização</label><input type="text" id="o_nin_local" placeholder="Ex: Galpão 3" class="input-modern w-full p-3 rounded-xl text-sm"></div></div></div>
+                            </div>
+                            <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-700">
+                                <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-box-archive text-primary"></i> Status das Armadilhas</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div><label class="text-xs font-bold text-zinc-500 ml-1 block mb-1">Condição Geral</label><select id="o_arm_status" class="input-modern w-full p-4 rounded-xl text-sm"><option value="Não avaliadas">Não avaliadas</option><option value="Ativa">Ativas e Operantes</option><option value="Inativa">Inativas</option><option value="Íntegra com violação">Íntegras, violadas</option><option value="Sem captura">Sem capturas</option></select></div>
+                                    <div><label class="text-xs font-bold text-zinc-500 ml-1 block mb-1">Leitor de QR Code</label><div class="flex gap-2"><input type="text" id="o_arm_qr" placeholder="Código" class="input-modern w-full p-4 rounded-xl text-sm"><button onclick="showToast('Abrindo câmera... (Requer HTTPS)')" class="bg-zinc-800 text-white p-4 rounded-xl hover:bg-zinc-700 transition w-16 flex justify-center items-center"><i class="fa-solid fa-qrcode text-lg"></i></button></div></div>
+                                </div>
+                            </div>
+                            <div><label class="text-sm font-bold text-zinc-700 dark:text-zinc-300 ml-1 block mb-2">Total de Interações / Voos (Geral)</label><input type="number" id="o_int" value="0" min="0" class="input-modern w-full md:w-1/3 p-4 rounded-xl text-center font-bold text-2xl text-primary bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200"></div>
+                            <div class="flex justify-between mt-8"><button type="button" onclick="mudarStepOp(1)" class="bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold py-3 px-8 rounded-xl transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button><button type="button" onclick="mudarStepOp(3)" class="bg-zinc-800 text-white font-bold py-3 px-8 rounded-xl hover:bg-zinc-700 transition">Avançar <i class="fa-solid fa-arrow-right ml-2"></i></button></div>
                         </div>
                         <div id="step-op-content-3" class="space-y-6 hidden">
-                            <textarea id="o_obs" placeholder="Observações..." class="input-modern w-full p-4 rounded-xl h-24"></textarea>
-                            <div class="flex gap-4"><button onclick="mudarStepOp(2)" class="w-1/2 bg-zinc-200 py-4 rounded-xl">Voltar</button><button onclick="alert('Salvo!')" class="w-1/2 bg-primary text-white py-4 rounded-xl">Finalizar</button></div>
+                            <div class="bg-red-50 dark:bg-red-900/10 p-6 rounded-2xl border border-red-100 dark:border-red-900/30">
+                                <div class="flex justify-between items-center mb-4"><h4 class="font-bold text-red-700 dark:text-red-400 text-sm"><i class="fa-solid fa-triangle-exclamation"></i> Não Conformidades Encontradas</h4><select id="v_infestacao" class="input-modern p-2 rounded-lg text-xs bg-white dark:bg-zinc-800 border-red-200 w-40 font-bold text-red-700"><option value="Baixo">Infestação: Baixa</option><option value="Médio">Infestação: Média</option><option value="Alto">Infestação: Alta</option></select></div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                    <label class="cb-label"><input type="checkbox" id="nc_residuos" class="w-4 h-4 text-red-600 rounded"><span class="text-sm">Resíduos Expostos</span></label><label class="cb-label"><input type="checkbox" id="nc_doca" class="w-4 h-4 text-red-600 rounded"><span class="text-sm">Doca Aberta</span></label><label class="cb-label"><input type="checkbox" id="nc_falha" class="w-4 h-4 text-red-600 rounded"><span class="text-sm">Falha Estrutural</span></label><label class="cb-label"><input type="checkbox" id="nc_pallets" class="w-4 h-4 text-red-600 rounded"><span class="text-sm">Pallets Mal Acondicionados</span></label><label class="cb-label"><input type="checkbox" id="nc_coletores" class="w-4 h-4 text-red-600 rounded"><span class="text-sm">Coletores Destampados</span></label><label class="cb-label"><input type="checkbox" id="nc_janelas" class="w-4 h-4 text-red-600 rounded"><span class="text-sm">Janelas Abertas</span></label><label class="cb-label"><input type="checkbox" id="nc_obras" class="w-4 h-4 text-red-600 rounded"><span class="text-sm">Obras no Local</span></label><label class="cb-label"><input type="checkbox" id="nc_area_imp" class="w-4 h-4 text-red-600 rounded"><span class="text-sm">Área Impedida</span></label><label class="cb-label"><input type="checkbox" id="nc_ninhos_nc" class="w-4 h-4 text-red-600 rounded"><span class="text-sm">Ninhos Presentes</span></label>
+                                </div>
+                            </div>
+                            <div class="bg-blue-50 dark:bg-blue-900/10 p-6 rounded-2xl border border-blue-100 dark:border-blue-900/30">
+                                <h4 class="font-bold text-blue-700 dark:text-blue-400 mb-4 text-sm"><i class="fa-solid fa-list-check"></i> Conclusão Técnica e Recomendações</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                    <label class="cb-label"><input type="checkbox" name="o_conc" value="Área controlada" class="w-4 h-4 text-blue-600 rounded"><span class="text-sm">Área controlada</span></label><label class="cb-label"><input type="checkbox" name="o_conc" value="Retorno frequente de aves" class="w-4 h-4 text-blue-600 rounded"><span class="text-sm">Retorno freq. de aves</span></label><label class="cb-label"><input type="checkbox" name="o_conc" value="Consertar falha estrutural" class="w-4 h-4 text-blue-600 rounded"><span class="text-sm">Consertar falha estrutural</span></label><label class="cb-label"><input type="checkbox" name="o_conc" value="Intensificar ações" class="w-4 h-4 text-blue-600 rounded"><span class="text-sm">Intensificar ações</span></label><label class="cb-label"><input type="checkbox" name="o_conc" value="Remoção de ninhos necessária" class="w-4 h-4 text-blue-600 rounded"><span class="text-sm">Requer remoção ninhos</span></label><label class="cb-label"><input type="checkbox" name="o_conc" value="Reforçar limpeza" class="w-4 h-4 text-blue-600 rounded"><span class="text-sm">Reforçar limpeza</span></label><label class="cb-label"><input type="checkbox" name="o_conc" value="Perigo para colaboradores/aves" class="w-4 h-4 text-blue-600 rounded"><span class="text-sm">Perigo colab./aves</span></label>
+                                </div>
+                            </div>
+                            <textarea id="o_obs" placeholder="Observações Extras do Serviço..." class="input-modern w-full p-4 rounded-xl h-24"></textarea>
+                            <div><label class="block font-bold text-zinc-700 dark:text-zinc-300 mb-2 flex items-center gap-2"><i class="fa-solid fa-camera"></i> Anexar Fotos</label><input type="file" id="v_fotos" accept="image/*" multiple class="block w-full text-sm text-zinc-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:bg-emerald-50 file:text-emerald-700 cursor-pointer border border-zinc-200 dark:border-zinc-700 p-2"><div id="preview-fotos" class="flex gap-3 mt-4 overflow-x-auto"></div></div>
+                            <div class="flex justify-between mt-8"><button type="button" onclick="mudarStepOp(2)" class="bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold py-3 px-8 rounded-xl transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button><button id="btn-visita" onclick="iniciarGPS()" class="bg-primary hover:bg-green-800 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg flex items-center gap-2"><i class="fa-solid fa-location-crosshairs"></i> Finalizar (GPS)</button></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Histórico de Campo</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="relative hidden sm:block">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
+                                <input type="text" onkeyup="filtrarLista('visitas', this.value)" placeholder="Filtrar histórico..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                            </div>
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('operacao', 'grid')" id="btn-view-grid-operacao" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('operacao', 'list')" id="btn-view-list-operacao" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
                         </div>
                     </div>
                     <div id="lista-visitas"></div>
                 </div>
 
-                <div id="tab-agenda" class="content max-w-5xl mx-auto">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400">Cronograma</h3>
-                        <div class="flex bg-zinc-200 p-1 rounded-lg">
-                            <button onclick="mudarView('agenda', 'calendar')" id="btn-view-calendar-agenda" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-calendar-alt"></i></button>
-                            <button onclick="mudarView('agenda', 'grid')" id="btn-view-grid-agenda" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-border-all"></i></button>
+                <div id="tab-agenda" class="content max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-calendar-plus"></i> Despachar Missão</h3><div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"><select id="ag_cli" class="input-modern w-full p-4 rounded-xl select-cli"></select><select id="ag_ave" class="input-modern w-full p-4 rounded-xl select-ave"></select><input type="date" id="ag_data" class="input-modern w-full p-4 rounded-xl"></div><button id="btn-agenda" onclick="salvarAgendamento()" class="w-full bg-accent text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-calendar-check"></i> Agendar Missão</button></div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Cronograma de Atividades</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('agenda', 'calendar')" id="btn-view-calendar-agenda" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-calendar-alt"></i> Calendário</button>
+                                <button onclick="mudarView('agenda', 'grid')" id="btn-view-grid-agenda" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('agenda', 'list')" id="btn-view-list-agenda" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
                         </div>
                     </div>
                     <div id="lista-agenda"></div>
                 </div>
 
-                <div id="tab-config" class="content max-w-4xl mx-auto">
-                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
-                        <h3 class="text-xl font-bold text-primary mb-6">Empresa</h3>
-                        <input type="text" id="cfg_nome" placeholder="Nome Fantasia" class="input-modern w-full p-4 rounded-xl mb-4">
-                        <button onclick="salvarConfig()" class="w-full bg-primary text-white font-bold py-4 rounded-xl">Salvar Empresa</button>
-                    </div>
-                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 mb-8">
-                        <h3 class="text-xl font-bold text-primary mb-6"><i class="fa-solid fa-book-open mr-2"></i> Manual e Dicas</h3>
-                        <div class="border rounded-2xl overflow-hidden mb-3">
-                            <button onclick="toggleAccordion('acc1')" class="w-full flex justify-between p-4 bg-zinc-50 font-bold"><span>Busca Mágica (Atalhos)</span><i id="icon-acc1" class="fa-solid fa-chevron-down"></i></button>
-                            <div id="content-acc1" class="hidden p-5 text-sm leading-relaxed border-t">Aperte <b>Ctrl + K</b> em qualquer tela para abrir a Busca Global. Use <b>ESC</b> para fechar.</div>
+                <div id="tab-financeiro" class="content max-w-5xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-money-bill-wave"></i> Novo Lançamento</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><select id="f_tipo" class="input-modern w-full p-4 rounded-xl"><option value="Receita">Receita</option><option value="Despesa">Despesa</option></select><select id="f_cli" class="input-modern w-full p-4 rounded-xl select-cli"><option value="">Sem Cliente Atrelado</option></select></div><input type="text" id="f_desc" placeholder="Descrição (ex: Mensalidade, Gasolina...)" class="input-modern w-full p-4 rounded-xl mb-4"><div class="grid grid-cols-2 gap-4 mb-6"><input type="number" id="f_valor" placeholder="Valor (R$)" class="input-modern w-full p-4 rounded-xl"><input type="date" id="f_venc" class="input-modern w-full p-4 rounded-xl"></div><button id="btn-financeiro" onclick="salvarFinanceiro()" class="w-full bg-accent text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-circle-plus"></i> Salvar Lançamento</button></div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Extrato</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="relative hidden sm:block">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
+                                <input type="text" onkeyup="filtrarLista('financeiro', this.value)" placeholder="Filtrar..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                            </div>
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('financeiro', 'grid')" id="btn-view-grid-financeiro" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('financeiro', 'list')" id="btn-view-list-financeiro" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
                         </div>
-                        <div class="border rounded-2xl overflow-hidden">
-                            <button onclick="toggleAccordion('acc2')" class="w-full flex justify-between p-4 bg-zinc-50 font-bold"><span>Operação Offline</span><i id="icon-acc2" class="fa-solid fa-chevron-down"></i></button>
-                            <div id="content-acc2" class="hidden p-5 text-sm leading-relaxed border-t">O sistema salva dados localmente se houver queda de internet. O botão de sincronizar aparecerá quando a rede voltar.</div>
+                    </div>
+                    <div id="lista-financeiro"></div>
+                </div>
+
+                <div id="tab-contratos" class="content max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-contrato"><i class="fa-solid fa-file-signature"></i> Firmar Contrato</h3><select id="ct_cli" class="input-modern w-full p-4 rounded-xl mb-4 select-cli"></select><div class="grid grid-cols-2 gap-4 mb-4"><input type="date" id="ct_ini" class="input-modern w-full p-4 rounded-xl"><input type="date" id="ct_fim" class="input-modern w-full p-4 rounded-xl"></div><div class="grid grid-cols-2 gap-4 mb-6"><input type="number" id="ct_val" placeholder="Valor Mensal (R$)" class="input-modern w-full p-4 rounded-xl"><input type="number" id="ct_freq" placeholder="Frequência Mensal" class="input-modern w-full p-4 rounded-xl"></div><button id="btn-contrato" onclick="salvarContrato()" class="w-full bg-accent text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar</button></div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Contratos Ativos</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="relative hidden sm:block">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
+                                <input type="text" onkeyup="filtrarLista('contratos', this.value)" placeholder="Filtrar..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                            </div>
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('contratos', 'grid')" id="btn-view-grid-contratos" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('contratos', 'list')" id="btn-view-list-contratos" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="lista-contratos"></div>
+                </div>
+
+                <div id="tab-usuarios" class="content max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-usuario"><i class="fa-solid fa-shield-halved"></i> Gerenciar Acessos</h3><div class="grid grid-cols-2 gap-4 mb-4"><input type="text" id="u_nome" placeholder="Nome Completo" class="input-modern w-full p-4 rounded-xl"><input type="email" id="u_email" placeholder="E-mail" class="input-modern w-full p-4 rounded-xl"></div><div class="grid grid-cols-2 gap-4 mb-6"><input type="password" id="u_senha" placeholder="Senha" class="input-modern w-full p-4 rounded-xl"><select id="u_perfil" class="input-modern w-full p-4 rounded-xl"><option value="tecnico">Técnico</option><option value="comercial">Comercial</option><option value="admin">Admin</option></select></div><button id="btn-usuario" onclick="salvarUsuario()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Acesso</button></div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Equipe</h3>
+                        <div class="flex items-center gap-2">
+                            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                                <button onclick="mudarView('usuarios', 'grid')" id="btn-view-grid-usuarios" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('usuarios', 'list')" id="btn-view-list-usuarios" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="lista-usuarios"></div>
+                </div>
+
+                <div id="tab-config" class="content max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-building"></i> Perfil Global da Empresa</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><input type="text" id="cfg_nome" placeholder="Nome Fantasia" class="input-modern w-full p-4 rounded-xl"><input type="text" id="cfg_cnpj" placeholder="CNPJ" class="input-modern w-full p-4 rounded-xl cnpj-mask" maxlength="18"></div><input type="text" id="cfg_end" placeholder="Endereço Completo" class="input-modern w-full p-4 rounded-xl mb-6"><div class="mb-8"><label class="block font-bold text-zinc-700 dark:text-zinc-300 mb-2 flex items-center gap-2"><i class="fa-solid fa-image"></i> Logo Oficial (Para PDFs)</label><input type="file" id="cfg_logo" accept="image/*" class="block w-full text-sm text-zinc-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:bg-emerald-50 file:text-emerald-700 cursor-pointer border border-zinc-200 dark:border-zinc-700 p-2"><img id="preview-logo" src="" class="mt-4 h-24 object-contain hidden border p-2 rounded-xl bg-white"></div><button id="btn-config" onclick="salvarConfig()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Empresa</button></div>
+                    
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-book-open-reader"></i> Manual e Dicas de Uso</h3>
+                        
+                        <div class="border border-zinc-200 dark:border-zinc-700 rounded-2xl overflow-hidden mb-3">
+                            <button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"><span class="font-bold text-sm dark:text-white"><i class="fa-solid fa-keyboard mr-2"></i> Atalhos de Teclado (Magic Search)</span><i id="icon-acc1" class="fa-solid fa-chevron-down text-zinc-500 transition-transform"></i></button>
+                            <div id="content-acc1" class="hidden p-5 text-sm text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700 leading-relaxed">
+                                Você não precisa usar o mouse para navegar. Aperte <b>Ctrl + K</b> em qualquer tela para abrir a Busca Global. Digite "Pombos", "Relatórios" ou "Propostas" e aperte Enter. Para fechar a busca sem clicar, basta apertar <b>ESC</b>.
+                            </div>
+                        </div>
+
+                        <div class="border border-zinc-200 dark:border-zinc-700 rounded-2xl overflow-hidden mb-3">
+                            <button onclick="toggleAccordion('acc2')" class="w-full flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"><span class="font-bold text-sm dark:text-white"><i class="fa-solid fa-magic mr-2"></i> Automação de CNPJ e CEP</span><i id="icon-acc2" class="fa-solid fa-chevron-down text-zinc-500 transition-transform"></i></button>
+                            <div id="content-acc2" class="hidden p-5 text-sm text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700 leading-relaxed">
+                                Na aba de Cadastro de Clientes, digite o CNPJ da empresa e clique fora da caixinha. A Ártemis vai se conectar à Receita Federal e preencher a Razão Social, Fantasia, Endereço e Telefones em 1 segundo. O mesmo funciona com o CEP!
+                            </div>
+                        </div>
+
+                        <div class="border border-zinc-200 dark:border-zinc-700 rounded-2xl overflow-hidden mb-3">
+                            <button onclick="toggleAccordion('acc3')" class="w-full flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"><span class="font-bold text-sm dark:text-white"><i class="fa-solid fa-bell mr-2"></i> O que significa o Badge Vermelho no Sino?</span><i id="icon-acc3" class="fa-solid fa-chevron-down text-zinc-500 transition-transform"></i></button>
+                            <div id="content-acc3" class="hidden p-5 text-sm text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700 leading-relaxed">
+                                O sininho é a inteligência da plataforma! Ele verifica sozinho todo o banco de dados e alerta automaticamente se houver <b>Contratos vencendo nos próximos 30 dias</b> ou se houver alguma <b>Ave de Rapina com a vacinação atrasada</b>.
+                            </div>
+                        </div>
+
+                        <div class="border border-zinc-200 dark:border-zinc-700 rounded-2xl overflow-hidden mb-3">
+                            <button onclick="toggleAccordion('acc4')" class="w-full flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"><span class="font-bold text-sm dark:text-white"><i class="fa-solid fa-satellite-dish mr-2"></i> Operação Offline no Campo</span><i id="icon-acc4" class="fa-solid fa-chevron-down text-zinc-500 transition-transform"></i></button>
+                            <div id="content-acc4" class="hidden p-5 text-sm text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700 leading-relaxed">
+                                Se você perder a conexão com a internet durante o serviço de campo, continue preenchendo. A Ártemis salvará todos os dados do Check-in no armazenamento do seu dispositivo. Assim que a rede voltar, um botão de <b>Sincronizar</b> aparecerá automaticamente na tela.
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </main>
         </div>
     </div>
-
+    
+    <div id="speed-dial" class="fixed bottom-8 right-8 z-50 hidden group"><div class="flex flex-col items-center gap-3 mb-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto"><button onclick="showTab('tab-operacao')" title="Nova Operação" class="w-12 h-12 bg-white dark:bg-zinc-800 text-primary dark:text-emerald-400 rounded-full shadow-lg border border-zinc-200 dark:border-zinc-700 hover:scale-110 transition flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></button><button onclick="showTab('tab-pdca')" title="Novo Plano de Ação" class="w-12 h-12 bg-white dark:bg-zinc-800 text-amber-500 rounded-full shadow-lg border border-zinc-200 dark:border-zinc-700 hover:scale-110 transition flex items-center justify-center"><i class="fa-solid fa-clipboard-list"></i></button></div><button class="w-14 h-14 bg-primary text-white rounded-full shadow-xl hover:bg-green-800 transition-transform duration-300 group-hover:rotate-45 text-xl flex items-center justify-center"><i class="fa-solid fa-plus"></i></button></div>
     <div id="toast-container" class="fixed bottom-8 left-8 z-[60] flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
         const API = 'https://artemis-backend-eso2.onrender.com'; 
         let glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] };
-        let usuarioLogado = null; let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
+        let usuarioLogado = null; let edit = { cli:null, ave:null, est:null, prop:null, pdca:null, cont:null, usu:null }; 
+        let agendamentoAtivo = null; let fotosBase64 = []; let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
+        
         const nomesPerfis = { 'admin': 'Diretor Executivo', 'comercial': 'Comercial / Financeiro', 'tecnico': 'Técnico de Manejo' };
 
-        // MÁSCARAS
+        // MÁSCARAS DE FORMATAÇÃO
         document.addEventListener('input', function (e) {
             if (e.target.classList.contains('cpf-mask')) { let v = e.target.value.replace(/\D/g, ''); v = v.replace(/(\d{3})(\d)/, '$1.$2'); v = v.replace(/(\d{3})(\d)/, '$1.$2'); v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); e.target.value = v; }
             if (e.target.classList.contains('cnpj-mask')) { let v = e.target.value.replace(/\D/g, ''); v = v.replace(/^(\d{2})(\d)/, '$1.$2'); v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3'); v = v.replace(/\.(\d{3})(\d)/, '.$1/$2'); v = v.replace(/(\d{4})(\d)/, '$1-$2'); e.target.value = v; }
@@ -281,53 +709,88 @@
         function formatName(name) { if(!name) return ''; const p = name.trim().split(' '); return p.length === 1 ? p[0] : `${p[0]} ${p[p.length - 1]}`; }
         function getInitials(name) { if(!name) return 'AF'; const p = name.trim().split(' '); if(p.length === 1) return p[0].substring(0, 2).toUpperCase(); return (p[0][0] + p[p.length - 1][0]).toUpperCase(); }
 
-        // CALENDÁRIO
-        function renderCalendar() {
-            const dataAtual = new Date(); const mes = dataAtual.getMonth(); const ano = dataAtual.getFullYear();
-            const primDia = new Date(ano, mes, 1).getDay(); const totDias = new Date(ano, mes + 1, 0).getDate();
-            const nomesMeses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-            let html = `<div class="bg-white p-6 rounded-3xl border"><h4 class="text-center font-bold text-xl mb-6 uppercase">${nomesMeses[mes]} ${ano}</h4><div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 mb-2"><div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div></div><div class="grid grid-cols-7 gap-2">`;
-            for(let i=0; i<primDia; i++) html += `<div class="p-2 border border-transparent"></div>`;
-            for(let dia=1; dia<=totDias; dia++) {
-                let dataStr = `${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
-                let missoes = (glob.ag||[]).filter(a => a.data_agendada && a.data_agendada.startsWith(dataStr));
-                let badges = missoes.map(m => `<div class="text-[10px] bg-primary text-white rounded px-1.5 py-0.5 mt-1 font-bold truncate">${m.cliente}</div>`).join('');
-                let bgHj = (dia === dataAtual.getDate()) ? 'bg-amber-50 border-accent' : 'bg-zinc-50 border-zinc-100';
-                html += `<div class="min-h-[90px] p-2 border rounded-xl ${bgHj} flex flex-col"><span class="font-bold opacity-50 mb-1">${dia}</span>${badges}</div>`;
-            }
-            html += `</div></div>`; return html;
+        // PREFERÊNCIAS DE USUÁRIO
+        let userPrefs = { focus: false, speedDial: true, toasts: true, animacoes: true, altoContraste: false, tabelas: false, autoSave: true };
+        function carregarPrefs() { const s = localStorage.getItem('artemis_prefs'); if(s) userPrefs = { ...userPrefs, ...JSON.parse(s) }; aplicarPrefs(); }
+        function togglePref(key) { userPrefs[key] = !userPrefs[key]; localStorage.setItem('artemis_prefs', JSON.stringify(userPrefs)); aplicarPrefs(); showToast("Configuração salva!"); }
+        function aplicarPrefs() {
+            Object.keys(userPrefs).forEach(key => {
+                const bg = document.getElementById(`tg-${key}`); const knob = document.getElementById(`tg-${key}-knob`); const on = document.getElementById(`tg-${key}-on`); const off = document.getElementById(`tg-${key}-off`);
+                if(bg && knob && on && off) {
+                    if(userPrefs[key]) {
+                        bg.classList.remove('bg-zinc-300', 'dark:bg-zinc-700'); bg.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
+                        knob.classList.remove('translate-x-1'); knob.classList.add('translate-x-9');
+                        on.classList.remove('opacity-0'); on.classList.add('opacity-100');
+                        off.classList.remove('opacity-100'); off.classList.add('opacity-0');
+                    } else {
+                        bg.classList.remove('bg-emerald-500', 'dark:bg-emerald-500'); bg.classList.add('bg-zinc-300', 'dark:bg-zinc-700');
+                        knob.classList.remove('translate-x-9'); knob.classList.add('translate-x-1');
+                        on.classList.remove('opacity-100'); on.classList.add('opacity-0');
+                        off.classList.remove('opacity-0'); off.classList.add('opacity-100');
+                    }
+                }
+            });
+            const sb = document.getElementById('sidebar'); const txts = document.querySelectorAll('.menu-text'); const log = document.getElementById('sidebar-logo'); const tit = document.getElementById('sidebar-title');
+            if(userPrefs.focus) { sb.className='w-24 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log)log.classList.add('hidden'); if(tit)tit.classList.add('opacity-0'); txts.forEach(t=>t.classList.add('hidden')); } 
+            else { sb.className='w-72 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log&&configGlobal.logo_base64)log.classList.remove('hidden'); if(tit)tit.classList.remove('opacity-0'); txts.forEach(t=>{t.classList.remove('hidden');}); }
+            const fab = document.getElementById('speed-dial'); if(fab) fab.style.display = userPrefs.speedDial ? 'block' : 'none';
+            if(userPrefs.altoContraste) document.body.classList.add('alto-contraste'); else document.body.classList.remove('alto-contraste');
+            if(userPrefs.tabelas) document.body.classList.add('tabela-compacta'); else document.body.classList.remove('tabela-compacta');
+            initAutoSave();
         }
 
-        // LOGIN
-        async function fazerLogin() {
-            const em = document.getElementById('login_email').value; const se = document.getElementById('login_senha').value;
-            const erroBox = document.getElementById('login-erro'); erroBox.innerText = "Conectando..."; erroBox.classList.remove('hidden');
+        // LOGIN E INIT
+        window.onload = () => { 
+            carregarTema(); 
+            document.getElementById('tela-login').classList.remove('hidden'); 
+            document.getElementById('tela-login').classList.add('flex'); 
+        };
+
+        async function fazerLogin() { 
+            const em = document.getElementById('login_email').value; const se = document.getElementById('login_senha').value; 
+            const erroBox = document.getElementById('login-erro');
             
+            // CHAVE MESTRA INFALÍVEL
             if(em === 'admin@silvestre.com' && se === '123456') {
                 usuarioLogado = { id: 99, nome: "Arisval Bazante de Sá Filho", email: "admin@silvestre.com", perfil: "admin" };
                 erroBox.classList.add('hidden');
-                init(); return;
+                init();
+                showToast("Modo Demonstração Ativado!");
+                return;
             }
 
-            try {
-                const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, senha:se})});
-                const d = await r.json();
-                if(d.ok) { usuarioLogado = d.usuario; erroBox.classList.add('hidden'); init(); }
-                else { erroBox.innerText = "Dados incorretos!"; erroBox.classList.add('bg-red-50', 'text-red-600'); }
-            } catch(e) { erroBox.innerText = "Erro no servidor. Tente usar a chave mestra (admin@silvestre.com / 123456)"; erroBox.classList.add('bg-red-50', 'text-red-600'); }
+            erroBox.innerText = "Conectando ao servidor...";
+            erroBox.classList.remove('hidden', 'text-red-600', 'bg-red-50');
+            erroBox.classList.add('text-amber-600', 'bg-amber-50');
+            
+            try { 
+                const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, senha:se})}); 
+                const d = await r.json(); 
+                if(d.ok) { 
+                    usuarioLogado = d.usuario; erroBox.classList.add('hidden'); init(); 
+                } else { 
+                    erroBox.innerText = "E-mail ou senha incorretos!"; 
+                    erroBox.classList.remove('text-amber-600', 'bg-amber-50'); erroBox.classList.add('text-red-600', 'bg-red-50');
+                } 
+            } catch(e) { 
+                erroBox.innerText = "Use a senha padrão 123456 para demonstração."; 
+                erroBox.classList.remove('text-amber-600', 'bg-amber-50'); erroBox.classList.add('text-red-600', 'bg-red-50');
+            } 
         }
 
-        // INIT
-        function init() {
-            document.getElementById('tela-login').classList.add('hidden'); 
+        function init() { 
+            document.getElementById('tela-login').classList.add('hidden'); document.getElementById('tela-login').classList.remove('flex');
+            document.getElementById('sistema-principal').classList.remove('hidden'); 
             
-            // O SEGREDO DO FLEX ESTÁ AQUI:
-            document.getElementById('sistema-principal').classList.remove('hidden');
-            document.getElementById('sistema-principal').classList.add('flex');
+            // A SALVAÇÃO DO LAYOUT - NÃO REMOVER ESSA LINHA!
+            document.getElementById('sistema-principal').classList.add('flex'); 
             
+            document.querySelectorAll('.aba-menu').forEach(a => { a.style.display = a.classList.contains(usuarioLogado.perfil) ? 'flex' : 'none'; }); 
             preencherPerfilUI();
-            showTab(usuarioLogado.perfil === 'tecnico' ? 'tab-operacao' : 'tab-dashboard');
-            carregarTudo(); carregarPrefs();
+            showTab(usuarioLogado.perfil === 'tecnico' ? 'tab-operacao' : 'tab-dashboard'); 
+            Object.keys(viewModos).forEach(k => mudarView(k, viewModos[k])); 
+            carregarPrefs(); 
+            carregarTudo(); 
         }
 
         function preencherPerfilUI() {
@@ -341,58 +804,77 @@
             const elMeuEmail = document.getElementById('meu_email'); if(elMeuEmail) elMeuEmail.value = usuarioLogado.email;
         }
 
-        // CARREGA DADOS DEMO
-        async function carregarTudo() {
-            glob.cli = [{id: 99, nome_fantasia: "Parque Dois Irmãos", documento_cpf_cnpj: "12.345.678/0001-99"}];
-            glob.ave = [{id: 99, nome: "Hermes", especie: "Gavião Asa-de-Telha", status_clinico: "Apto para Voo"}];
-            glob.ag = [
-                {id: 99, cliente: "Parque Dois Irmãos", ave: "Hermes", data_agendada: new Date().toISOString().split('T')[0], status: "Pendente"},
-                {id: 98, cliente: "Indústrias Recife", ave: "Zeus", data_agendada: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0], status: "Pendente"}
-            ];
-            glob.vis = [{id: 99, cliente: "Parque Dois Irmãos", ave: "Hermes", data_visita: new Date().toISOString().split('T')[0], qtd_interacoes: 12, qtd_capturas: 1, observacoes: "Serviço realizado com sucesso."}];
+        async function carregarTudo() { 
+            // CARREGA DADOS FICTÍCIOS INSTANTANEAMENTE (MODO APRESENTAÇÃO)
+            glob.cli = [{id: 99, nome_fantasia: "Indústrias Recife S.A.", documento_cpf_cnpj: "12.345.678/0001-99", contato_nome: "João Diretor"}];
+            glob.ave = [{id: 99, nome: "Hermes", especie: "Gavião Asa-de-Telha", status_clinico: "Apto para Voo", peso_minimo: 680, peso_maximo: 720}];
+            glob.est = [{id: 99, nome_item: "Luva de Raspa", categoria: "EPI", quantidade: 15, ca_epi: "45678"}];
+            glob.prop = [{id: 99, cliente: "Indústrias Recife S.A.", tipo_servico: "Manejo de Pombos", valor_mensal: "4500.00", status: "Em Negociação"}];
+            glob.pdca = [{id: 99, problema: "Retorno constante de pombos na doca", cliente: "Indústrias Recife S.A.", responsavel: "Arisval", prazo: new Date().toISOString(), status: "Pendente"}];
+            glob.vis = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Hermes", data_visita: new Date().toISOString(), qtd_interacoes: 12, qtd_capturas: 0, observacoes: "Serviço realizado."}];
+            glob.ag = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Hermes", data_agendada: new Date().toISOString().split('T')[0], status: "Pendente"}];
+            glob.fin = [{id: 99, descricao: "Fatura Mensalidade", cliente: "Indústrias Recife S.A.", valor: "4500.00", tipo: "Receita", status: "Pago"}];
+            glob.cont = [{id: 99, cliente: "Indústrias Recife S.A.", valor_mensal: "4500.00", frequencia_semanal: 2, data_fim: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()}];
 
-            rendCli(); rendAve(); rendVis(); rendAg(); popCli(); popAve(); updDash();
+            rendCli(); rendAve(); rendEst(); rendProp(); rendPDCA(); rendVis(); rendAg(); rendFin(); rendCont(); popCli(); popAve(); updDash();
         }
 
-        function updDash() { 
-            const elProp = document.getElementById('dash-kpi-propostas'); const elAve = document.getElementById('dash-kpi-aves');
-            if(elProp) elProp.innerText = "5"; if(elAve) elAve.innerText = "2"; 
+        // ================= FUNÇÕES UI BÁSICAS =================
+        function showTab(id) { document.querySelectorAll('.content').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('nav-active')); const b = document.getElementById('btn-'+id); if(b) b.classList.add('nav-active'); if(id === 'tab-dashboard') buildChart(); }
+        
+        let viewModos = { clientes:'grid', aves:'grid', estoque:'grid', propostas:'grid', pdca:'grid', operacao:'grid', agenda:'grid', financeiro:'grid', contratos:'grid', usuarios:'grid' };
+        function mudarView(aba, modo) {
+            viewModos[aba] = modo; 
+            const btnsIcons = { grid: '<i class="fa-solid fa-border-all"></i> Cards', list: '<i class="fa-solid fa-list"></i> Tabela', calendar: '<i class="fa-solid fa-calendar-alt"></i> Calendário' };
+            ['grid', 'list', 'calendar'].forEach(b => {
+                const btn = document.getElementById(`btn-view-${b}-${aba}`);
+                if(btn) {
+                    btn.className = modo === b ? 'px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition' : 'px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition'; 
+                    btn.innerHTML = btnsIcons[b];
+                }
+            });
+            if(aba==='clientes') rendCli(); if(aba==='aves') rendAve(); if(aba==='estoque') rendEst(); if(aba==='propostas') rendProp(); if(aba==='pdca') rendPDCA(); if(aba==='operacao') rendVis(); if(aba==='agenda') rendAg(); if(aba==='financeiro') rendFin(); if(aba==='contratos') rendCont(); if(aba==='usuarios') rendUsu();
         }
 
-        // UX BASE
-        function showTab(id) { document.querySelectorAll('.content').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-        
-        let viewModos = { agenda: 'calendar' };
-        function mudarView(aba, modo) { viewModos[aba] = modo; if(aba==='agenda') rendAg(); }
-        
-        function toggleAccordion(id) { const c = document.getElementById('content-'+id); c.classList.toggle('hidden'); }
+        function renderCalendar() {
+            const dataAtual = new Date(); const mes = dataAtual.getMonth(); const ano = dataAtual.getFullYear();
+            const primDia = new Date(ano, mes, 1).getDay(); const totDias = new Date(ano, mes + 1, 0).getDate();
+            const nomesMeses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            let html = `<div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6"><h4 class="text-center font-bold text-xl mb-6 dark:text-white uppercase tracking-widest">${nomesMeses[mes]} ${ano}</h4><div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 mb-2"><div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div></div><div class="grid grid-cols-7 gap-2">`;
+            for(let i=0; i<primDia; i++) html += `<div class="p-2 border border-transparent"></div>`;
+            for(let dia=1; dia<=totDias; dia++) {
+                let dataStr = `${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+                let missoes = (glob.ag||[]).filter(a => a.data_agendada && a.data_agendada.startsWith(dataStr));
+                let badges = missoes.map(m => `<div class="text-[10px] bg-primary text-white rounded px-1.5 py-0.5 mt-1 font-bold truncate shadow-sm">${m.cliente.substring(0,8)}...</div>`).join('');
+                let bgHj = (dia === dataAtual.getDate()) ? 'bg-amber-50 dark:bg-amber-900/20 border-accent' : 'bg-zinc-50 dark:bg-zinc-800/50 border-zinc-100 dark:border-zinc-700';
+                html += `<div class="min-h-[90px] p-2 border rounded-xl ${bgHj} dark:text-white flex flex-col"><span class="font-bold opacity-50 mb-1">${dia}</span>${badges}</div>`;
+            }
+            html += `</div></div>`; return html;
+        }
+
+        // RENDERIZADORES COMPLETOS COM ESTILOS ORIGINAIS!
+        function tableTpl(heads, bodyHtml) { return `<div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm text-zinc-600 dark:text-zinc-400 whitespace-nowrap"><thead class="bg-zinc-50 dark:bg-zinc-800/50 text-zinc-800 dark:text-zinc-200 font-bold"><tr>${heads.map(h=>`<th class="p-4">${h}</th>`).join('')}</tr></thead><tbody>${bodyHtml}</tbody></table></div>`; }
+
+        function rendCli() { const c = document.getElementById('lista-clientes'); if(!c) return; if(viewModos.clientes === 'grid') { c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.cli.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><b class="text-lg dark:text-white">${x.nome_fantasia || x.nome_razao_social}</b><br><span class="text-xs text-zinc-500">${x.documento_cpf_cnpj}</span><div class="flex gap-2 mt-4"><button class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:text-primary transition"><i class="fa-solid fa-pen"></i> Editar</button><button class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'CNPJ/CPF', 'Ações'], glob.cli.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome_fantasia || x.nome_razao_social}</td><td class="p-4">${x.documento_cpf_cnpj}</td><td class="p-4 text-right"><button class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        function rendAve() { const c = document.getElementById('lista-aves'); if(!c) return; if(viewModos.aves === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.ave.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><div class="flex justify-between"><b class="text-lg dark:text-white flex items-center gap-2"><i class="fa-solid fa-feather text-emerald-600"></i> ${x.nome}</b><span class="text-[10px] uppercase font-bold px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">${x.status_clinico || 'Sem Info'}</span></div><span class="text-xs text-zinc-500">${x.especie}</span><div class="flex gap-2 mt-4"><button class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i> Editar</button><button class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Nome', 'Espécie', 'Status', 'Ações'], glob.ave.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome}</td><td class="p-4">${x.especie}</td><td class="p-4"><span class="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">${x.status_clinico || 'Sem Info'}</span></td><td class="p-4 text-right"><button class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        function rendEst() { const c = document.getElementById('lista-estoque'); if(!c) return; if(viewModos.estoque === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.est.map(x => `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><b class="text-lg dark:text-white">${x.nome_item}</b><br><span class="text-xs uppercase font-bold text-zinc-400">${x.categoria}</span><p class="text-2xl font-bold text-primary mt-2">${x.quantidade}</p><div class="flex gap-2 mt-4"><button class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Material', 'Categoria', 'Qtd', 'Ações'], glob.est.map(x => `<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome_item}</td><td class="p-4">${x.categoria}</td><td class="p-4 font-bold text-emerald-600">${x.quantidade}</td><td class="p-4 text-right"><button class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        function rendProp() { const c = document.getElementById('lista-propostas'); if(!c) return; if(viewModos.propostas === 'grid') { c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.prop.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-accent shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center card"><div class="mb-4 md:mb-0"><b class="dark:text-white">${x.cliente}</b><p class="text-sm text-zinc-500">${x.tipo_servico} | R$ ${x.valor_mensal}</p><span class="text-[10px] font-bold px-2 py-1 rounded mt-2 block w-max bg-zinc-200 text-zinc-700">${x.status}</span></div><div class="flex gap-2 w-full md:w-auto"><button class="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex-1 transition hover:bg-purple-700"><i class="fa-solid fa-file-pdf"></i> PDF</button><button class="bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-sm font-bold flex-1 hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 py-2 rounded-xl text-sm font-bold flex-1 transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Serviço', 'Valor', 'Status', 'Ações'], glob.prop.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4">${x.tipo_servico}</td><td class="p-4 font-bold text-emerald-600">R$ ${x.valor_mensal}</td><td class="p-4"><span class="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">${x.status}</span></td><td class="p-4 text-right"><button class="text-purple-600 mr-3"><i class="fa-solid fa-file-pdf"></i></button><button class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        function rendPDCA() { const c = document.getElementById('lista-pdca'); if(!c) return; if(viewModos.pdca === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.pdca.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b class="dark:text-white">${x.problema}</b><span class="float-right text-xs bg-zinc-100 dark:bg-zinc-800 p-1 rounded font-bold text-zinc-600 dark:text-zinc-400">${x.status}</span><p class="text-sm text-zinc-500 my-2">${x.cliente}</p><p class="text-xs text-zinc-400">Resp: ${x.responsavel} | Prazo: ${new Date(x.prazo).toLocaleDateString()}</p><div class="flex gap-2 mt-4"><button class="flex-1 bg-zinc-100 dark:bg-zinc-800 py-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Problema', 'Cliente', 'Prazo', 'Status', 'Ações'], glob.pdca.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.problema}</td><td class="p-4">${x.cliente}</td><td class="p-4">${new Date(x.prazo).toLocaleDateString()}</td><td class="p-4">${x.status}</td><td class="p-4 text-right"><button class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        function rendVis() { const c = document.getElementById('lista-visitas'); if(!c) return; if(viewModos.operacao === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.vis.map((x,i)=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b class="dark:text-white">${new Date(x.data_visita).toLocaleDateString()}</b><div class="float-right flex gap-1"><button class="bg-zinc-800 text-white p-2 rounded-xl text-xs hover:bg-zinc-700 transition"><i class="fa-solid fa-file-pdf"></i></button><button class="bg-red-50 dark:bg-red-900/20 text-red-600 p-2 rounded-xl text-xs hover:bg-red-100 transition"><i class="fa-solid fa-trash"></i></button></div><p class="text-sm mt-2 text-zinc-500">${x.ave} em ${x.cliente}</p><p class="text-xs bg-zinc-50 dark:bg-zinc-800 p-2 mt-2 rounded font-bold text-zinc-600 dark:text-zinc-400">📍 Interações: ${x.qtd_interacoes}</p></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Data', 'Cliente', 'Ave', 'Interações', 'Ações'], glob.vis.map((x,i)=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${new Date(x.data_visita).toLocaleDateString()}</td><td class="p-4">${x.cliente}</td><td class="p-4">${x.ave}</td><td class="p-4 font-bold text-primary">${x.qtd_interacoes}</td><td class="p-4 text-right"><button class="text-zinc-800 dark:text-zinc-300 mr-3"><i class="fa-solid fa-file-pdf"></i></button><button class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        function rendAg() { const c = document.getElementById('lista-agenda'); if(!c) return; if(viewModos.agenda === 'calendar') { c.className = ''; c.innerHTML = renderCalendar(); } else if(viewModos.agenda === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.ag.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border shadow-sm card"><b class="dark:text-white">${x.cliente}</b><br><span class="text-xs text-zinc-500">${new Date(x.data_agendada).toLocaleDateString()} | ${x.ave}</span><span class="float-right text-xs font-bold bg-zinc-100 dark:bg-zinc-800 p-1 rounded text-zinc-700 dark:text-zinc-400">${x.status}</span><br>${x.status==='Pendente'?`<button class="mt-2 text-xs text-red-500 font-bold hover:underline">Cancelar</button>`:''}</div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Data', 'Ave', 'Status', 'Ações'], glob.ag.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4">${new Date(x.data_agendada).toLocaleDateString()}</td><td class="p-4">${x.ave}</td><td class="p-4 font-bold">${x.status}</td><td class="p-4 text-right">${x.status==='Pendente'?`<button class="text-red-500"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('')); } }
+        function rendFin() { const c = document.getElementById('lista-financeiro'); if(!c) return; if(viewModos.financeiro === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.fin.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border-l-4 ${x.tipo==='Receita'?'border-emerald-500':'border-red-500'} shadow-sm card"><b class="text-lg dark:text-white">${x.descricao}</b><div class="float-right">${x.status==='Pendente'?`<button class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold hover:bg-emerald-600 transition">Baixar</button>`:`<span class="text-xs font-bold text-emerald-600 bg-emerald-50 p-1 rounded">Pago</span>`}<button class="ml-2 text-red-500"><i class="fa-solid fa-trash"></i></button></div><p class="text-sm mt-1 text-zinc-500">${x.cliente||'Sem Cliente'}</p><p class="text-lg font-bold mt-2 text-zinc-800 dark:text-zinc-200">R$ ${x.valor}</p></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Descrição', 'Cliente', 'Valor', 'Status', 'Ações'], glob.fin.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.descricao}</td><td class="p-4">${x.cliente||'-'}</td><td class="p-4 font-bold ${x.tipo==='Receita'?'text-emerald-600':'text-red-500'}">R$ ${x.valor}</td><td class="p-4">${x.status}</td><td class="p-4 text-right">${x.status==='Pendente'?`<button class="text-emerald-500 mr-3"><i class="fa-solid fa-check"></i></button>`:''}<button class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        function rendCont() { const c = document.getElementById('lista-contratos'); if(!c) return; if(viewModos.contratos === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.cont.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border-l-4 border-accent shadow-sm card"><b class="dark:text-white">${x.cliente}</b><div class="float-right flex gap-2"><button class="text-zinc-500 hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button class="text-red-500"><i class="fa-solid fa-trash"></i></button></div><p class="text-sm mt-1 text-zinc-500">R$ ${x.valor_mensal}</p></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Valor Mensal', 'Frequência', 'Ações'], glob.cont.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4 font-bold text-emerald-600">R$ ${x.valor_mensal}</td><td class="p-4">${x.frequencia_semanal}x sem.</td><td class="p-4 text-right"><button class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+
+        function updDash() { const elProp = document.getElementById('dash-kpi-propostas'); const elAve = document.getElementById('dash-kpi-aves'); if(elProp) elProp.innerText = "1"; if(elAve) elAve.innerText = "1"; }
+        function popCli(){ const o = '<option value="">-- Cliente --</option>' + (glob.cli||[]).map(c=>`<option value="${c.id}">${c.nome_fantasia}</option>`).join(''); document.querySelectorAll('.select-cli').forEach(s => s.innerHTML = o); }
+        function popAve(){ const o = '<option value="">-- Ave --</option>' + (glob.ave||[]).map(a=>`<option value="${a.id}">${a.nome}</option>`).join(''); document.querySelectorAll('.select-ave').forEach(s => s.innerHTML = o); }
+        function showToast(m) { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'bg-white p-4 rounded-xl shadow-2xl border text-sm font-bold flex gap-2 items-center'; t.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-500"></i> ${m}`; c.appendChild(t); setTimeout(()=>t.remove(), 3000); }
+        function mudarStepOp(n) { document.getElementById('step-op-content-1').classList.add('hidden'); document.getElementById('step-op-content-2').classList.add('hidden'); document.getElementById('step-op-content-3').classList.add('hidden'); document.getElementById('step-op-content-'+n).classList.remove('hidden'); document.getElementById('step-op-line-1').style.width = n >= 2 ? '100%' : '0%'; document.getElementById('step-op-line-2').style.width = n >= 3 ? '100%' : '0%'; }
+        function toggleAccordion(id) { const c = document.getElementById('content-'+id); if(c) c.classList.toggle('hidden'); }
         function toggleDropdown() { document.getElementById('user-dropdown').classList.toggle('hidden'); }
         function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
         function fazerLogout() { location.reload(); }
-        
-        function showToast(m) { 
-            if(!userPrefs.toasts) return; 
-            const c = document.getElementById('toast-container'); const t = document.createElement('div'); 
-            t.className = 'bg-white p-4 rounded-xl shadow-2xl border text-sm font-bold flex gap-2 items-center'; 
-            t.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-500"></i> ${m}`; 
-            c.appendChild(t); setTimeout(()=>t.remove(), 3000); 
-        }
 
-        // RENDER FUNCTIONS
-        function popCli(){ const o = '<option value="">-- Cliente --</option>' + (glob.cli||[]).map(c=>`<option value="${c.id}">${c.nome_fantasia}</option>`).join(''); document.querySelectorAll('.select-cli').forEach(s => s.innerHTML = o); }
-        function popAve(){ const o = '<option value="">-- Ave --</option>' + (glob.ave||[]).map(a=>`<option value="${a.id}">${a.nome}</option>`).join(''); document.querySelectorAll('.select-ave').forEach(s => s.innerHTML = o); }
-        
-        function rendCli() { const c = document.getElementById('lista-clientes'); if(!c) return; c.innerHTML = (glob.cli||[]).map(x=>`<div class="bg-white p-6 rounded-2xl border shadow-sm card"><b class="text-lg">${x.nome_fantasia}</b><br><span class="text-xs text-zinc-500">${x.documento_cpf_cnpj}</span></div>`).join(''); }
-        function rendAve() { const c = document.getElementById('lista-aves'); if(!c) return; c.innerHTML = (glob.ave||[]).map(x=>`<div class="bg-white p-6 rounded-2xl border shadow-sm card"><b class="text-lg"><i class="fa-solid fa-feather text-emerald-600"></i> ${x.nome}</b><br><span class="text-xs text-zinc-500">${x.especie}</span></div>`).join(''); }
-        function rendVis() { const c = document.getElementById('lista-visitas'); if(!c) return; c.innerHTML = (glob.vis||[]).map(x=>`<div class="bg-white p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b>${new Date(x.data_visita).toLocaleDateString()}</b><p class="text-sm text-zinc-500">${x.ave} em ${x.cliente}</p><p class="text-xs mt-2 font-bold">Interações: ${x.qtd_interacoes}</p></div>`).join(''); }
-        function rendAg() { const c = document.getElementById('lista-agenda'); if(!c) return; c.innerHTML = (viewModos.agenda === 'calendar') ? renderCalendar() : "<p class='p-8 text-center'>Clique em Calendário acima.</p>"; }
-
-        function mudarStepOp(n) { document.getElementById('step-op-content-1').classList.add('hidden'); document.getElementById('step-op-content-2').classList.add('hidden'); document.getElementById('step-op-content-3').classList.add('hidden'); document.getElementById('step-op-content-'+n).classList.remove('hidden'); document.getElementById('step-op-line-1').style.width = n >= 2 ? '100%' : '0%'; document.getElementById('step-op-line-2').style.width = n >= 3 ? '100%' : '0%'; }
-
-        // PREFERENCES
-        let userPrefs = { focus: false, speedDial: true, toasts: true, animacoes: true, autoSave: true };
-        function carregarPrefs() { /* Stub */ }
-        function togglePref(key) { userPrefs[key] = !userPrefs[key]; showToast("Configuração alterada!"); }
     </script>
 </body>
 </html>

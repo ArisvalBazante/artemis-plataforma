@@ -93,6 +93,7 @@
         </div>
 
         <div class="flex-1 flex flex-col overflow-hidden relative">
+            
             <header class="h-24 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 px-4 md:px-8 flex items-center justify-between z-10 relative shrink-0">
                 <div class="flex items-center gap-6">
                     <h1 id="page-title" class="text-2xl font-bold tracking-tight text-zinc-800 dark:text-white hidden lg:block">Visão Geral</h1>
@@ -108,6 +109,7 @@
                             <i class="fa-solid fa-bell text-lg"></i>
                             <span id="notif-badge" class="absolute top-1 right-1 w-4 h-4 bg-red-500 border-2 border-white dark:border-zinc-900 rounded-full text-[9px] font-bold text-white flex items-center justify-center transition-transform scale-0">0</span>
                         </button>
+                        
                         <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-zinc-800 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-700 z-50 overflow-hidden flex flex-col">
                             <div class="p-4 border-b border-zinc-100 dark:border-zinc-700 flex justify-between items-center bg-zinc-50 dark:bg-zinc-800/80">
                                 <h4 class="font-bold text-zinc-800 dark:text-white flex items-center gap-2"><i class="fa-solid fa-inbox text-primary dark:text-emerald-400"></i> Alertas</h4>
@@ -135,7 +137,7 @@
                     <div class="relative">
                         <button onclick="toggleDropdown()" class="flex items-center gap-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 p-2 rounded-full transition cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700">
                             <div class="text-right hidden sm:block">
-                                <p id="nome-logado-header" class="font-bold text-sm text-zinc-800 dark:text-white capitalize tracking-tight"></p>
+                                <p id="nome-logado-header" class="font-bold text-sm text-zinc-800 dark:text-white tracking-tight"></p>
                                 <p id="perfil-logado" class="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium capitalize"></p>
                             </div>
                             <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm border-2 border-white dark:border-zinc-800 overflow-hidden" id="iniciais-logado"></div>
@@ -159,7 +161,7 @@
                         <div class="flex items-center gap-6 mb-8 border-b border-zinc-100 dark:border-zinc-800 pb-8">
                             <div class="relative">
                                 <div id="perfil-foto-preview" class="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold shadow-md overflow-hidden">
-                                    AB
+                                    <i class="fa-solid fa-user"></i>
                                 </div>
                                 <label class="absolute bottom-0 right-0 bg-accent text-white w-8 h-8 rounded-full cursor-pointer shadow-lg hover:bg-accent-hover transition flex items-center justify-center">
                                     <i class="fa-solid fa-camera text-sm"></i>
@@ -178,14 +180,14 @@
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">E-mail de Acesso</label><input type="email" id="meu_email" class="input-modern w-full p-4 rounded-xl opacity-60 cursor-not-allowed" disabled></div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">CPF</label><input type="text" id="meu_cpf" placeholder="000.000.000-00" class="input-modern w-full p-4 rounded-xl"></div>
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">WhatsApp Pessoal</label><input type="text" id="meu_wpp" placeholder="(00) 00000-0000" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">CPF</label><input type="text" id="meu_cpf" placeholder="000.000.000-00" class="input-modern w-full p-4 rounded-xl cpf-mask" maxlength="14"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">WhatsApp Pessoal</label><input type="text" id="meu_wpp" placeholder="(00) 00000-0000" class="input-modern w-full p-4 rounded-xl tel-mask" maxlength="15"></div>
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">Código do Funcionário</label><input type="text" value="SILV-2026" class="input-modern w-full p-4 rounded-xl opacity-60 cursor-not-allowed" disabled></div>
                         </div>
 
                         <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-house text-primary mr-2"></i> Endereço Residencial</h4>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                            <input type="text" id="p_cep" placeholder="CEP (Só Números)" class="input-modern w-full p-4 rounded-xl" onblur="buscarCepPerfil()" maxlength="9">
+                            <input type="text" id="p_cep" placeholder="CEP (00000-000)" class="input-modern w-full p-4 rounded-xl cep-mask" onblur="buscarCepPerfil()" maxlength="9">
                             <input type="text" id="p_logradouro" placeholder="Logradouro (Rua, Av)" class="input-modern w-full p-4 rounded-xl md:col-span-2">
                             <input type="text" id="p_numero" placeholder="Número" class="input-modern w-full p-4 rounded-xl">
                         </div>
@@ -199,11 +201,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">Tipo Sanguíneo</label><select id="p_sangue" class="input-modern w-full p-4 rounded-xl"><option value="">Não Informado</option><option value="A">A</option><option value="B">B</option><option value="AB">AB</option><option value="O">O</option></select></div>
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">Fator RH</label><select id="p_rh" class="input-modern w-full p-4 rounded-xl"><option value="">Não Informado</option><option value="Positivo (+)">Positivo (+)</option><option value="Negativo (-)">Negativo (-)</option></select></div>
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Contato de Emergência</label><input type="text" id="p_emergencia" placeholder="Nome e Telefone" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Alergias / Restrições</label><input type="text" id="p_alergias" placeholder="Ex: Dipirona" class="input-modern w-full p-4 rounded-xl"></div>
                         </div>
-                        <div class="mb-8">
-                            <label class="text-xs text-zinc-500 ml-1 font-bold">Alergias ou Restrições Médicas</label>
-                            <input type="text" id="p_alergias" placeholder="Ex: Alergia a abelha, Dipirona..." class="input-modern w-full p-4 rounded-xl">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Nome (Contato de Emergência)</label><input type="text" id="p_emergencia_nome" placeholder="Nome do Contato" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Telefone (Emergência)</label><input type="text" id="p_emergencia_tel" placeholder="(00) 00000-0000" class="input-modern w-full p-4 rounded-xl tel-mask" maxlength="15"></div>
                         </div>
 
                         <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-lock text-primary mr-2"></i> Alterar Senha</h4>
@@ -245,8 +247,8 @@
                                 <div><p class="font-bold dark:text-white text-sm">Tabelas Compactas</p><p class="text-[11px] text-zinc-500">Espreme listagens para caber mais na tela.</p></div>
                                 <button onclick="togglePref('tabelas')" id="tg-tabelas" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-tabelas-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-tabelas-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-tabelas-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
-                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold dark:text-white text-sm text-amber-600 dark:text-amber-400"><i class="fa-solid fa-shield-cat mr-1"></i> Auto-Salvar Check-in</p><p class="text-[11px] text-zinc-500">Salva o que você digita a cada 10 seg.</p></div>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 md:col-span-2">
+                                <div><p class="font-bold dark:text-white text-sm text-amber-600 dark:text-amber-400"><i class="fa-solid fa-shield-cat mr-1"></i> Auto-Salvar Check-in</p><p class="text-[11px] text-zinc-500">Salva o que você digita a cada 10 seg na Operação.</p></div>
                                 <button onclick="togglePref('autoSave')" id="tg-autoSave" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-autoSave-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-autoSave-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-autoSave-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
                         </div>
@@ -285,13 +287,13 @@
                         
                         <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-6 flex items-start gap-3">
                             <i class="fa-solid fa-circle-info text-blue-500 mt-1"></i>
-                            <p class="text-sm text-blue-800 dark:text-blue-300"><b>Aviso:</b> Digite o CNPJ e clique fora do campo para preencher os dados automaticamente via BrasilAPI.</p>
+                            <p class="text-sm text-blue-800 dark:text-blue-300"><b>Aviso:</b> Digite o CNPJ ou CEP e clique fora do campo para preencher os dados automaticamente via Integração BrasilAPI.</p>
                         </div>
 
                         <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm">Dados Principais</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <input type="text" id="c_doc" placeholder="CNPJ (Apenas números)" class="input-modern w-full p-4 rounded-xl font-bold" onblur="buscarCnpj()" maxlength="14">
-                            <input type="text" id="c_tel" placeholder="WhatsApp Principal" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="c_doc" placeholder="CNPJ (00.000.000/0000-00)" class="input-modern w-full p-4 rounded-xl font-bold cnpj-mask" onblur="buscarCnpj()" maxlength="18">
+                            <input type="text" id="c_tel" placeholder="WhatsApp Principal" class="input-modern w-full p-4 rounded-xl tel-mask" maxlength="15">
                             <input type="text" id="c_nome" placeholder="Razão Social" class="input-modern w-full p-4 rounded-xl">
                             <input type="text" id="c_fantasia" placeholder="Nome Fantasia" class="input-modern w-full p-4 rounded-xl">
                             <input type="text" id="c_contato_nome" placeholder="Nome do Contato" class="input-modern w-full p-4 rounded-xl">
@@ -300,7 +302,7 @@
 
                         <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm mt-4 border-t border-zinc-100 dark:border-zinc-800 pt-4">Endereço</h4>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                            <input type="text" id="c_cep" placeholder="CEP (Só Números)" class="input-modern w-full p-4 rounded-xl" onblur="buscarCep()" maxlength="9">
+                            <input type="text" id="c_cep" placeholder="CEP (00000-000)" class="input-modern w-full p-4 rounded-xl cep-mask" onblur="buscarCep()" maxlength="9">
                             <input type="text" id="c_logradouro" placeholder="Logradouro (Rua, Av)" class="input-modern w-full p-4 rounded-xl md:col-span-2">
                             <input type="text" id="c_numero" placeholder="Número" class="input-modern w-full p-4 rounded-xl">
                         </div>
@@ -313,9 +315,9 @@
                         <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-700 mb-6">
                             <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-address-book text-primary dark:text-emerald-400"></i> Contatos Setoriais (Opcional)</h4>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Comercial</label><input type="text" id="c_com_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_com_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm"></div>
-                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Financeiro</label><input type="text" id="c_fin_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_fin_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm"></div>
-                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Operacional</label><input type="text" id="c_ope_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_ope_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm"></div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Comercial</label><input type="text" id="c_com_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_com_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm tel-mask" maxlength="15"></div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Financeiro</label><input type="text" id="c_fin_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_fin_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm tel-mask" maxlength="15"></div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Operacional</label><input type="text" id="c_ope_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_ope_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm tel-mask" maxlength="15"></div>
                             </div>
                         </div>
                         <button id="btn-cliente" onclick="salvarCliente()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Cliente</button>
@@ -329,8 +331,8 @@
                                 <input type="text" onkeyup="filtrarLista('clientes', this.value)" placeholder="Filtrar clientes..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('clientes', 'grid')" id="btn-view-grid-clientes" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('clientes', 'list')" id="btn-view-list-clientes" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('clientes', 'grid')" id="btn-view-grid-clientes" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('clientes', 'list')" id="btn-view-list-clientes" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -352,6 +354,7 @@
                             <input type="number" id="a_min" placeholder="Peso Mínimo (g)" class="input-modern w-full p-4 rounded-xl">
                             <input type="number" id="a_max" placeholder="Peso Máximo (g)" class="input-modern w-full p-4 rounded-xl">
                         </div>
+                        
                         <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-700 mb-6">
                             <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-notes-medical text-primary"></i> Prontuário Médico</h4>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
@@ -375,8 +378,8 @@
                                 <input type="text" onkeyup="filtrarLista('aves', this.value)" placeholder="Filtrar aves..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -412,8 +415,8 @@
                                 <input type="text" onkeyup="filtrarLista('estoque', this.value)" placeholder="Filtrar itens..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('estoque', 'grid')" id="btn-view-grid-estoque" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('estoque', 'list')" id="btn-view-list-estoque" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('estoque', 'grid')" id="btn-view-grid-estoque" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('estoque', 'list')" id="btn-view-list-estoque" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -460,8 +463,8 @@
                                 <input type="text" onkeyup="filtrarLista('propostas', this.value)" placeholder="Filtrar propostas..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('propostas', 'grid')" id="btn-view-grid-propostas" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('propostas', 'list')" id="btn-view-list-propostas" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('propostas', 'grid')" id="btn-view-grid-propostas" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('propostas', 'list')" id="btn-view-list-propostas" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -470,7 +473,7 @@
 
                 <div id="tab-pdca" class="content max-w-5xl mx-auto">
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-clipboard-list"></i> Novo Plano de Ação</h3>
+                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-pdca"><i class="fa-solid fa-clipboard-list"></i> Novo Plano de Ação</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><select id="pd_cli" class="input-modern w-full p-4 rounded-xl select-cli"></select><input type="text" id="pd_prob" placeholder="Problema Identificado" class="input-modern w-full p-4 rounded-xl"></div>
                         <div class="mb-4"><input type="text" id="pd_causa" placeholder="Causa Raiz" class="input-modern w-full p-4 rounded-xl"></div>
                         <div class="mb-4"><textarea id="pd_acao" placeholder="Ação a ser executada" class="input-modern w-full p-4 rounded-xl h-24"></textarea></div>
@@ -485,8 +488,8 @@
                                 <input type="text" onkeyup="filtrarLista('pdca', this.value)" placeholder="Filtrar ações..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('pdca', 'grid')" id="btn-view-grid-pdca" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('pdca', 'list')" id="btn-view-list-pdca" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('pdca', 'grid')" id="btn-view-grid-pdca" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('pdca', 'list')" id="btn-view-list-pdca" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -575,8 +578,8 @@
                                 <input type="text" onkeyup="filtrarLista('visitas', this.value)" placeholder="Filtrar histórico..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('operacao', 'grid')" id="btn-view-grid-operacao" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('operacao', 'list')" id="btn-view-list-operacao" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('operacao', 'grid')" id="btn-view-grid-operacao" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('operacao', 'list')" id="btn-view-list-operacao" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -589,9 +592,9 @@
                         <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Cronograma de Atividades</h3>
                         <div class="flex items-center gap-2">
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('agenda', 'calendar')" id="btn-view-calendar-agenda" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-calendar-alt"></i> Calendário</button>
-                                <button onclick="mudarView('agenda', 'grid')" id="btn-view-grid-agenda" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('agenda', 'list')" id="btn-view-list-agenda" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('agenda', 'calendar')" id="btn-view-calendar-agenda" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-calendar-alt"></i> Calendário</button>
+                                <button onclick="mudarView('agenda', 'grid')" id="btn-view-grid-agenda" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('agenda', 'list')" id="btn-view-list-agenda" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -605,11 +608,11 @@
                         <div class="flex items-center gap-2">
                             <div class="relative hidden sm:block">
                                 <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
-                                <input type="text" onkeyup="filtrarLista('financeiro', this.value)" placeholder="Filtrar..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                                <input type="text" onkeyup="filtrarLista('financeiro', this.value)" placeholder="Filtrar lançamentos..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('financeiro', 'grid')" id="btn-view-grid-financeiro" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('financeiro', 'list')" id="btn-view-list-financeiro" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('financeiro', 'grid')" id="btn-view-grid-financeiro" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('financeiro', 'list')" id="btn-view-list-financeiro" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -623,11 +626,11 @@
                         <div class="flex items-center gap-2">
                             <div class="relative hidden sm:block">
                                 <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
-                                <input type="text" onkeyup="filtrarLista('contratos', this.value)" placeholder="Filtrar..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+                                <input type="text" onkeyup="filtrarLista('contratos', this.value)" placeholder="Filtrar contratos..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('contratos', 'grid')" id="btn-view-grid-contratos" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('contratos', 'list')" id="btn-view-list-contratos" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('contratos', 'grid')" id="btn-view-grid-contratos" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('contratos', 'list')" id="btn-view-list-contratos" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -635,13 +638,13 @@
                 </div>
 
                 <div id="tab-usuarios" class="content max-w-4xl mx-auto">
-                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-usuario"><i class="fa-solid fa-shield-halved"></i> Gerenciar Acessos</h3><div class="grid grid-cols-2 gap-4 mb-4"><input type="text" id="u_nome" placeholder="Nome" class="input-modern w-full p-4 rounded-xl"><input type="email" id="u_email" placeholder="E-mail" class="input-modern w-full p-4 rounded-xl"></div><div class="grid grid-cols-2 gap-4 mb-6"><input type="password" id="u_senha" placeholder="Senha" class="input-modern w-full p-4 rounded-xl"><select id="u_perfil" class="input-modern w-full p-4 rounded-xl"><option value="tecnico">Técnico</option><option value="comercial">Comercial</option><option value="admin">Admin</option></select></div><button id="btn-usuario" onclick="salvarUsuario()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Acesso</button></div>
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2" id="titulo-usuario"><i class="fa-solid fa-shield-halved"></i> Gerenciar Acessos</h3><div class="grid grid-cols-2 gap-4 mb-4"><input type="text" id="u_nome" placeholder="Nome Completo" class="input-modern w-full p-4 rounded-xl"><input type="email" id="u_email" placeholder="E-mail" class="input-modern w-full p-4 rounded-xl"></div><div class="grid grid-cols-2 gap-4 mb-6"><input type="password" id="u_senha" placeholder="Senha" class="input-modern w-full p-4 rounded-xl"><select id="u_perfil" class="input-modern w-full p-4 rounded-xl"><option value="tecnico">Técnico</option><option value="comercial">Comercial</option><option value="admin">Admin</option></select></div><button id="btn-usuario" onclick="salvarUsuario()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Acesso</button></div>
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Equipe</h3>
                         <div class="flex items-center gap-2">
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('usuarios', 'grid')" id="btn-view-grid-usuarios" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                                <button onclick="mudarView('usuarios', 'list')" id="btn-view-list-usuarios" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
+                                <button onclick="mudarView('usuarios', 'grid')" id="btn-view-grid-usuarios" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('usuarios', 'list')" id="btn-view-list-usuarios" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -649,20 +652,121 @@
                 </div>
 
                 <div id="tab-config" class="content max-w-4xl mx-auto">
-                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-building"></i> Perfil Global da Empresa</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><input type="text" id="cfg_nome" placeholder="Nome Fantasia" class="input-modern w-full p-4 rounded-xl"><input type="text" id="cfg_cnpj" placeholder="CNPJ" class="input-modern w-full p-4 rounded-xl"></div><input type="text" id="cfg_end" placeholder="Endereço Completo" class="input-modern w-full p-4 rounded-xl mb-6"><div class="mb-8"><label class="block font-bold text-zinc-700 dark:text-zinc-300 mb-2 flex items-center gap-2"><i class="fa-solid fa-image"></i> Logo Oficial (Para PDFs)</label><input type="file" id="cfg_logo" accept="image/*" class="block w-full text-sm text-zinc-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:bg-emerald-50 file:text-emerald-700 cursor-pointer border border-zinc-200 dark:border-zinc-700 p-2"><img id="preview-logo" src="" class="mt-4 h-24 object-contain hidden border p-2 rounded-xl bg-white"></div><button id="btn-config" onclick="salvarConfig()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Empresa</button></div>
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8"><h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-building"></i> Perfil Global da Empresa</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><input type="text" id="cfg_nome" placeholder="Nome Fantasia" class="input-modern w-full p-4 rounded-xl"><input type="text" id="cfg_cnpj" placeholder="CNPJ" class="input-modern w-full p-4 rounded-xl cnpj-mask" maxlength="18"></div><input type="text" id="cfg_end" placeholder="Endereço Completo" class="input-modern w-full p-4 rounded-xl mb-6"><div class="mb-8"><label class="block font-bold text-zinc-700 dark:text-zinc-300 mb-2 flex items-center gap-2"><i class="fa-solid fa-image"></i> Logo Oficial (Para PDFs)</label><input type="file" id="cfg_logo" accept="image/*" class="block w-full text-sm text-zinc-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:bg-emerald-50 file:text-emerald-700 cursor-pointer border border-zinc-200 dark:border-zinc-700 p-2"><img id="preview-logo" src="" class="mt-4 h-24 object-contain hidden border p-2 rounded-xl bg-white"></div><button id="btn-config" onclick="salvarConfig()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Empresa</button></div>
+                    
+                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
+                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-book-open-reader"></i> Manual e Dicas de Uso</h3>
+                        
+                        <div class="border border-zinc-200 dark:border-zinc-700 rounded-2xl overflow-hidden mb-3">
+                            <button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"><span class="font-bold text-sm dark:text-white"><i class="fa-solid fa-keyboard mr-2"></i> Atalhos de Teclado (Magic Search)</span><i id="icon-acc1" class="fa-solid fa-chevron-down text-zinc-500 transition-transform"></i></button>
+                            <div id="content-acc1" class="hidden p-5 text-sm text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700 leading-relaxed">
+                                Você não precisa usar o mouse para navegar. Aperte <b>Ctrl + K</b> (ou Cmd + K no Mac) em qualquer tela para abrir a Busca Global. Digite "Pombos", "Relatórios" ou "Propostas" e aperte Enter. Para fechar a busca sem clicar, basta apertar <b>ESC</b>.
+                            </div>
+                        </div>
+
+                        <div class="border border-zinc-200 dark:border-zinc-700 rounded-2xl overflow-hidden mb-3">
+                            <button onclick="toggleAccordion('acc2')" class="w-full flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"><span class="font-bold text-sm dark:text-white"><i class="fa-solid fa-magic mr-2"></i> Automação de CNPJ e CEP</span><i id="icon-acc2" class="fa-solid fa-chevron-down text-zinc-500 transition-transform"></i></button>
+                            <div id="content-acc2" class="hidden p-5 text-sm text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700 leading-relaxed">
+                                Na aba de Cadastro de Clientes, digite o CNPJ da empresa e clique fora da caixinha (ou aperte a tecla Tab). A Ártemis vai se conectar à Receita Federal e preencher a Razão Social, Fantasia, Endereço e Telefones em 1 segundo. O mesmo funciona com o CEP!
+                            </div>
+                        </div>
+
+                        <div class="border border-zinc-200 dark:border-zinc-700 rounded-2xl overflow-hidden mb-3">
+                            <button onclick="toggleAccordion('acc3')" class="w-full flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"><span class="font-bold text-sm dark:text-white"><i class="fa-solid fa-bell mr-2"></i> O que significa o Badge Vermelho no Sino?</span><i id="icon-acc3" class="fa-solid fa-chevron-down text-zinc-500 transition-transform"></i></button>
+                            <div id="content-acc3" class="hidden p-5 text-sm text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700 leading-relaxed">
+                                O sininho é a inteligência da plataforma! Ele verifica sozinho todo o banco de dados e alerta automaticamente se houver <b>Contratos vencendo nos próximos 30 dias</b> ou se houver alguma <b>Ave de Rapina com a vacinação atrasada</b>.
+                            </div>
+                        </div>
+
+                        <div class="border border-zinc-200 dark:border-zinc-700 rounded-2xl overflow-hidden mb-3">
+                            <button onclick="toggleAccordion('acc4')" class="w-full flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"><span class="font-bold text-sm dark:text-white"><i class="fa-solid fa-satellite-dish mr-2"></i> Operação Offline no Campo</span><i id="icon-acc4" class="fa-solid fa-chevron-down text-zinc-500 transition-transform"></i></button>
+                            <div id="content-acc4" class="hidden p-5 text-sm text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700 leading-relaxed">
+                                Se você perder a conexão com a internet durante o serviço de campo (no meio do mato ou num galpão), continue trabalhando. A Ártemis salvará todos os dados do Check-in no armazenamento do seu dispositivo. Assim que a rede 4G/Wi-Fi voltar, um botão de <b>Sincronizar</b> aparecerá automaticamente na tela.
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </main>
         </div>
     </div>
 
+    <div id="speed-dial" class="fixed bottom-8 right-8 z-50 hidden group"><div class="flex flex-col items-center gap-3 mb-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto"><button onclick="showTab('tab-operacao')" title="Nova Operação" class="w-12 h-12 bg-white dark:bg-zinc-800 text-primary dark:text-emerald-400 rounded-full shadow-lg border border-zinc-200 dark:border-zinc-700 hover:scale-110 transition flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></button><button onclick="showTab('tab-pdca')" title="Novo Plano de Ação" class="w-12 h-12 bg-white dark:bg-zinc-800 text-amber-500 rounded-full shadow-lg border border-zinc-200 dark:border-zinc-700 hover:scale-110 transition flex items-center justify-center"><i class="fa-solid fa-clipboard-list"></i></button></div><button class="w-14 h-14 bg-primary text-white rounded-full shadow-xl hover:bg-green-800 transition-transform duration-300 group-hover:rotate-45 text-xl flex items-center justify-center"><i class="fa-solid fa-plus"></i></button></div>
+    <div id="toast-container" class="fixed bottom-8 left-8 z-[60] flex flex-col gap-3 pointer-events-none"></div>
+    <div id="search-modal" class="fixed inset-0 bg-zinc-900/60 backdrop-blur-sm z-[100] hidden items-start justify-center pt-[15vh] px-4 transition-opacity duration-300"><div class="bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-700 overflow-hidden flex flex-col"><div class="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-3"><i class="fa-solid fa-magnifying-glass text-zinc-400 text-lg ml-2"></i><input type="text" id="search-input" placeholder="Buscar por páginas..." class="w-full bg-transparent border-none focus:outline-none text-zinc-800 dark:text-white text-lg placeholder-zinc-400 p-2"><button onclick="closeSearch()" class="px-2 text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-xl cursor-pointer"></i></button></div><div id="search-results" class="max-h-[50vh] overflow-y-auto p-2 bg-zinc-50 dark:bg-zinc-950/50"></div></div></div>
+
+    <script>
+        document.addEventListener('input', function (e) {
+            if (e.target.classList.contains('cpf-mask')) {
+                let v = e.target.value.replace(/\D/g, '');
+                v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                e.target.value = v;
+            }
+            if (e.target.classList.contains('cnpj-mask')) {
+                let v = e.target.value.replace(/\D/g, '');
+                v = v.replace(/^(\d{2})(\d)/, '$1.$2');
+                v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+                v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');
+                v = v.replace(/(\d{4})(\d)/, '$1-$2');
+                e.target.value = v;
+            }
+            if (e.target.classList.contains('tel-mask')) {
+                let v = e.target.value.replace(/\D/g, '');
+                v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+                v = v.replace(/(\d)(\d{4})$/, '$1-$2');
+                e.target.value = v;
+            }
+            if (e.target.classList.contains('cep-mask')) {
+                let v = e.target.value.replace(/\D/g, '');
+                v = v.replace(/^(\d{5})(\d)/, '$1-$2');
+                e.target.value = v;
+            }
+        });
+    </script>
+
     <script>
         const API = 'https://artemis-backend-eso2.onrender.com'; 
         let glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] };
+        
+        // ================= PREFS DE SISTEMA =================
+        let userPrefs = { focus: false, speedDial: true, toasts: true, animacoes: true, altoContraste: false, tabelas: false, autoSave: true };
+        function carregarPrefs() { const s = localStorage.getItem('artemis_prefs'); if(s) userPrefs = { ...userPrefs, ...JSON.parse(s) }; aplicarPrefs(); }
+        function togglePref(key) { userPrefs[key] = !userPrefs[key]; localStorage.setItem('artemis_prefs', JSON.stringify(userPrefs)); aplicarPrefs(); showToast("Configuração salva!"); }
+        function aplicarPrefs() {
+            Object.keys(userPrefs).forEach(key => {
+                const bg = document.getElementById(`tg-${key}`); const knob = document.getElementById(`tg-${key}-knob`); const on = document.getElementById(`tg-${key}-on`); const off = document.getElementById(`tg-${key}-off`);
+                if(bg && knob && on && off) {
+                    if(userPrefs[key]) {
+                        bg.classList.remove('bg-zinc-300', 'dark:bg-zinc-700'); bg.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
+                        knob.classList.remove('translate-x-1'); knob.classList.add('translate-x-9');
+                        on.classList.remove('opacity-0'); on.classList.add('opacity-100');
+                        off.classList.remove('opacity-100'); off.classList.add('opacity-0');
+                    } else {
+                        bg.classList.remove('bg-emerald-500', 'dark:bg-emerald-500'); bg.classList.add('bg-zinc-300', 'dark:bg-zinc-700');
+                        knob.classList.remove('translate-x-9'); knob.classList.add('translate-x-1');
+                        on.classList.remove('opacity-100'); on.classList.add('opacity-0');
+                        off.classList.remove('opacity-0'); off.classList.add('opacity-100');
+                    }
+                }
+            });
+            // Efeitos Visuais
+            const sb = document.getElementById('sidebar'); const txts = document.querySelectorAll('.menu-text'); const log = document.getElementById('sidebar-logo'); const tit = document.getElementById('sidebar-title');
+            if(userPrefs.focus) { sb.className='w-24 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log)log.classList.add('hidden'); if(tit)tit.classList.add('opacity-0'); txts.forEach(t=>t.classList.add('hidden')); } 
+            else { sb.className='w-72 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log&&configGlobal.logo_base64)log.classList.remove('hidden'); if(tit)tit.classList.remove('opacity-0'); txts.forEach(t=>{t.classList.remove('hidden');}); }
+            
+            const fab = document.getElementById('speed-dial'); if(fab) fab.style.display = userPrefs.speedDial ? 'block' : 'none';
+            if(userPrefs.altoContraste) document.body.classList.add('alto-contraste'); else document.body.classList.remove('alto-contraste');
+            if(userPrefs.tabelas) document.body.classList.add('tabela-compacta'); else document.body.classList.remove('tabela-compacta');
+            initAutoSave();
+        }
+
+        // ================= FUNÇÕES DE PERFIL E IMAGEM =================
         let usuarioLogado = null; 
         let edit = { cli:null, ave:null, est:null, prop:null, pdca:null, cont:null, usu:null }; 
         let agendamentoAtivo = null; let fotosBase64 = []; let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
         
-        // --- FUNÇÕES DE NOME E FOTO DO PERFIL ---
         function formatName(name) {
             if(!name) return ''; const p = name.trim().split(' ');
             return p.length === 1 ? p[0] : `${p[0]} ${p[p.length - 1]}`;
@@ -672,6 +776,7 @@
             if(p.length === 1) return p[0].substring(0, 2).toUpperCase();
             return (p[0][0] + p[p.length - 1][0]).toUpperCase();
         }
+        
         function carregarFotoPerfil(e) {
             const file = e.target.files[0];
             if(file) {
@@ -682,7 +787,6 @@
                     const inic = document.getElementById('iniciais-logado');
                     prev.innerHTML = `<img src="${base64}" class="w-full h-full object-cover">`;
                     inic.innerHTML = `<img src="${base64}" class="w-full h-full object-cover">`;
-                    // Salva no localStorage como extensão de perfil
                     let ext = JSON.parse(localStorage.getItem(`artemis_ext_${usuarioLogado.id}`) || '{}');
                     ext.foto = base64;
                     localStorage.setItem(`artemis_ext_${usuarioLogado.id}`, JSON.stringify(ext));
@@ -706,7 +810,6 @@
             }
         }
         function salvarPerfil() {
-            // Salva dados básicos no backend (se a senha for trocada)
             const n_nome = document.getElementById('meu_nome').value;
             const n_senha1 = document.getElementById('p_senha1').value;
             const n_senha2 = document.getElementById('p_senha2').value;
@@ -718,8 +821,8 @@
                 if(n_senha1) usuarioLogado.senha = n_senha1;
                 localStorage.setItem('artemis_auth', JSON.stringify(usuarioLogado));
                 document.getElementById('nome-logado-header').innerText = formatName(n_nome);
+                document.getElementById('perfil-nome-display').innerText = n_nome;
                 
-                // Salva dados estendidos locais (Prontuário, Endereço, etc)
                 let ext = JSON.parse(localStorage.getItem(`artemis_ext_${usuarioLogado.id}`) || '{}');
                 ext.cpf = document.getElementById('meu_cpf').value;
                 ext.wpp = document.getElementById('meu_wpp').value;
@@ -731,7 +834,8 @@
                 ext.estado = document.getElementById('p_estado').value;
                 ext.sangue = document.getElementById('p_sangue').value;
                 ext.rh = document.getElementById('p_rh').value;
-                ext.emergencia = document.getElementById('p_emergencia').value;
+                ext.emergencia_nome = document.getElementById('p_emergencia_nome').value;
+                ext.emergencia_tel = document.getElementById('p_emergencia_tel').value;
                 ext.alergias = document.getElementById('p_alergias').value;
                 localStorage.setItem(`artemis_ext_${usuarioLogado.id}`, JSON.stringify(ext));
                 
@@ -764,7 +868,8 @@
             if(ext.estado) document.getElementById('p_estado').value = ext.estado;
             if(ext.sangue) document.getElementById('p_sangue').value = ext.sangue;
             if(ext.rh) document.getElementById('p_rh').value = ext.rh;
-            if(ext.emergencia) document.getElementById('p_emergencia').value = ext.emergencia;
+            if(ext.emergencia_nome) document.getElementById('p_emergencia_nome').value = ext.emergencia_nome;
+            if(ext.emergencia_tel) document.getElementById('p_emergencia_tel').value = ext.emergencia_tel;
             if(ext.alergias) document.getElementById('p_alergias').value = ext.alergias;
         }
 
@@ -789,7 +894,7 @@
                 const btn = document.getElementById(`btn-view-${b}-${aba}`);
                 if(btn) {
                     btn.className = modo === b ? 'px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition' : 'px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition';
-                    btn.innerHTML = btnsIcons[b]; // Garante que o ícone permaneça
+                    btn.innerHTML = btnsIcons[b];
                 }
             });
             if(aba==='clientes') rendCli(); if(aba==='aves') rendAve(); if(aba==='estoque') rendEst(); if(aba==='propostas') rendProp(); if(aba==='pdca') rendPDCA(); if(aba==='operacao') rendVis(); if(aba==='agenda') rendAg(); if(aba==='financeiro') rendFin(); if(aba==='contratos') rendCont(); if(aba==='usuarios') rendUsu();
@@ -800,16 +905,34 @@
             const dataAtual = new Date(); const mes = dataAtual.getMonth(); const ano = dataAtual.getFullYear();
             const primDia = new Date(ano, mes, 1).getDay(); const totDias = new Date(ano, mes + 1, 0).getDate();
             const nomesMeses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            
             let html = `<div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6"><h4 class="text-center font-bold text-xl mb-6 dark:text-white uppercase tracking-widest">${nomesMeses[mes]} ${ano}</h4><div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 mb-2"><div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div></div><div class="grid grid-cols-7 gap-2">`;
+            
             for(let i=0; i<primDia; i++) html += `<div class="p-2 border border-transparent"></div>`;
+            
             for(let dia=1; dia<=totDias; dia++) {
                 let dataStr = `${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
                 let missoes = glob.ag.filter(a => a.data_agendada && a.data_agendada.startsWith(dataStr));
+                
                 let badges = missoes.map(m => `<div class="text-[10px] bg-primary text-white rounded px-1.5 py-0.5 mt-1 font-bold truncate shadow-sm" title="${m.cliente} - ${m.ave}">${m.cliente.substring(0,8)}...</div>`).join('');
                 let bgHj = (dia === dataAtual.getDate()) ? 'bg-amber-50 dark:bg-amber-900/20 border-accent' : 'bg-zinc-50 dark:bg-zinc-800/50 border-zinc-100 dark:border-zinc-700';
+                
                 html += `<div class="min-h-[90px] p-2 border rounded-xl ${bgHj} dark:text-white flex flex-col"><span class="font-bold opacity-50 mb-1">${dia}</span>${badges}</div>`;
             }
-            html += `</div></div>`; return html;
+            html += `</div></div>`;
+            return html;
+        }
+
+        function rendAg() { 
+            const c = document.getElementById('lista-agenda'); 
+            if(viewModos.agenda === 'calendar') {
+                c.className = '';
+                c.innerHTML = renderCalendar();
+            } else if(viewModos.agenda === 'grid'){ 
+                c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.ag.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border shadow-sm card"><b class="dark:text-white">${x.cliente}</b><br><span class="text-xs text-zinc-500">${new Date(x.data_agendada).toLocaleDateString()} | ${x.ave}</span><span class="float-right text-xs font-bold bg-zinc-100 dark:bg-zinc-800 p-1 rounded text-zinc-700 dark:text-zinc-400">${x.status}</span><br>${x.status==='Pendente'?`<button onclick="exc('agendamentos',${x.id})" class="mt-2 text-xs text-red-500 font-bold hover:underline">Cancelar</button>`:''}</div>`).join(''); 
+            } else { 
+                c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Data', 'Ave', 'Status', 'Ações'], glob.ag.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4">${new Date(x.data_agendada).toLocaleDateString()}</td><td class="p-4">${x.ave}</td><td class="p-4 font-bold">${x.status}</td><td class="p-4 text-right">${x.status==='Pendente'?`<button onclick="exc('agendamentos',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('')); 
+            } 
         }
 
         // --- AUTO-SAVE CHECK-IN ---
@@ -826,38 +949,8 @@
             if(draft && !document.getElementById('o_obs').value) document.getElementById('o_obs').value = draft;
         }
 
-        // --- PREFERÊNCIAS TOTAIS ---
-        let userPrefs = { focus: false, speedDial: true, toasts: true, animacoes: true, altoContraste: false, tabelas: false, autoSave: true };
-        function carregarPrefs() { const s = localStorage.getItem('artemis_prefs'); if(s) userPrefs = { ...userPrefs, ...JSON.parse(s) }; aplicarPrefs(); }
-        function togglePref(key) { userPrefs[key] = !userPrefs[key]; localStorage.setItem('artemis_prefs', JSON.stringify(userPrefs)); aplicarPrefs(); showToast("Configuração salva!"); }
-        function aplicarPrefs() {
-            Object.keys(userPrefs).forEach(key => {
-                const bg = document.getElementById(`tg-${key}`); const knob = document.getElementById(`tg-${key}-knob`); const on = document.getElementById(`tg-${key}-on`); const off = document.getElementById(`tg-${key}-off`);
-                if(bg && knob && on && off) {
-                    if(userPrefs[key]) {
-                        bg.classList.remove('bg-zinc-300', 'dark:bg-zinc-700'); bg.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
-                        knob.classList.remove('translate-x-1'); knob.classList.add('translate-x-9');
-                        on.classList.remove('opacity-0'); on.classList.add('opacity-100');
-                        off.classList.remove('opacity-100'); off.classList.add('opacity-0');
-                    } else {
-                        bg.classList.remove('bg-emerald-500', 'dark:bg-emerald-500'); bg.classList.add('bg-zinc-300', 'dark:bg-zinc-700');
-                        knob.classList.remove('translate-x-9'); knob.classList.add('translate-x-1');
-                        on.classList.remove('opacity-100'); on.classList.add('opacity-0');
-                        off.classList.remove('opacity-0'); off.classList.add('opacity-100');
-                    }
-                }
-            });
-            // Efeitos Práticos:
-            const sb = document.getElementById('sidebar'); const txts = document.querySelectorAll('.menu-text'); const log = document.getElementById('sidebar-logo'); const tit = document.getElementById('sidebar-title');
-            if(userPrefs.focus) { sb.className='w-24 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log)log.classList.add('hidden'); if(tit)tit.classList.add('opacity-0'); txts.forEach(t=>t.classList.add('hidden')); } 
-            else { sb.className='w-72 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log&&configGlobal.logo_base64)log.classList.remove('hidden'); if(tit)tit.classList.remove('opacity-0'); txts.forEach(t=>{t.classList.remove('hidden');}); }
-            const fab = document.getElementById('speed-dial'); if(fab) fab.style.display = userPrefs.speedDial ? 'block' : 'none';
-            if(userPrefs.altoContraste) document.body.classList.add('alto-contraste'); else document.body.classList.remove('alto-contraste');
-            if(userPrefs.tabelas) document.body.classList.add('tabela-compacta'); else document.body.classList.remove('tabela-compacta');
-            initAutoSave();
-        }
-        function showToast(msg) { if(!userPrefs.toasts) return; const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-2xl p-4 rounded-2xl flex items-center gap-3 transform transition-all pointer-events-auto min-w-[300px] text-sm font-bold dark:text-white'; t.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i> ${msg}`; c.appendChild(t); setTimeout(()=>t.remove(), 3500); }
-
+        // UI BÁSICA
+        function toggleAccordion(id) { const c = document.getElementById('content-'+id); const i = document.getElementById('icon-'+id); c.classList.toggle('hidden'); i.classList.toggle('rotate-180'); }
         function toggleDarkMode() { document.documentElement.classList.toggle('dark'); localStorage.setItem('artemis_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); }
         function carregarTema() { if (localStorage.getItem('artemis_theme') === 'dark') document.documentElement.classList.add('dark'); }
         function toggleDropdown() { document.getElementById('user-dropdown').classList.toggle('hidden'); document.getElementById('notif-dropdown').classList.add('hidden'); }
@@ -868,17 +961,32 @@
         });
 
         // INIT & LOGIN
-        window.onload = () => { carregarTema(); const a = localStorage.getItem('artemis_auth'); if(a) { usuarioLogado = JSON.parse(a); init(); } else { document.getElementById('tela-login').classList.remove('hidden'); document.getElementById('tela-login').classList.add('flex'); } };
-        async function fazerLogin() { const em = document.getElementById('login_email').value; const se = document.getElementById('login_senha').value; try { const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, senha:se})}); const d = await r.json(); if(d.ok) { localStorage.setItem('artemis_auth', JSON.stringify(d.usuario)); location.reload(); } else { document.getElementById('login-erro').innerText = d.msg; document.getElementById('login-erro').classList.remove('hidden'); } } catch(e) { document.getElementById('login-erro').innerText = "Servidor Offline. Aguarde 30s e tente novamente."; document.getElementById('login-erro').classList.remove('hidden'); } }
+        window.onload = () => { 
+            carregarTema(); 
+            const a = localStorage.getItem('artemis_auth'); 
+            if(a) { usuarioLogado = JSON.parse(a); init(); } 
+            else { document.getElementById('tela-login').classList.remove('hidden'); document.getElementById('tela-login').classList.add('flex'); } 
+        };
+
+        async function fazerLogin() { 
+            const em = document.getElementById('login_email').value; const se = document.getElementById('login_senha').value; 
+            try { 
+                const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, senha:se})}); 
+                const d = await r.json(); 
+                if(d.ok) { localStorage.setItem('artemis_auth', JSON.stringify(d.usuario)); location.reload(); } 
+                else { document.getElementById('login-erro').innerText = d.msg; document.getElementById('login-erro').classList.remove('hidden'); } 
+            } catch(e) { document.getElementById('login-erro').innerText = "Servidor Offline. Aguarde 30s e tente novamente."; document.getElementById('login-erro').classList.remove('hidden'); } 
+        }
         function fazerLogout() { localStorage.removeItem('artemis_auth'); location.reload(); }
 
         function init() { 
             document.getElementById('tela-login').classList.add('hidden'); document.getElementById('sistema-principal').classList.remove('hidden'); document.getElementById('sistema-principal').classList.add('flex'); 
             document.querySelectorAll('.aba-menu').forEach(a => { a.style.display = a.classList.contains(usuarioLogado.perfil) ? 'flex' : 'none'; }); 
-            preencherPerfilUI(); // Preenche a UI
+            preencherPerfilUI();
             showTab(usuarioLogado.perfil === 'tecnico' ? 'tab-operacao' : 'tab-dashboard'); 
             Object.keys(viewModos).forEach(k => mudarView(k, viewModos[k])); 
             carregarPrefs(); carregarTudo(); 
+            
             document.getElementById('e_cat').addEventListener('change', e => { const b = document.getElementById('bloco_epi'); if(e.target.value === 'EPI') b.classList.remove('hidden'); else { b.classList.add('hidden'); document.getElementById('e_ca').value = ''; document.getElementById('e_val').value = ''; } });
         }
 
@@ -887,7 +995,18 @@
         let notificacoes = [];
         async function carregarTudo() { 
             fetch(`${API}/config`).then(r=>r.json()).then(d=>{ configGlobal = d; if(d.logo_base64) document.getElementById('sidebar-logo').src = d.logo_base64; }); 
-            Promise.all([ fetch(`${API}/clientes`).then(r=>r.json()).then(d=>{glob.cli=d; rendCli(); popCli();}), fetch(`${API}/aves`).then(r=>r.json()).then(d=>{glob.ave=d; rendAve(); popAve();}), fetch(`${API}/estoque`).then(r=>r.json()).then(d=>{glob.est=d; rendEst();}), fetch(`${API}/propostas`).then(r=>r.json()).then(d=>{glob.prop=d; rendProp();}), fetch(`${API}/pdca`).then(r=>r.json()).then(d=>{glob.pdca=d; rendPDCA();}), fetch(`${API}/visitas`).then(r=>r.json()).then(d=>{glob.vis=d; rendVis(); updDash();}), fetch(`${API}/agendamentos`).then(r=>r.json()).then(d=>{glob.ag=d; rendAg(); updDash();}), fetch(`${API}/financeiro`).then(r=>r.json()).then(d=>{glob.fin=d; rendFin(); updDash();}), fetch(`${API}/contratos`).then(r=>r.json()).then(d=>{glob.cont=d; rendCont(); updDash();}), fetch(`${API}/usuarios`).then(r=>r.json()).then(d=>{glob.usu=d; rendUsu();}) ]).then(() => { if(usuarioLogado.perfil !== 'tecnico') verificarAlertas(); }); 
+            Promise.all([ 
+                fetch(`${API}/clientes`).then(r=>r.json()).then(d=>{glob.cli=d; rendCli(); popCli();}), 
+                fetch(`${API}/aves`).then(r=>r.json()).then(d=>{glob.ave=d; rendAve(); popAve();}), 
+                fetch(`${API}/estoque`).then(r=>r.json()).then(d=>{glob.est=d; rendEst();}), 
+                fetch(`${API}/propostas`).then(r=>r.json()).then(d=>{glob.prop=d; rendProp();}), 
+                fetch(`${API}/pdca`).then(r=>r.json()).then(d=>{glob.pdca=d; rendPDCA();}), 
+                fetch(`${API}/visitas`).then(r=>r.json()).then(d=>{glob.vis=d; rendVis(); updDash();}), 
+                fetch(`${API}/agendamentos`).then(r=>r.json()).then(d=>{glob.ag=d; rendAg(); updDash();}), 
+                fetch(`${API}/financeiro`).then(r=>r.json()).then(d=>{glob.fin=d; rendFin(); updDash();}), 
+                fetch(`${API}/contratos`).then(r=>r.json()).then(d=>{glob.cont=d; rendCont(); updDash();}), 
+                fetch(`${API}/usuarios`).then(r=>r.json()).then(d=>{glob.usu=d; rendUsu();}) 
+            ]).then(() => { if(usuarioLogado.perfil !== 'tecnico') verificarAlertas(); }); 
         }
 
         function verificarAlertas() { fetch(`${API}/alertas`).then(r => r.json()).then(data => { const lista = document.getElementById('lista-alertas'); const container = document.getElementById('container-alertas'); lista.innerHTML = ''; notificacoes = []; let temAlerta = false; if(data.contratosVencendo && data.contratosVencendo.length > 0) { temAlerta = true; data.contratosVencendo.forEach(c => { lista.innerHTML += `<li>Contrato com <strong>${c.cliente}</strong> vence dia ${new Date(c.data_fim).toLocaleDateString('pt-BR')}</li>`; notificacoes.push({id: Date.now()+Math.random(), msg: `O contrato com ${c.cliente} está vencendo!`, time: 'Alerta Financeiro'}); }); } if(data.avesAtrasadas && data.avesAtrasadas.length > 0) { temAlerta = true; data.avesAtrasadas.forEach(a => { lista.innerHTML += `<li>Ave <strong>${a.nome}</strong> está com pendência no cartão de vacinas.</li>`; notificacoes.push({id: Date.now()+Math.random(), msg: `Atenção: Ave ${a.nome} precisa de vacina!`, time: 'Alerta de Plantel'}); }); } if(temAlerta){ container.classList.remove('hidden'); renderNotificacoes(); } else { container.classList.add('hidden'); } }); }
@@ -925,42 +1044,49 @@
                 } catch(e) { showToast("CNPJ não encontrado na API.", "warning"); }
             }
         }
-        function rendCli() { const c = document.getElementById('lista-clientes'); if(viewModos.clientes === 'grid') { c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.cli.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><b class="text-lg dark:text-white">${x.nome_fantasia || x.nome_razao_social}</b><br><span class="text-xs text-zinc-500">${x.documento_cpf_cnpj}</span><div class="flex gap-2 mt-4"><button onclick="edCli(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:text-primary transition"><i class="fa-solid fa-pen"></i> Editar</button><button onclick="exc('clientes',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'CNPJ/CPF', 'Ações'], glob.cli.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome_fantasia || x.nome_razao_social}</td><td class="p-4">${x.documento_cpf_cnpj}</td><td class="p-4 text-right"><button onclick="edCli(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('clientes',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
-        function limparFormCli(){ ['c_nome','c_fantasia','c_doc','c_tel','c_contato_nome','c_email','c_cep','c_logradouro','c_numero','c_bairro','c_cidade','c_estado','c_com_nome','c_com_tel','c_fin_nome','c_fin_tel','c_ope_nome','c_ope_tel'].forEach(id=>document.getElementById(id).value=''); edit.cli = null; }
-        function edCli(id){ const c = glob.cli.find(x=>x.id===id); if(!c) return; document.getElementById('c_nome').value = c.nome_razao_social || ''; document.getElementById('c_fantasia').value = c.nome_fantasia || ''; document.getElementById('c_doc').value = c.documento_cpf_cnpj || ''; document.getElementById('c_tel').value = c.telefone || ''; document.getElementById('c_contato_nome').value = c.contato_nome || ''; document.getElementById('c_email').value = c.email_contato || ''; document.getElementById('c_cep').value = c.cep || ''; document.getElementById('c_logradouro').value = c.logradouro || ''; document.getElementById('c_numero').value = c.numero || ''; document.getElementById('c_bairro').value = c.bairro || ''; document.getElementById('c_cidade').value = c.cidade || ''; document.getElementById('c_estado').value = c.estado || ''; document.getElementById('c_com_nome').value = c.comercial_nome || ''; document.getElementById('c_com_tel').value = c.comercial_tel || ''; document.getElementById('c_fin_nome').value = c.financeiro_nome || ''; document.getElementById('c_fin_tel').value = c.financeiro_tel || ''; document.getElementById('c_ope_nome').value = c.operacional_nome || ''; document.getElementById('c_ope_tel').value = c.operacional_tel || ''; edit.cli = id; window.scrollTo({top: 0, behavior: 'smooth'}); }
-        function salvarCliente(){ const d = { nome_razao_social: document.getElementById('c_nome').value, nome_fantasia: document.getElementById('c_fantasia').value, documento_cpf_cnpj: document.getElementById('c_doc').value, telefone: document.getElementById('c_tel').value, contato_nome: document.getElementById('c_contato_nome').value, email_contato: document.getElementById('c_email').value, cep: document.getElementById('c_cep').value, logradouro: document.getElementById('c_logradouro').value, numero: document.getElementById('c_numero').value, bairro: document.getElementById('c_bairro').value, cidade: document.getElementById('c_cidade').value, estado: document.getElementById('c_estado').value, comercial_nome: document.getElementById('c_com_nome').value, comercial_tel: document.getElementById('c_com_tel').value, financeiro_nome: document.getElementById('c_fin_nome').value, financeiro_tel: document.getElementById('c_fin_tel').value, operacional_nome: document.getElementById('c_ope_nome').value, operacional_tel: document.getElementById('c_ope_tel').value }; fetch(`${API}/clientes${edit.cli?'/'+edit.cli:''}`, {method: edit.cli?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormCli(); carregarTudo(); showToast("Cliente Salvo com Sucesso!"); }); }
-        async function buscarCep() { const cep = document.getElementById('c_cep').value.replace(/\D/g, ''); if (cep.length === 8) { try { const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`); const data = await res.json(); if (!data.erro) { document.getElementById('c_logradouro').value = data.logradouro; document.getElementById('c_bairro').value = data.bairro; document.getElementById('c_cidade').value = data.localidade; document.getElementById('c_estado').value = data.uf; document.getElementById('c_numero').focus(); showToast("Endereço preenchido automaticamente."); } } catch (e) { showToast("Erro ao buscar o CEP.", "warning"); } } }
 
-        function rendAve() { const c = document.getElementById('lista-aves'); if(viewModos.aves === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.ave.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><div class="flex justify-between"><b class="text-lg dark:text-white flex items-center gap-2"><i class="fa-solid fa-feather text-emerald-600"></i> ${x.nome}</b><span class="text-[10px] uppercase font-bold px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">${x.status_clinico || 'Sem Info'}</span></div><span class="text-xs text-zinc-500">${x.especie}</span><div class="flex gap-2 mt-4"><button onclick="edAve(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('aves',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Nome', 'Espécie', 'Anilha', 'Status', 'Ações'], glob.ave.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome}</td><td class="p-4">${x.especie}</td><td class="p-4">${x.anilha||'-'}</td><td class="p-4"><span class="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">${x.status_clinico || 'Sem Info'}</span></td><td class="p-4 text-right"><button onclick="edAve(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('aves',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
-        function limparFormAve(){ ['a_nome','a_especie','a_anilha','a_min','a_max','a_doenca','a_historico','a_hist_det'].forEach(id=>document.getElementById(id).value=''); document.getElementById('a_status').value = 'Apto para Voo'; document.getElementById('a_data_aval').value = ''; document.getElementById('a_vacina').checked = true; edit.ave = null; }
-        function edAve(id){ const a = glob.ave.find(x=>x.id===id); if(!a) return; document.getElementById('a_nome').value = a.nome; document.getElementById('a_especie').value = a.especie; document.getElementById('a_anilha').value = a.anilha || ''; document.getElementById('a_min').value = a.peso_minimo; document.getElementById('a_max').value = a.peso_maximo; document.getElementById('a_status').value = a.status_clinico || 'Apto para Voo'; document.getElementById('a_data_aval').value = a.ultima_avaliacao ? a.ultima_avaliacao.split('T')[0] : ''; document.getElementById('a_vacina').checked = a.vacinas_em_dia !== false; document.getElementById('a_doenca').value = a.doencas_preexistentes || ''; document.getElementById('a_historico').value = a.historico_medico || ''; document.getElementById('a_hist_det').value = a.historico_detalhado || ''; edit.ave = id; window.scrollTo({top: 0, behavior: 'smooth'}); }
-        function salvarAve(){ const d = { nome: document.getElementById('a_nome').value, especie: document.getElementById('a_especie').value, peso_minimo: document.getElementById('a_min').value, peso_maximo: document.getElementById('a_max').value, anilha: document.getElementById('a_anilha').value, status_clinico: document.getElementById('a_status').value, ultima_avaliacao: document.getElementById('a_data_aval').value, vacinas_em_dia: document.getElementById('a_vacina').checked, doencas_preexistentes: document.getElementById('a_doenca').value, historico_medico: document.getElementById('a_historico').value, historico_detalhado: document.getElementById('a_hist_det').value }; fetch(`${API}/aves${edit.ave?'/'+edit.ave:''}`, {method: edit.ave?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormAve(); carregarTudo(); showToast("Ave Salva com Sucesso!"); }); }
-
-        function rendEst() { const c = document.getElementById('lista-estoque'); if(viewModos.estoque === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.est.map(x => { let epiInfo = x.categoria === 'EPI' && x.ca_epi ? `<div class="text-xs bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-400 p-2 rounded mt-2"><b>CA:</b> ${x.ca_epi} ${x.validade_epi ? `| <b>Validade:</b> ${new Date(x.validade_epi).toLocaleDateString('pt-BR')}` : ''}</div>` : ''; return `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><b class="text-lg dark:text-white">${x.nome_item}</b><br><span class="text-xs uppercase font-bold text-zinc-400">${x.categoria}</span>${epiInfo}<p class="text-2xl font-bold text-primary mt-2">${x.quantidade}</p><div class="flex gap-2 mt-4"><button onclick="edEst(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('estoque',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`; }).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Material', 'Categoria', 'Qtd', 'CA', 'Validade', 'Ações'], glob.est.map(x => `<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome_item}</td><td class="p-4">${x.categoria}</td><td class="p-4 font-bold ${x.quantidade < 5 ? 'text-red-500' : 'text-emerald-600'}">${x.quantidade}</td><td class="p-4">${x.ca_epi || '-'}</td><td class="p-4">${x.validade_epi ? new Date(x.validade_epi).toLocaleDateString('pt-BR') : '-'}</td><td class="p-4 text-right"><button onclick="edEst(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('estoque',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        // --- SALVAMENTOS (TODOS OS OUTROS CONTINUAM IGUAIS) ---
         function limparFormEst(){ ['e_nome','e_qtd','e_ca','e_val'].forEach(id=>document.getElementById(id).value=''); document.getElementById('e_cat').value = 'EPI'; document.getElementById('e_cat').dispatchEvent(new Event('change')); edit.est = null; }
         function edEst(id){ const e = glob.est.find(x=>x.id===id); if(!e) return; document.getElementById('e_nome').value = e.nome_item; document.getElementById('e_qtd').value = e.quantidade; document.getElementById('e_cat').value = e.categoria; document.getElementById('e_ca').value = e.ca_epi || ''; document.getElementById('e_val').value = e.validade_epi ? e.validade_epi.split('T')[0] : ''; document.getElementById('e_cat').dispatchEvent(new Event('change')); edit.est = id; window.scrollTo({top: 0, behavior: 'smooth'}); }
         function salvarEstoque(){ const d = { nome_item: document.getElementById('e_nome').value, quantidade: document.getElementById('e_qtd').value, categoria: document.getElementById('e_cat').value, ca_epi: document.getElementById('e_ca').value, validade_epi: document.getElementById('e_val').value }; fetch(`${API}/estoque${edit.est?'/'+edit.est:''}`, {method: edit.est?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormEst(); carregarTudo(); showToast("Estoque Salvo!"); }); }
 
-        function imprimirProposta(id) { const p = glob.prop.find(x=>x.id===id); if(!p) return; const logo = configGlobal.logo_base64 ? `<img src="${configGlobal.logo_base64}" style="max-height:80px;">` : `<h2 style="color:#14532d">${configGlobal.nome_empresa || 'SILVESTRE'}</h2>`; const html = `<html><head><title>Proposta Comercial - ${p.cliente}</title><style>body{font-family:Arial, sans-serif; padding:40px;} .header{text-align:center; border-bottom:2px solid #14532d; padding-bottom:20px; margin-bottom:20px;} table{width:100%; border-collapse:collapse; margin-top:20px;} th,td{border:1px solid #ccc; padding:10px; text-align:left;} th{background:#f4f4f5;} .box{background:#fdfdfd; border:1px solid #eee; padding:15px; border-radius:5px; margin-top:20px;}</style></head><body onload="window.print()"> <div class="header">${logo}<h3>PROPOSTA COMERCIAL DE SERVIÇOS</h3></div> <p><b>A/C:</b> ${p.cliente}</p> <table><tr><th>Serviço Proposto</th><td>${p.tipo_servico}</td></tr><tr><th>Frequência de Visitas</th><td>${p.frequencia}</td></tr><tr><th>Investimento Mensal</th><td style="font-weight:bold; color:#14532d;">R$ ${p.valor_mensal}</td></tr></table> <div class="box"><b>Escopo e Observações Técnicas:</b><br><p>${p.observacoes || 'Execução de manejo de fauna com métodos incruentos.'}</p></div> <div class="box"><b>Condições Comerciais:</b><br><p>${p.condicoes || 'Validade da proposta: 15 dias.'}</p></div> <div style="margin-top:80px; text-align:center; border-top:1px solid #000; padding-top:10px; width:50%; margin-left:auto; margin-right:auto;">Assinatura / De Acordo</div> </body></html>`; window.open('','_blank').document.write(html); }
-        function rendProp() { const c = document.getElementById('lista-propostas'); if(viewModos.propostas === 'grid') { c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.prop.map(x=>{ let corBadge = 'bg-zinc-200 text-zinc-700'; if(x.status === 'Lead') corBadge = 'bg-blue-100 text-blue-700'; if(x.status === 'Enviada') corBadge = 'bg-purple-100 text-purple-700'; if(x.status === 'Em Negociação') corBadge = 'bg-amber-100 text-amber-700'; if(x.status === 'Ganho') corBadge = 'bg-emerald-100 text-emerald-700'; if(x.status === 'Perdido') corBadge = 'bg-red-100 text-red-700'; return `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-accent shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center card"><div class="mb-4 md:mb-0"><b class="dark:text-white">${x.cliente}</b><p class="text-sm text-zinc-500">${x.tipo_servico} | R$ ${x.valor_mensal}</p><span class="text-[10px] font-bold px-2 py-1 rounded mt-2 block w-max ${corBadge}">${x.status}</span></div><div class="flex gap-2 w-full md:w-auto"><button onclick="imprimirProposta(${x.id})" class="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex-1 transition hover:bg-purple-700"><i class="fa-solid fa-file-pdf"></i> PDF</button><button onclick="edProp(${x.id})" class="bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-sm font-bold flex-1 hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('propostas',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 py-2 rounded-xl text-sm font-bold flex-1 transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`; }).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Serviço', 'Valor', 'Status', 'Ações'], glob.prop.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4">${x.tipo_servico}</td><td class="p-4 font-bold text-emerald-600">R$ ${x.valor_mensal}</td><td class="p-4"><span class="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">${x.status}</span></td><td class="p-4 text-right"><button onclick="imprimirProposta(${x.id})" class="text-purple-600 mr-3"><i class="fa-solid fa-file-pdf"></i></button><button onclick="edProp(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('propostas',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
         function limparFormProp(){ ['p_cli','p_serv','p_freq','p_val','p_obs','p_cond'].forEach(id=>document.getElementById(id).value=''); document.getElementById('p_status').value = 'Lead'; edit.prop = null; mudarStep(1); }
         function edProp(id){ const p = glob.prop.find(x=>x.id===id); if(!p) return; document.getElementById('p_cli').value = p.cliente_id; document.getElementById('p_serv').value = p.tipo_servico; document.getElementById('p_status').value = p.status; document.getElementById('p_freq').value = p.frequencia; document.getElementById('p_val').value = p.valor_mensal; document.getElementById('p_obs').value = p.observacoes; document.getElementById('p_cond').value = p.condicoes; edit.prop = id; mudarStep(1); window.scrollTo({top: 0, behavior: 'smooth'}); }
         function salvarProposta(){ const d = { cliente_id: document.getElementById('p_cli').value, tipo_servico: document.getElementById('p_serv').value, frequencia: document.getElementById('p_freq').value, valor_mensal: document.getElementById('p_val').value, observacoes: document.getElementById('p_obs').value, condicoes: document.getElementById('p_cond').value, status: document.getElementById('p_status').value }; fetch(`${API}/propostas${edit.prop?'/'+edit.prop:''}`, {method: edit.prop?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormProp(); carregarTudo(); showToast("Proposta Salva no Funil!"); }); }
 
-        function rendPDCA() { const c = document.getElementById('lista-pdca'); if(viewModos.pdca === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.pdca.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b class="dark:text-white">${x.problema}</b><span class="float-right text-xs bg-zinc-100 dark:bg-zinc-800 p-1 rounded font-bold text-zinc-600 dark:text-zinc-400">${x.status}</span><p class="text-sm text-zinc-500 my-2">${x.cliente}</p><p class="text-xs text-zinc-400">Resp: ${x.responsavel} | Prazo: ${new Date(x.prazo).toLocaleDateString()}</p><div class="flex gap-2 mt-4"><button onclick="edPDCA(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 py-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('pdca',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Problema', 'Cliente', 'Prazo', 'Status', 'Ações'], glob.pdca.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.problema}</td><td class="p-4">${x.cliente}</td><td class="p-4">${new Date(x.prazo).toLocaleDateString()}</td><td class="p-4">${x.status}</td><td class="p-4 text-right"><button onclick="edPDCA(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('pdca',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
         function limparFormPDCA(){ ['pd_cli','pd_prob','pd_causa','pd_acao','pd_resp','pd_prazo'].forEach(id=>document.getElementById(id).value=''); document.getElementById('pd_status').value = 'Pendente'; edit.pdca = null; }
         function edPDCA(id){ const p = glob.pdca.find(x=>x.id===id); if(!p) return; document.getElementById('pd_cli').value = p.cliente_id; document.getElementById('pd_prob').value = p.problema; document.getElementById('pd_causa').value = p.causa; document.getElementById('pd_acao').value = p.plano_acao; document.getElementById('pd_resp').value = p.responsavel; document.getElementById('pd_prazo').value = p.prazo.split('T')[0]; document.getElementById('pd_status').value = p.status; edit.pdca = id; window.scrollTo({top: 0, behavior: 'smooth'}); }
         function salvarPDCA(){ const d = { cliente_id: document.getElementById('pd_cli').value, problema: document.getElementById('pd_prob').value, causa: document.getElementById('pd_causa').value, plano_acao: document.getElementById('pd_acao').value, responsavel: document.getElementById('pd_resp').value, prazo: document.getElementById('pd_prazo').value, status: document.getElementById('pd_status').value }; fetch(`${API}/pdca${edit.pdca?'/'+edit.pdca:''}`, {method: edit.pdca?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormPDCA(); carregarTudo(); showToast("Ação Registrada!"); }); }
 
-        function rendVis() { const c = document.getElementById('lista-visitas'); if(viewModos.operacao === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.vis.map((x,i)=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b class="dark:text-white">${new Date(x.data_visita).toLocaleDateString()}</b><div class="float-right flex gap-1"><button onclick="imprimirRelatorio(${i})" class="bg-zinc-800 text-white p-2 rounded-xl text-xs hover:bg-zinc-700 transition"><i class="fa-solid fa-file-pdf"></i></button><button onclick="exc('visitas',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 p-2 rounded-xl text-xs hover:bg-red-100 transition"><i class="fa-solid fa-trash"></i></button></div><p class="text-sm mt-2 text-zinc-500">${x.ave} em ${x.cliente}</p><p class="text-xs bg-zinc-50 dark:bg-zinc-800 p-2 mt-2 rounded font-bold text-zinc-600 dark:text-zinc-400">📍 Interações: ${x.qtd_interacoes}</p></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Data', 'Cliente', 'Ave', 'Interações', 'Ações'], glob.vis.map((x,i)=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${new Date(x.data_visita).toLocaleDateString()}</td><td class="p-4">${x.cliente}</td><td class="p-4">${x.ave}</td><td class="p-4 font-bold text-primary">${x.qtd_interacoes}</td><td class="p-4 text-right"><button onclick="imprimirRelatorio(${i})" class="text-zinc-800 dark:text-zinc-300 mr-3"><i class="fa-solid fa-file-pdf"></i></button><button onclick="exc('visitas',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        // --- BUSCA GLOBAL (RESTAURADA E APRIMORADA) ---
+        const rotasSistema = [
+            { titulo: 'Operação e Check-in', tab: 'tab-operacao', icon: 'fa-location-dot', tags: 'campo visita gps laudo tecnico missao aves' },
+            { titulo: 'Agenda de Missões', tab: 'tab-agenda', icon: 'fa-calendar-days', tags: 'despacho agendamento calendario cronograma' },
+            { titulo: 'Planos de Ação', tab: 'tab-pdca', icon: 'fa-clipboard-list', tags: 'pdca problema causa acao resolucao ninhos' },
+            { titulo: 'Propostas Comerciais', tab: 'tab-propostas', icon: 'fa-briefcase', tags: 'vendas lead crm orcamento' },
+            { titulo: 'Estoque e EPIs', tab: 'tab-estoque', icon: 'fa-box', tags: 'materiais consumo inventario' },
+            { titulo: 'Gestão Financeira', tab: 'tab-financeiro', icon: 'fa-money-bill-wave', tags: 'receitas despesas nf nota fiscal contas faturamento' },
+            { titulo: 'Contratos Ativos', tab: 'tab-contratos', icon: 'fa-file-signature', tags: 'firmar recorrencia vigencia' },
+            { titulo: 'Plantel de Aves', tab: 'tab-plantel', icon: 'fa-feather', tags: 'gaviao falcao peso biometria anilha prontuario doenca vacina' },
+            { titulo: 'Carteira de Clientes', tab: 'tab-clientes', icon: 'fa-users', tags: 'cadastro cnpj razao relatorio mensal contato' },
+            { titulo: 'Acessos e Usuários', tab: 'tab-usuarios', icon: 'fa-shield-halved', tags: 'senha perfil admin tecnico' },
+            { titulo: 'Painel de Controle', tab: 'tab-dashboard', icon: 'fa-chart-column', tags: 'graficos metricas kpi inicio home dashboard' },
+            { titulo: 'Configurações Globais', tab: 'tab-config', icon: 'fa-gear', tags: 'empresa logo perfil foco modo escuro preferencias' },
+            { titulo: 'Meu Cadastro', tab: 'tab-perfil', icon: 'fa-id-badge', tags: 'senha cpf endereco perfil preferencias' }
+        ];
 
-        function rendAg() { const c = document.getElementById('lista-agenda'); if(viewModos.agenda === 'calendar') { c.className = ''; c.innerHTML = renderCalendar(); } else if(viewModos.agenda === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.ag.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border shadow-sm card"><b class="dark:text-white">${x.cliente}</b><br><span class="text-xs text-zinc-500">${new Date(x.data_agendada).toLocaleDateString()} | ${x.ave}</span><span class="float-right text-xs font-bold bg-zinc-100 dark:bg-zinc-800 p-1 rounded text-zinc-700 dark:text-zinc-400">${x.status}</span><br>${x.status==='Pendente'?`<button onclick="exc('agendamentos',${x.id})" class="mt-2 text-xs text-red-500 font-bold hover:underline">Cancelar</button>`:''}</div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Data', 'Ave', 'Status', 'Ações'], glob.ag.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4">${new Date(x.data_agendada).toLocaleDateString()}</td><td class="p-4">${x.ave}</td><td class="p-4 font-bold">${x.status}</td><td class="p-4 text-right">${x.status==='Pendente'?`<button onclick="exc('agendamentos',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('')); } }
+        function openSearch() { document.getElementById('search-modal').classList.remove('hidden'); document.getElementById('search-modal').classList.add('flex'); setTimeout(() => document.getElementById('search-input').focus(), 100); renderSearch(''); }
+        function closeSearch() { document.getElementById('search-modal').classList.add('hidden'); document.getElementById('search-modal').classList.remove('flex'); }
+        document.getElementById('search-input').addEventListener('input', (e) => renderSearch(e.target.value));
 
-        function rendFin() { const c = document.getElementById('lista-financeiro'); if(viewModos.financeiro === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.fin.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border-l-4 ${x.tipo==='Receita'?'border-emerald-500':'border-red-500'} shadow-sm card"><b class="text-lg dark:text-white">${x.descricao}</b><div class="float-right">${x.status==='Pendente'?`<button onclick="baixarFin(${x.id})" class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold hover:bg-emerald-600 transition">Baixar</button>`:`<span class="text-xs font-bold text-emerald-600 bg-emerald-50 p-1 rounded">Pago</span>`}<button onclick="exc('financeiro',${x.id})" class="ml-2 text-red-500"><i class="fa-solid fa-trash"></i></button></div><p class="text-sm mt-1 text-zinc-500">${x.cliente||'Sem Cliente'}</p><p class="text-lg font-bold mt-2 text-zinc-800 dark:text-zinc-200">R$ ${x.valor}</p></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Descrição', 'Cliente', 'Valor', 'Status', 'Ações'], glob.fin.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.descricao}</td><td class="p-4">${x.cliente||'-'}</td><td class="p-4 font-bold ${x.tipo==='Receita'?'text-emerald-600':'text-red-500'}">R$ ${x.valor}</td><td class="p-4">${x.status}</td><td class="p-4 text-right">${x.status==='Pendente'?`<button onclick="baixarFin(${x.id})" class="text-emerald-500 mr-3"><i class="fa-solid fa-check"></i></button>`:''}<button onclick="exc('financeiro',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+        function renderSearch(query) {
+            const container = document.getElementById('search-results'); query = query.toLowerCase();
+            const filtered = rotasSistema.filter(r => r.titulo.toLowerCase().includes(query) || r.tags.includes(query));
+            if(filtered.length === 0) { container.innerHTML = '<p class="text-center text-zinc-500 py-10"><i class="fa-solid fa-ghost text-2xl mb-2 block"></i>Nenhuma rota encontrada.</p>'; return; }
+            container.innerHTML = filtered.map(r => `<div onclick="showTab('${r.tab}'); closeSearch();" class="p-4 mb-2 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-2xl cursor-pointer flex items-center gap-4 transition-all group border border-zinc-100 dark:border-zinc-700 shadow-sm"><div class="w-12 h-12 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 group-hover:bg-primary group-hover:text-white rounded-xl flex items-center justify-center transition-colors"><i class="fa-solid ${r.icon} text-lg"></i></div><div><p class="font-bold text-zinc-800 dark:text-white text-lg leading-tight">${r.titulo}</p><p class="text-xs text-zinc-500 uppercase tracking-widest mt-1">Ir para a página</p></div><i class="fa-solid fa-arrow-right ml-auto text-zinc-300 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-2 text-xl"></i></div>`).join('');
+        }
+        window.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); } if (e.key === 'Escape' && !document.getElementById('search-modal').classList.contains('hidden')) { closeSearch(); } });
 
-        function rendCont() { const c = document.getElementById('lista-contratos'); if(viewModos.contratos === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.cont.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border-l-4 border-accent shadow-sm card"><b class="dark:text-white">${x.cliente}</b><div class="float-right flex gap-2"><button onclick="edCont(${x.id})" class="text-zinc-500 hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('contratos',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></div><p class="text-sm mt-1 text-zinc-500">R$ ${x.valor_mensal}</p></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Valor Mensal', 'Frequência', 'Término', 'Ações'], glob.cont.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4 font-bold text-emerald-600">R$ ${x.valor_mensal}</td><td class="p-4">${x.frequencia_semanal}x sem.</td><td class="p-4">${new Date(x.data_fim).toLocaleDateString()}</td><td class="p-4 text-right"><button onclick="edCont(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('contratos',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
-
-        function rendUsu() { const c = document.getElementById('lista-usuarios'); if(viewModos.usuarios === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.usu.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border shadow-sm card"><b class="text-lg dark:text-white">${x.nome}</b><br><span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-bold uppercase">${x.perfil}</span><div class="flex gap-2 mt-4"><button onclick="edUsu(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold hover:text-primary transition">Editar</button><button onclick="exc('usuarios',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Nome', 'E-mail', 'Perfil', 'Ações'], glob.usu.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome}</td><td class="p-4">${x.email}</td><td class="p-4 uppercase font-bold text-[10px]">${x.perfil}</td><td class="p-4 text-right"><button onclick="edUsu(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('usuarios',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
     </script>
 </body>
 </html>

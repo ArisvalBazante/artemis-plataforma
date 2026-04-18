@@ -303,15 +303,42 @@
         }
 
         // LOGIN E INIT
-        async function fazerLogin() {
-            const em = document.getElementById('login_email').value; const se = document.getElementById('login_senha').value;
-            const erroBox = document.getElementById('login-erro'); erroBox.innerText = "Conectando..."; erroBox.classList.remove('hidden');
-            try {
-                const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, senha:se})});
-                const d = await r.json();
-                if(d.ok) { usuarioLogado = d.usuario; erroBox.classList.add('hidden'); init(); }
-                else { erroBox.innerText = "Dados incorretos!"; erroBox.classList.add('bg-red-50', 'text-red-600'); }
-            } catch(e) { erroBox.innerText = "Erro. Tente novamente."; }
+        async function fazerLogin() { 
+            const em = document.getElementById('login_email').value; 
+            const se = document.getElementById('login_senha').value; 
+            const erroBox = document.getElementById('login-erro');
+            
+            // --- CHAVE MESTRA PARA APRESENTAÇÃO ---
+            if(em === 'admin@silvestre.com' && se === '123456') {
+                usuarioLogado = { id: 99, nome: "Arisval Bazante", email: "admin@silvestre.com", perfil: "admin" };
+                erroBox.classList.add('hidden');
+                init();
+                showToast("Modo Offline / Chave Mestra Ativada!");
+                return;
+            }
+            // --------------------------------------
+
+            erroBox.innerText = "Conectando ao servidor... Aguarde.";
+            erroBox.classList.remove('hidden', 'text-red-600', 'bg-red-50', 'dark:text-red-400', 'dark:bg-red-950/50');
+            erroBox.classList.add('text-amber-600', 'bg-amber-50', 'dark:text-amber-400', 'dark:bg-amber-950/50');
+            
+            try { 
+                const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, senha:se})}); 
+                const d = await r.json(); 
+                if(d.ok) { 
+                    usuarioLogado = d.usuario; 
+                    erroBox.classList.add('hidden');
+                    init(); 
+                } else { 
+                    erroBox.innerText = "E-mail ou senha incorretos!"; 
+                    erroBox.classList.remove('text-amber-600', 'bg-amber-50', 'dark:text-amber-400', 'dark:bg-amber-950/50');
+                    erroBox.classList.add('text-red-600', 'bg-red-50', 'dark:text-red-400', 'dark:bg-red-950/50');
+                } 
+            } catch(e) { 
+                erroBox.innerText = "Servidor offline... Tente novamente em 15 seg."; 
+                erroBox.classList.remove('text-amber-600', 'bg-amber-50', 'dark:text-amber-400', 'dark:bg-amber-950/50');
+                erroBox.classList.add('text-red-600', 'bg-red-50', 'dark:text-red-400', 'dark:bg-red-950/50');
+            } 
         }
 
         function init() {

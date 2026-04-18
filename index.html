@@ -44,6 +44,13 @@
         .dark .cb-label { background: #27272a; border-color: #3f3f46; color: white; }
         .cb-label:hover { border-color: #14532d; }
         .dark .cb-label:hover { border-color: #4ade80; }
+
+        /* Estilos de Preferências Especiais */
+        body.tabela-compacta td, body.tabela-compacta th { padding: 6px 12px !important; font-size: 0.8rem; }
+        body.alto-contraste .text-zinc-500 { color: #27272a !important; font-weight: 600; }
+        body.alto-contraste.dark .text-zinc-500 { color: #d4d4d8 !important; font-weight: 600; }
+        body.alto-contraste .border-zinc-200 { border-color: #a1a1aa !important; }
+        body.alto-contraste.dark .border-zinc-700 { border-color: #52525b !important; }
     </style>
 </head>
 <body class="bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen flex overflow-hidden">
@@ -101,7 +108,6 @@
                             <i class="fa-solid fa-bell text-lg"></i>
                             <span id="notif-badge" class="absolute top-1 right-1 w-4 h-4 bg-red-500 border-2 border-white dark:border-zinc-900 rounded-full text-[9px] font-bold text-white flex items-center justify-center transition-transform scale-0">0</span>
                         </button>
-                        
                         <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-zinc-800 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-700 z-50 overflow-hidden flex flex-col">
                             <div class="p-4 border-b border-zinc-100 dark:border-zinc-700 flex justify-between items-center bg-zinc-50 dark:bg-zinc-800/80">
                                 <h4 class="font-bold text-zinc-800 dark:text-white flex items-center gap-2"><i class="fa-solid fa-inbox text-primary dark:text-emerald-400"></i> Alertas</h4>
@@ -132,7 +138,7 @@
                                 <p id="nome-logado-header" class="font-bold text-sm text-zinc-800 dark:text-white capitalize tracking-tight"></p>
                                 <p id="perfil-logado" class="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium capitalize"></p>
                             </div>
-                            <div class="w-10 h-10 bg-[#1a7f5a] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm" id="iniciais-logado"></div>
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm border-2 border-white dark:border-zinc-800 overflow-hidden" id="iniciais-logado"></div>
                             <i class="fa-solid fa-chevron-down text-zinc-400 text-xs ml-1 mr-2"></i>
                         </button>
             
@@ -150,41 +156,98 @@
                 
                 <div id="tab-perfil" class="content max-w-4xl mx-auto">
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-id-badge"></i> Meus Dados Pessoais</h3>
+                        <div class="flex items-center gap-6 mb-8 border-b border-zinc-100 dark:border-zinc-800 pb-8">
+                            <div class="relative">
+                                <div id="perfil-foto-preview" class="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold shadow-md overflow-hidden">
+                                    AB
+                                </div>
+                                <label class="absolute bottom-0 right-0 bg-accent text-white w-8 h-8 rounded-full cursor-pointer shadow-lg hover:bg-accent-hover transition flex items-center justify-center">
+                                    <i class="fa-solid fa-camera text-sm"></i>
+                                    <input type="file" id="p_foto" class="hidden" accept="image/*" onchange="carregarFotoPerfil(event)">
+                                </label>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold dark:text-white" id="perfil-nome-display">Carregando...</h3>
+                                <p class="text-zinc-500 uppercase text-xs font-bold mt-1" id="perfil-cargo-display">Carregando...</p>
+                            </div>
+                        </div>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm"><i class="fa-solid fa-id-badge text-primary mr-2"></i> Identificação</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Nome Completo</label><input type="text" id="meu_nome" class="input-modern w-full p-4 rounded-xl opacity-60 cursor-not-allowed" disabled></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Nome Completo</label><input type="text" id="meu_nome" class="input-modern w-full p-4 rounded-xl"></div>
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">E-mail de Acesso</label><input type="email" id="meu_email" class="input-modern w-full p-4 rounded-xl opacity-60 cursor-not-allowed" disabled></div>
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">CPF</label><input type="text" id="meu_cpf" placeholder="000.000.000-00" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">WhatsApp Pessoal</label><input type="text" id="meu_wpp" placeholder="(00) 00000-0000" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Código do Funcionário</label><input type="text" value="SILV-2026" class="input-modern w-full p-4 rounded-xl opacity-60 cursor-not-allowed" disabled></div>
+                        </div>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-house text-primary mr-2"></i> Endereço Residencial</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                            <input type="text" id="p_cep" placeholder="CEP (Só Números)" class="input-modern w-full p-4 rounded-xl" onblur="buscarCepPerfil()" maxlength="9">
+                            <input type="text" id="p_logradouro" placeholder="Logradouro (Rua, Av)" class="input-modern w-full p-4 rounded-xl md:col-span-2">
+                            <input type="text" id="p_numero" placeholder="Número" class="input-modern w-full p-4 rounded-xl">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                            <input type="text" id="p_bairro" placeholder="Bairro" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="p_cidade" placeholder="Cidade" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="p_estado" placeholder="UF (Ex: PE)" class="input-modern w-full p-4 rounded-xl" maxlength="2">
+                        </div>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-notes-medical text-red-500 mr-2"></i> Prontuário do Colaborador</h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">CPF</label><input type="text" placeholder="000.000.000-00" class="input-modern w-full p-4 rounded-xl"></div>
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">WhatsApp Pessoal</label><input type="text" placeholder="(00) 00000-0000" class="input-modern w-full p-4 rounded-xl"></div>
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Código do Funcionário</label><input type="text" placeholder="EX: 1045" value="SILV-2026" class="input-modern w-full p-4 rounded-xl opacity-60 cursor-not-allowed" disabled></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Tipo Sanguíneo</label><select id="p_sangue" class="input-modern w-full p-4 rounded-xl"><option value="">Não Informado</option><option value="A">A</option><option value="B">B</option><option value="AB">AB</option><option value="O">O</option></select></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Fator RH</label><select id="p_rh" class="input-modern w-full p-4 rounded-xl"><option value="">Não Informado</option><option value="Positivo (+)">Positivo (+)</option><option value="Negativo (-)">Negativo (-)</option></select></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Contato de Emergência</label><input type="text" id="p_emergencia" placeholder="Nome e Telefone" class="input-modern w-full p-4 rounded-xl"></div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Endereço Residencial</label><input type="text" placeholder="Rua, Número, Bairro, Cidade" class="input-modern w-full p-4 rounded-xl"></div>
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Contato de Emergência</label><input type="text" placeholder="Nome e Telefone do Familiar" class="input-modern w-full p-4 rounded-xl"></div>
+                        <div class="mb-8">
+                            <label class="text-xs text-zinc-500 ml-1 font-bold">Alergias ou Restrições Médicas</label>
+                            <input type="text" id="p_alergias" placeholder="Ex: Alergia a abelha, Dipirona..." class="input-modern w-full p-4 rounded-xl">
                         </div>
-                        <button class="w-full bg-primary hover:bg-green-800 text-white font-bold py-4 rounded-xl transition shadow-lg" onclick="showToast('Dados salvos!')"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-lock text-primary mr-2"></i> Alterar Senha</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Nova Senha</label><input type="password" id="p_senha1" placeholder="Deixe em branco para manter" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Confirmar Nova Senha</label><input type="password" id="p_senha2" placeholder="Repita a nova senha" class="input-modern w-full p-4 rounded-xl"></div>
+                        </div>
+
+                        <button id="btn-salvar-perfil" class="w-full bg-primary hover:bg-green-800 text-white font-bold py-4 rounded-xl transition shadow-lg flex justify-center items-center gap-2" onclick="salvarPerfil()">
+                            <i class="fa-solid fa-floppy-disk"></i> Atualizar Meu Cadastro
+                        </button>
                     </div>
 
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Minhas Preferências</h3>
+                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Minhas Preferências de Sistema</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold dark:text-white text-sm">Modo Foco</p><p class="text-[11px] text-zinc-500">Recolhe o menu lateral.</p></div>
+                                <div><p class="font-bold dark:text-white text-sm">Modo Foco</p><p class="text-[11px] text-zinc-500">Recolhe o menu lateral permanentemente.</p></div>
                                 <button onclick="togglePref('focus')" id="tg-focus" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-focus-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-focus-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-focus-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
                             <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold dark:text-white text-sm">Speed Dial</p><p class="text-[11px] text-zinc-500">Botão de atalho flutuante na tela principal.</p></div>
+                                <div><p class="font-bold dark:text-white text-sm">Speed Dial</p><p class="text-[11px] text-zinc-500">Botão de atalho flutuante no canto da tela.</p></div>
                                 <button onclick="togglePref('speedDial')" id="tg-speedDial" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-speedDial-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-speedDial-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-speedDial-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
                             <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold dark:text-white text-sm">Notificações Toast</p><p class="text-[11px] text-zinc-500">Avisos dinâmicos e silenciosos.</p></div>
+                                <div><p class="font-bold dark:text-white text-sm">Avisos na Tela (Toast)</p><p class="text-[11px] text-zinc-500">Notificações silenciosas de confirmação.</p></div>
                                 <button onclick="togglePref('toasts')" id="tg-toasts" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-toasts-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-toasts-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-toasts-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
                             <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold dark:text-white text-sm">Microinterações</p><p class="text-[11px] text-zinc-500">Animação de spinner nos botões.</p></div>
+                                <div><p class="font-bold dark:text-white text-sm">Microinterações</p><p class="text-[11px] text-zinc-500">Animações nos botões ao salvar dados.</p></div>
                                 <button onclick="togglePref('animacoes')" id="tg-animacoes" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-animacoes-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-animacoes-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-animacoes-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
+                                <div><p class="font-bold dark:text-white text-sm">Alto Contraste (Campo)</p><p class="text-[11px] text-zinc-500">Escurece as fontes e as bordas contra o sol.</p></div>
+                                <button onclick="togglePref('altoContraste')" id="tg-altoContraste" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-altoContraste-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-altoContraste-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-altoContraste-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
+                            </div>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
+                                <div><p class="font-bold dark:text-white text-sm">Tabelas Compactas</p><p class="text-[11px] text-zinc-500">Espreme listagens para caber mais na tela.</p></div>
+                                <button onclick="togglePref('tabelas')" id="tg-tabelas" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-tabelas-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-tabelas-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-tabelas-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
+                            </div>
+                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
+                                <div><p class="font-bold dark:text-white text-sm text-amber-600 dark:text-amber-400"><i class="fa-solid fa-shield-cat mr-1"></i> Auto-Salvar Check-in</p><p class="text-[11px] text-zinc-500">Salva o que você digita a cada 10 seg.</p></div>
+                                <button onclick="togglePref('autoSave')" id="tg-autoSave" class="relative inline-flex items-center h-8 w-16 rounded-full transition-colors duration-300 bg-zinc-300 dark:bg-zinc-700"><span class="absolute left-2.5 w-4 text-center text-white/80 font-bold text-[11px] z-0"><i class="fa-solid fa-xmark"></i></span><span class="absolute right-2.5 w-4 text-center text-zinc-400 font-bold text-[11px] z-0"><i class="fa-solid fa-check"></i></span><span id="tg-autoSave-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1 shadow-md"><i id="tg-autoSave-on" class="fa-solid fa-check text-emerald-500 text-[12px] absolute transition-opacity opacity-0"></i><i id="tg-autoSave-off" class="fa-solid fa-xmark text-zinc-400 text-[12px] absolute transition-opacity opacity-100"></i></span></button>
                             </div>
                         </div>
                     </div>
@@ -219,14 +282,23 @@
                             <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-building"></i> Cadastro de Cliente</h3>
                             <button onclick="limparFormCli()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
                         </div>
+                        
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-6 flex items-start gap-3">
+                            <i class="fa-solid fa-circle-info text-blue-500 mt-1"></i>
+                            <p class="text-sm text-blue-800 dark:text-blue-300"><b>Aviso:</b> Digite o CNPJ e clique fora do campo para preencher os dados automaticamente via BrasilAPI.</p>
+                        </div>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm">Dados Principais</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input type="text" id="c_doc" placeholder="CNPJ (Apenas números)" class="input-modern w-full p-4 rounded-xl font-bold" onblur="buscarCnpj()" maxlength="14">
+                            <input type="text" id="c_tel" placeholder="WhatsApp Principal" class="input-modern w-full p-4 rounded-xl">
                             <input type="text" id="c_nome" placeholder="Razão Social" class="input-modern w-full p-4 rounded-xl">
                             <input type="text" id="c_fantasia" placeholder="Nome Fantasia" class="input-modern w-full p-4 rounded-xl">
-                            <input type="text" id="c_doc" placeholder="CNPJ / CPF" class="input-modern w-full p-4 rounded-xl">
-                            <input type="text" id="c_tel" placeholder="WhatsApp Principal" class="input-modern w-full p-4 rounded-xl">
-                            <input type="email" id="c_email" placeholder="E-mail Principal" class="input-modern w-full p-4 rounded-xl md:col-span-2">
+                            <input type="text" id="c_contato_nome" placeholder="Nome do Contato" class="input-modern w-full p-4 rounded-xl">
+                            <input type="email" id="c_email" placeholder="E-mail Principal" class="input-modern w-full p-4 rounded-xl">
                         </div>
-                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-4">Endereço</h4>
+
+                        <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-2 text-sm mt-4 border-t border-zinc-100 dark:border-zinc-800 pt-4">Endereço</h4>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                             <input type="text" id="c_cep" placeholder="CEP (Só Números)" class="input-modern w-full p-4 rounded-xl" onblur="buscarCep()" maxlength="9">
                             <input type="text" id="c_logradouro" placeholder="Logradouro (Rua, Av)" class="input-modern w-full p-4 rounded-xl md:col-span-2">
@@ -237,16 +309,18 @@
                             <input type="text" id="c_cidade" placeholder="Cidade" class="input-modern w-full p-4 rounded-xl">
                             <input type="text" id="c_estado" placeholder="UF (Ex: PE)" class="input-modern w-full p-4 rounded-xl" maxlength="2">
                         </div>
+                        
                         <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-700 mb-6">
-                            <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-address-book text-primary dark:text-emerald-400"></i> Contatos Setoriais</h4>
+                            <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-address-book text-primary dark:text-emerald-400"></i> Contatos Setoriais (Opcional)</h4>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Comercial</label><input type="text" id="c_com_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_com_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm"></div>
-                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Financeiro</label><input type="text" id="c_fin_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_fin_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm"></div>
-                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Operacional</label><input type="text" id="c_ope_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_ope_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm"></div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Comercial</label><input type="text" id="c_com_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_com_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm"></div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Financeiro</label><input type="text" id="c_fin_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_fin_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm"></div>
+                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Setor Operacional</label><input type="text" id="c_ope_nome" placeholder="Nome" class="input-modern w-full p-3 rounded-xl mb-2 text-sm"><input type="text" id="c_ope_tel" placeholder="Telefone" class="input-modern w-full p-3 rounded-xl text-sm"></div>
                             </div>
                         </div>
                         <button id="btn-cliente" onclick="salvarCliente()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Cliente</button>
                     </div>
+                    
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Carteira de Clientes</h3>
                         <div class="flex items-center gap-2">
@@ -255,8 +329,8 @@
                                 <input type="text" onkeyup="filtrarLista('clientes', this.value)" placeholder="Filtrar clientes..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('clientes', 'grid')" id="btn-view-grid-clientes" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition">Cards</button>
-                                <button onclick="mudarView('clientes', 'list')" id="btn-view-list-clientes" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition">Tabela</button>
+                                <button onclick="mudarView('clientes', 'grid')" id="btn-view-grid-clientes" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('clientes', 'list')" id="btn-view-list-clientes" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -266,7 +340,7 @@
                 <div id="tab-plantel" class="content max-w-4xl mx-auto">
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-feather"></i> Cadastro de Ave</h3>
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2" id="titulo-ave"><i class="fa-solid fa-feather"></i> Cadastro de Ave</h3>
                             <button onclick="limparFormAve()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -301,8 +375,8 @@
                                 <input type="text" onkeyup="filtrarLista('aves', this.value)" placeholder="Filtrar aves..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition">Cards</button>
-                                <button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition">Tabela</button>
+                                <button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -312,7 +386,7 @@
                 <div id="tab-estoque" class="content max-w-4xl mx-auto">
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-box-open"></i> Cadastro de Material</h3>
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2" id="titulo-estoque"><i class="fa-solid fa-box-open"></i> Cadastro de Material</h3>
                             <button onclick="limparFormEst()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -320,6 +394,7 @@
                             <select id="e_cat" class="input-modern w-full p-4 rounded-xl"><option value="EPI">EPI</option><option value="Equipamento">Equipamento</option><option value="Consumível">Consumível</option></select>
                         </div>
                         <input type="number" id="e_qtd" placeholder="Quantidade em Estoque" class="input-modern w-full p-4 rounded-xl mb-6">
+                        
                         <div id="bloco_epi" class="bg-amber-50 dark:bg-amber-900/20 p-5 rounded-2xl border border-amber-200 dark:border-amber-800 mb-6">
                             <h4 class="text-sm font-bold text-amber-800 dark:text-amber-400 mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Dados de Segurança (EPI)</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -337,8 +412,8 @@
                                 <input type="text" onkeyup="filtrarLista('estoque', this.value)" placeholder="Filtrar itens..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('estoque', 'grid')" id="btn-view-grid-estoque" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition">Cards</button>
-                                <button onclick="mudarView('estoque', 'list')" id="btn-view-list-estoque" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition">Tabela</button>
+                                <button onclick="mudarView('estoque', 'grid')" id="btn-view-grid-estoque" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('estoque', 'list')" id="btn-view-list-estoque" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -348,7 +423,7 @@
                 <div id="tab-propostas" class="content max-w-5xl mx-auto">
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
                         <div class="flex justify-between items-center mb-8">
-                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-file-circle-plus"></i> Assistente de Proposta</h3>
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2" id="titulo-proposta"><i class="fa-solid fa-file-circle-plus"></i> Assistente de Proposta</h3>
                             <button onclick="limparFormProp()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
                         </div>
                         <div class="flex items-center mb-10 px-4">
@@ -378,15 +453,15 @@
                         </div>
                     </div>
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Funil de Vendas</h3>
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Funil Comercial</h3>
                         <div class="flex items-center gap-2">
                             <div class="relative hidden sm:block">
                                 <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
                                 <input type="text" onkeyup="filtrarLista('propostas', this.value)" placeholder="Filtrar propostas..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('propostas', 'grid')" id="btn-view-grid-propostas" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition">Cards</button>
-                                <button onclick="mudarView('propostas', 'list')" id="btn-view-list-propostas" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition">Tabela</button>
+                                <button onclick="mudarView('propostas', 'grid')" id="btn-view-grid-propostas" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('propostas', 'list')" id="btn-view-list-propostas" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -403,15 +478,15 @@
                         <button id="btn-pdca" onclick="salvarPDCA()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-check"></i> Registrar Ação</button>
                     </div>
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Acompanhamento das Melhorias</h3>
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Acompanhamento de Melhorias</h3>
                         <div class="flex items-center gap-2">
                             <div class="relative hidden sm:block">
                                 <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
                                 <input type="text" onkeyup="filtrarLista('pdca', this.value)" placeholder="Filtrar ações..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('pdca', 'grid')" id="btn-view-grid-pdca" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition">Cards</button>
-                                <button onclick="mudarView('pdca', 'list')" id="btn-view-list-pdca" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition">Tabela</button>
+                                <button onclick="mudarView('pdca', 'grid')" id="btn-view-grid-pdca" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('pdca', 'list')" id="btn-view-list-pdca" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -500,8 +575,8 @@
                                 <input type="text" onkeyup="filtrarLista('visitas', this.value)" placeholder="Filtrar histórico..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('operacao', 'grid')" id="btn-view-grid-operacao" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition">Cards</button>
-                                <button onclick="mudarView('operacao', 'list')" id="btn-view-list-operacao" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition">Tabela</button>
+                                <button onclick="mudarView('operacao', 'grid')" id="btn-view-grid-operacao" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('operacao', 'list')" id="btn-view-list-operacao" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -533,8 +608,8 @@
                                 <input type="text" onkeyup="filtrarLista('financeiro', this.value)" placeholder="Filtrar..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('financeiro', 'grid')" id="btn-view-grid-financeiro" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition">Cards</button>
-                                <button onclick="mudarView('financeiro', 'list')" id="btn-view-list-financeiro" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition">Tabela</button>
+                                <button onclick="mudarView('financeiro', 'grid')" id="btn-view-grid-financeiro" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('financeiro', 'list')" id="btn-view-list-financeiro" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -551,8 +626,8 @@
                                 <input type="text" onkeyup="filtrarLista('contratos', this.value)" placeholder="Filtrar..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
                             </div>
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('contratos', 'grid')" id="btn-view-grid-contratos" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition">Cards</button>
-                                <button onclick="mudarView('contratos', 'list')" id="btn-view-list-contratos" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition">Tabela</button>
+                                <button onclick="mudarView('contratos', 'grid')" id="btn-view-grid-contratos" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('contratos', 'list')" id="btn-view-list-contratos" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -565,8 +640,8 @@
                         <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Equipe</h3>
                         <div class="flex items-center gap-2">
                             <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                                <button onclick="mudarView('usuarios', 'grid')" id="btn-view-grid-usuarios" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition">Cards</button>
-                                <button onclick="mudarView('usuarios', 'list')" id="btn-view-list-usuarios" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition">Tabela</button>
+                                <button onclick="mudarView('usuarios', 'grid')" id="btn-view-grid-usuarios" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                                <button onclick="mudarView('usuarios', 'list')" id="btn-view-list-usuarios" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i> Tabela</button>
                             </div>
                         </div>
                     </div>
@@ -583,22 +658,117 @@
     <script>
         const API = 'https://artemis-backend-eso2.onrender.com'; 
         let glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] };
-        let usuarioLogado = null; let edit = { cli:null, ave:null, est:null, prop:null, pdca:null, cont:null, usu:null }; 
+        let usuarioLogado = null; 
+        let edit = { cli:null, ave:null, est:null, prop:null, pdca:null, cont:null, usu:null }; 
         let agendamentoAtivo = null; let fotosBase64 = []; let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
-        const nomesPerfis = { 'admin': 'Administrador Geral', 'comercial': 'Comercial / Financeiro', 'tecnico': 'Técnico de Campo' };
-
-        let viewModos = { clientes:'grid', aves:'grid', estoque:'grid', propostas:'grid', pdca:'grid', operacao:'grid', agenda:'grid', financeiro:'grid', contratos:'grid', usuarios:'grid' };
-        ['clientes','aves','estoque','propostas','pdca','operacao','agenda','financeiro','contratos','usuarios'].forEach(v => { let s = localStorage.getItem(`artemis_view_${v}`); if(s) viewModos[v] = s; });
-
-        function mudarView(aba, modo) {
-            viewModos[aba] = modo; localStorage.setItem(`artemis_view_${aba}`, modo);
-            ['grid', 'list', 'calendar'].forEach(b => {
-                const btn = document.getElementById(`btn-view-${b}-${aba}`);
-                if(btn) btn.className = modo === b ? 'px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition' : 'px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition';
+        
+        // --- FUNÇÕES DE NOME E FOTO DO PERFIL ---
+        function formatName(name) {
+            if(!name) return ''; const p = name.trim().split(' ');
+            return p.length === 1 ? p[0] : `${p[0]} ${p[p.length - 1]}`;
+        }
+        function getInitials(name) {
+            if(!name) return 'AB'; const p = name.trim().split(' ');
+            if(p.length === 1) return p[0].substring(0, 2).toUpperCase();
+            return (p[0][0] + p[p.length - 1][0]).toUpperCase();
+        }
+        function carregarFotoPerfil(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64 = event.target.result;
+                    const prev = document.getElementById('perfil-foto-preview');
+                    const inic = document.getElementById('iniciais-logado');
+                    prev.innerHTML = `<img src="${base64}" class="w-full h-full object-cover">`;
+                    inic.innerHTML = `<img src="${base64}" class="w-full h-full object-cover">`;
+                    // Salva no localStorage como extensão de perfil
+                    let ext = JSON.parse(localStorage.getItem(`artemis_ext_${usuarioLogado.id}`) || '{}');
+                    ext.foto = base64;
+                    localStorage.setItem(`artemis_ext_${usuarioLogado.id}`, JSON.stringify(ext));
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        function buscarCepPerfil() {
+            const cep = document.getElementById('p_cep').value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                fetch(`https://viacep.com.br/ws/${cep}/json/`).then(r=>r.json()).then(data => {
+                    if (!data.erro) {
+                        document.getElementById('p_logradouro').value = data.logradouro;
+                        document.getElementById('p_bairro').value = data.bairro;
+                        document.getElementById('p_cidade').value = data.localidade;
+                        document.getElementById('p_estado').value = data.uf;
+                        document.getElementById('p_numero').focus();
+                        showToast("Endereço auto-preenchido!");
+                    }
+                }).catch(e => showToast("Erro no CEP.", "warning"));
+            }
+        }
+        function salvarPerfil() {
+            // Salva dados básicos no backend (se a senha for trocada)
+            const n_nome = document.getElementById('meu_nome').value;
+            const n_senha1 = document.getElementById('p_senha1').value;
+            const n_senha2 = document.getElementById('p_senha2').value;
+            if(n_senha1 && n_senha1 !== n_senha2) { showToast("As senhas não coincidem!"); return; }
+            
+            const payload = { nome: n_nome, email: usuarioLogado.email, perfil: usuarioLogado.perfil, senha: n_senha1 || usuarioLogado.senha };
+            fetch(`${API}/usuarios/${usuarioLogado.id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).then(() => {
+                usuarioLogado.nome = n_nome;
+                if(n_senha1) usuarioLogado.senha = n_senha1;
+                localStorage.setItem('artemis_auth', JSON.stringify(usuarioLogado));
+                document.getElementById('nome-logado-header').innerText = formatName(n_nome);
+                
+                // Salva dados estendidos locais (Prontuário, Endereço, etc)
+                let ext = JSON.parse(localStorage.getItem(`artemis_ext_${usuarioLogado.id}`) || '{}');
+                ext.cpf = document.getElementById('meu_cpf').value;
+                ext.wpp = document.getElementById('meu_wpp').value;
+                ext.cep = document.getElementById('p_cep').value;
+                ext.logradouro = document.getElementById('p_logradouro').value;
+                ext.numero = document.getElementById('p_numero').value;
+                ext.bairro = document.getElementById('p_bairro').value;
+                ext.cidade = document.getElementById('p_cidade').value;
+                ext.estado = document.getElementById('p_estado').value;
+                ext.sangue = document.getElementById('p_sangue').value;
+                ext.rh = document.getElementById('p_rh').value;
+                ext.emergencia = document.getElementById('p_emergencia').value;
+                ext.alergias = document.getElementById('p_alergias').value;
+                localStorage.setItem(`artemis_ext_${usuarioLogado.id}`, JSON.stringify(ext));
+                
+                showToast("Perfil atualizado com sucesso!");
+                document.getElementById('p_senha1').value = ''; document.getElementById('p_senha2').value = '';
             });
-            if(aba==='clientes') rendCli(); if(aba==='aves') rendAve(); if(aba==='estoque') rendEst(); if(aba==='propostas') rendProp(); if(aba==='pdca') rendPDCA(); if(aba==='operacao') rendVis(); if(aba==='agenda') rendAg(); if(aba==='financeiro') rendFin(); if(aba==='contratos') rendCont(); if(aba==='usuarios') rendUsu();
+        }
+        function preencherPerfilUI() {
+            document.getElementById('meu_nome').value = usuarioLogado.nome;
+            document.getElementById('perfil-nome-display').innerText = usuarioLogado.nome;
+            document.getElementById('perfil-cargo-display').innerText = nomesPerfis[usuarioLogado.perfil] || usuarioLogado.perfil;
+            document.getElementById('nome-logado-header').innerText = formatName(usuarioLogado.nome);
+            
+            let ext = JSON.parse(localStorage.getItem(`artemis_ext_${usuarioLogado.id}`) || '{}');
+            const inic = getInitials(usuarioLogado.nome);
+            if(ext.foto) {
+                document.getElementById('perfil-foto-preview').innerHTML = `<img src="${ext.foto}" class="w-full h-full object-cover">`;
+                document.getElementById('iniciais-logado').innerHTML = `<img src="${ext.foto}" class="w-full h-full object-cover">`;
+            } else {
+                document.getElementById('perfil-foto-preview').innerHTML = inic;
+                document.getElementById('iniciais-logado').innerHTML = inic;
+            }
+            if(ext.cpf) document.getElementById('meu_cpf').value = ext.cpf;
+            if(ext.wpp) document.getElementById('meu_wpp').value = ext.wpp;
+            if(ext.cep) document.getElementById('p_cep').value = ext.cep;
+            if(ext.logradouro) document.getElementById('p_logradouro').value = ext.logradouro;
+            if(ext.numero) document.getElementById('p_numero').value = ext.numero;
+            if(ext.bairro) document.getElementById('p_bairro').value = ext.bairro;
+            if(ext.cidade) document.getElementById('p_cidade').value = ext.cidade;
+            if(ext.estado) document.getElementById('p_estado').value = ext.estado;
+            if(ext.sangue) document.getElementById('p_sangue').value = ext.sangue;
+            if(ext.rh) document.getElementById('p_rh').value = ext.rh;
+            if(ext.emergencia) document.getElementById('p_emergencia').value = ext.emergencia;
+            if(ext.alergias) document.getElementById('p_alergias').value = ext.alergias;
         }
 
+        // --- FILTRO DE LISTAS ---
         function filtrarLista(aba, termo) {
             const query = termo.toLowerCase(); const container = document.getElementById(`lista-${aba}`); if(!container) return;
             if (viewModos[aba] === 'list') {
@@ -607,6 +777,86 @@
                 container.querySelectorAll('.card').forEach(c => { c.style.display = c.innerText.toLowerCase().includes(query) ? '' : 'none'; });
             }
         }
+        
+        const nomesPerfis = { 'admin': 'Administrador Geral', 'comercial': 'Comercial / Financeiro', 'tecnico': 'Técnico de Campo' };
+        let viewModos = { clientes:'grid', aves:'grid', estoque:'grid', propostas:'grid', pdca:'grid', operacao:'grid', agenda:'grid', financeiro:'grid', contratos:'grid', usuarios:'grid' };
+        ['clientes','aves','estoque','propostas','pdca','operacao','agenda','financeiro','contratos','usuarios'].forEach(v => { let s = localStorage.getItem(`artemis_view_${v}`); if(s) viewModos[v] = s; });
+
+        function mudarView(aba, modo) {
+            viewModos[aba] = modo; localStorage.setItem(`artemis_view_${aba}`, modo);
+            const btnsIcons = { grid: '<i class="fa-solid fa-border-all"></i> Cards', list: '<i class="fa-solid fa-list"></i> Tabela', calendar: '<i class="fa-solid fa-calendar-alt"></i> Calendário' };
+            ['grid', 'list', 'calendar'].forEach(b => {
+                const btn = document.getElementById(`btn-view-${b}-${aba}`);
+                if(btn) {
+                    btn.className = modo === b ? 'px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition' : 'px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition';
+                    btn.innerHTML = btnsIcons[b]; // Garante que o ícone permaneça
+                }
+            });
+            if(aba==='clientes') rendCli(); if(aba==='aves') rendAve(); if(aba==='estoque') rendEst(); if(aba==='propostas') rendProp(); if(aba==='pdca') rendPDCA(); if(aba==='operacao') rendVis(); if(aba==='agenda') rendAg(); if(aba==='financeiro') rendFin(); if(aba==='contratos') rendCont(); if(aba==='usuarios') rendUsu();
+        }
+
+        // --- CALENDÁRIO ---
+        function renderCalendar() {
+            const dataAtual = new Date(); const mes = dataAtual.getMonth(); const ano = dataAtual.getFullYear();
+            const primDia = new Date(ano, mes, 1).getDay(); const totDias = new Date(ano, mes + 1, 0).getDate();
+            const nomesMeses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+            let html = `<div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6"><h4 class="text-center font-bold text-xl mb-6 dark:text-white uppercase tracking-widest">${nomesMeses[mes]} ${ano}</h4><div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 mb-2"><div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div></div><div class="grid grid-cols-7 gap-2">`;
+            for(let i=0; i<primDia; i++) html += `<div class="p-2 border border-transparent"></div>`;
+            for(let dia=1; dia<=totDias; dia++) {
+                let dataStr = `${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+                let missoes = glob.ag.filter(a => a.data_agendada && a.data_agendada.startsWith(dataStr));
+                let badges = missoes.map(m => `<div class="text-[10px] bg-primary text-white rounded px-1.5 py-0.5 mt-1 font-bold truncate shadow-sm" title="${m.cliente} - ${m.ave}">${m.cliente.substring(0,8)}...</div>`).join('');
+                let bgHj = (dia === dataAtual.getDate()) ? 'bg-amber-50 dark:bg-amber-900/20 border-accent' : 'bg-zinc-50 dark:bg-zinc-800/50 border-zinc-100 dark:border-zinc-700';
+                html += `<div class="min-h-[90px] p-2 border rounded-xl ${bgHj} dark:text-white flex flex-col"><span class="font-bold opacity-50 mb-1">${dia}</span>${badges}</div>`;
+            }
+            html += `</div></div>`; return html;
+        }
+
+        // --- AUTO-SAVE CHECK-IN ---
+        let autoSaveInterval;
+        function initAutoSave() {
+            if(autoSaveInterval) clearInterval(autoSaveInterval);
+            autoSaveInterval = setInterval(() => {
+                if(userPrefs.autoSave && document.getElementById('tab-operacao').classList.contains('active')) {
+                    const obs = document.getElementById('o_obs').value;
+                    if(obs) localStorage.setItem('artemis_draft_obs', obs);
+                }
+            }, 10000);
+            const draft = localStorage.getItem('artemis_draft_obs');
+            if(draft && !document.getElementById('o_obs').value) document.getElementById('o_obs').value = draft;
+        }
+
+        // --- PREFERÊNCIAS TOTAIS ---
+        let userPrefs = { focus: false, speedDial: true, toasts: true, animacoes: true, altoContraste: false, tabelas: false, autoSave: true };
+        function carregarPrefs() { const s = localStorage.getItem('artemis_prefs'); if(s) userPrefs = { ...userPrefs, ...JSON.parse(s) }; aplicarPrefs(); }
+        function togglePref(key) { userPrefs[key] = !userPrefs[key]; localStorage.setItem('artemis_prefs', JSON.stringify(userPrefs)); aplicarPrefs(); showToast("Configuração salva!"); }
+        function aplicarPrefs() {
+            Object.keys(userPrefs).forEach(key => {
+                const bg = document.getElementById(`tg-${key}`); const knob = document.getElementById(`tg-${key}-knob`); const on = document.getElementById(`tg-${key}-on`); const off = document.getElementById(`tg-${key}-off`);
+                if(bg && knob && on && off) {
+                    if(userPrefs[key]) {
+                        bg.classList.remove('bg-zinc-300', 'dark:bg-zinc-700'); bg.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
+                        knob.classList.remove('translate-x-1'); knob.classList.add('translate-x-9');
+                        on.classList.remove('opacity-0'); on.classList.add('opacity-100');
+                        off.classList.remove('opacity-100'); off.classList.add('opacity-0');
+                    } else {
+                        bg.classList.remove('bg-emerald-500', 'dark:bg-emerald-500'); bg.classList.add('bg-zinc-300', 'dark:bg-zinc-700');
+                        knob.classList.remove('translate-x-9'); knob.classList.add('translate-x-1');
+                        on.classList.remove('opacity-100'); on.classList.add('opacity-0');
+                        off.classList.remove('opacity-0'); off.classList.add('opacity-100');
+                    }
+                }
+            });
+            // Efeitos Práticos:
+            const sb = document.getElementById('sidebar'); const txts = document.querySelectorAll('.menu-text'); const log = document.getElementById('sidebar-logo'); const tit = document.getElementById('sidebar-title');
+            if(userPrefs.focus) { sb.className='w-24 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log)log.classList.add('hidden'); if(tit)tit.classList.add('opacity-0'); txts.forEach(t=>t.classList.add('hidden')); } 
+            else { sb.className='w-72 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log&&configGlobal.logo_base64)log.classList.remove('hidden'); if(tit)tit.classList.remove('opacity-0'); txts.forEach(t=>{t.classList.remove('hidden');}); }
+            const fab = document.getElementById('speed-dial'); if(fab) fab.style.display = userPrefs.speedDial ? 'block' : 'none';
+            if(userPrefs.altoContraste) document.body.classList.add('alto-contraste'); else document.body.classList.remove('alto-contraste');
+            if(userPrefs.tabelas) document.body.classList.add('tabela-compacta'); else document.body.classList.remove('tabela-compacta');
+            initAutoSave();
+        }
+        function showToast(msg) { if(!userPrefs.toasts) return; const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-2xl p-4 rounded-2xl flex items-center gap-3 transform transition-all pointer-events-auto min-w-[300px] text-sm font-bold dark:text-white'; t.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i> ${msg}`; c.appendChild(t); setTimeout(()=>t.remove(), 3500); }
 
         function toggleDarkMode() { document.documentElement.classList.toggle('dark'); localStorage.setItem('artemis_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); }
         function carregarTema() { if (localStorage.getItem('artemis_theme') === 'dark') document.documentElement.classList.add('dark'); }
@@ -617,38 +867,22 @@
             const notif = document.getElementById('notif-dropdown'); if(notif && !notif.classList.contains('hidden') && !e.target.closest('.relative')) notif.classList.add('hidden');
         });
 
-        function showTab(id) { document.querySelectorAll('.content').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('nav-active')); const b = document.getElementById('btn-'+id); if(b) b.classList.add('nav-active'); if(id === 'tab-dashboard') buildChart(); }
-
-        let userPrefs = { focus: false, speedDial: true, toasts: true, animacoes: true };
-        function carregarPrefs() { const s = localStorage.getItem('artemis_prefs'); if(s) userPrefs = JSON.parse(s); aplicarPrefs(); }
-        function togglePref(key) { userPrefs[key] = !userPrefs[key]; localStorage.setItem('artemis_prefs', JSON.stringify(userPrefs)); aplicarPrefs(); showToast("Preferência atualizada!"); }
-        function aplicarPrefs() {
-            ['focus', 'speedDial', 'toasts', 'animacoes'].forEach(key => {
-                const bg = document.getElementById(`tg-${key}`); const knob = document.getElementById(`tg-${key}-knob`); const on = document.getElementById(`tg-${key}-on`); const off = document.getElementById(`tg-${key}-off`);
-                if(bg && knob && on && off) {
-                    if(userPrefs[key]) { bg.classList.remove('bg-zinc-300', 'dark:bg-zinc-700'); bg.classList.add('bg-emerald-500', 'dark:bg-emerald-500'); knob.classList.remove('translate-x-1'); knob.classList.add('translate-x-9'); on.classList.remove('opacity-0'); on.classList.add('opacity-100'); off.classList.remove('opacity-100'); off.classList.add('opacity-0'); } 
-                    else { bg.classList.remove('bg-emerald-500', 'dark:bg-emerald-500'); bg.classList.add('bg-zinc-300', 'dark:bg-zinc-700'); knob.classList.remove('translate-x-9'); knob.classList.add('translate-x-1'); on.classList.remove('opacity-100'); on.classList.add('opacity-0'); off.classList.remove('opacity-0'); off.classList.add('opacity-100'); }
-                }
-            });
-            const sb = document.getElementById('sidebar'); const txts = document.querySelectorAll('.menu-text'); const log = document.getElementById('sidebar-logo'); const tit = document.getElementById('sidebar-title');
-            if(userPrefs.focus) { sb.className='w-24 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log)log.classList.add('hidden'); if(tit)tit.classList.add('opacity-0'); txts.forEach(t=>t.classList.add('hidden')); } else { sb.className='w-72 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log&&configGlobal.logo_base64)log.classList.remove('hidden'); if(tit)tit.classList.remove('opacity-0'); txts.forEach(t=>{t.classList.remove('hidden');}); }
-            const fab = document.getElementById('speed-dial'); if(fab) fab.style.display = userPrefs.speedDial ? 'block' : 'none';
-        }
-
-        function showToast(msg) { if(!userPrefs.toasts) return; const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-2xl p-4 rounded-2xl flex items-center gap-3 transform transition-all pointer-events-auto min-w-[300px] text-sm font-bold dark:text-white'; t.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i> ${msg}`; c.appendChild(t); setTimeout(()=>t.remove(), 3500); }
-
+        // INIT & LOGIN
         window.onload = () => { carregarTema(); const a = localStorage.getItem('artemis_auth'); if(a) { usuarioLogado = JSON.parse(a); init(); } else { document.getElementById('tela-login').classList.remove('hidden'); document.getElementById('tela-login').classList.add('flex'); } };
         async function fazerLogin() { const em = document.getElementById('login_email').value; const se = document.getElementById('login_senha').value; try { const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, senha:se})}); const d = await r.json(); if(d.ok) { localStorage.setItem('artemis_auth', JSON.stringify(d.usuario)); location.reload(); } else { document.getElementById('login-erro').innerText = d.msg; document.getElementById('login-erro').classList.remove('hidden'); } } catch(e) { document.getElementById('login-erro').innerText = "Servidor Offline. Aguarde 30s e tente novamente."; document.getElementById('login-erro').classList.remove('hidden'); } }
         function fazerLogout() { localStorage.removeItem('artemis_auth'); location.reload(); }
 
         function init() { 
             document.getElementById('tela-login').classList.add('hidden'); document.getElementById('sistema-principal').classList.remove('hidden'); document.getElementById('sistema-principal').classList.add('flex'); 
-            document.getElementById('nome-logado-header').innerText = usuarioLogado.nome; document.getElementById('perfil-logado').innerText = nomesPerfis[usuarioLogado.perfil] || usuarioLogado.perfil;
-            document.getElementById('meu_nome').value = usuarioLogado.nome; document.getElementById('meu_email').value = usuarioLogado.email; 
             document.querySelectorAll('.aba-menu').forEach(a => { a.style.display = a.classList.contains(usuarioLogado.perfil) ? 'flex' : 'none'; }); 
+            preencherPerfilUI(); // Preenche a UI
             showTab(usuarioLogado.perfil === 'tecnico' ? 'tab-operacao' : 'tab-dashboard'); 
-            Object.keys(viewModos).forEach(k => mudarView(k, viewModos[k])); carregarPrefs(); carregarTudo(); 
+            Object.keys(viewModos).forEach(k => mudarView(k, viewModos[k])); 
+            carregarPrefs(); carregarTudo(); 
+            document.getElementById('e_cat').addEventListener('change', e => { const b = document.getElementById('bloco_epi'); if(e.target.value === 'EPI') b.classList.remove('hidden'); else { b.classList.add('hidden'); document.getElementById('e_ca').value = ''; document.getElementById('e_val').value = ''; } });
         }
+
+        function showTab(id) { document.querySelectorAll('.content').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('nav-active')); const b = document.getElementById('btn-'+id); if(b) b.classList.add('nav-active'); if(id === 'tab-dashboard') buildChart(); }
 
         let notificacoes = [];
         async function carregarTudo() { 
@@ -669,108 +903,64 @@
         let dashChart = null; function buildChart() { const ctx = document.getElementById('chartEvolucao'); if(!ctx) return; const u = [...glob.vis].reverse().slice(-10); if(dashChart) dashChart.destroy(); dashChart = new Chart(ctx.getContext('2d'), { type: 'line', data: { labels: u.map(v=>new Date(v.data_visita).toLocaleDateString().slice(0,5)), datasets: [{ label: 'Interações Registradas', data: u.map(v=>v.qtd_interacoes), borderColor: '#14532d', backgroundColor: 'rgba(20, 83, 45, 0.1)', fill: true, tension: 0.4 }] } }); }
         function tableTpl(heads, bodyHtml) { return `<div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm text-zinc-600 dark:text-zinc-400 whitespace-nowrap"><thead class="bg-zinc-50 dark:bg-zinc-800/50 text-zinc-800 dark:text-zinc-200 font-bold"><tr>${heads.map(h=>`<th class="p-4">${h}</th>`).join('')}</tr></thead><tbody>${bodyHtml}</tbody></table></div>`; }
 
-        // --- CLIENTES ---
+        // --- CLIENTES COM BUSCA CNPJ BRASIL API ---
+        async function buscarCnpj() {
+            let cnpj = document.getElementById('c_doc').value.replace(/\D/g, '');
+            if(cnpj.length === 14) {
+                try {
+                    const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+                    const data = await res.json();
+                    if(data.razao_social) {
+                        document.getElementById('c_nome').value = data.razao_social;
+                        document.getElementById('c_fantasia').value = data.nome_fantasia || data.razao_social;
+                        document.getElementById('c_cep').value = data.cep;
+                        document.getElementById('c_logradouro').value = `${data.logradouro}${data.complemento ? ' ' + data.complemento : ''}`;
+                        document.getElementById('c_numero').value = data.numero;
+                        document.getElementById('c_bairro').value = data.bairro;
+                        document.getElementById('c_cidade').value = data.municipio;
+                        document.getElementById('c_estado').value = data.uf;
+                        document.getElementById('c_tel').value = data.ddd_telefone_1 || data.ddd_telefone_2 || '';
+                        showToast("CNPJ importado da Receita Federal!", "success");
+                    }
+                } catch(e) { showToast("CNPJ não encontrado na API.", "warning"); }
+            }
+        }
         function rendCli() { const c = document.getElementById('lista-clientes'); if(viewModos.clientes === 'grid') { c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.cli.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><b class="text-lg dark:text-white">${x.nome_fantasia || x.nome_razao_social}</b><br><span class="text-xs text-zinc-500">${x.documento_cpf_cnpj}</span><div class="flex gap-2 mt-4"><button onclick="edCli(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:text-primary transition"><i class="fa-solid fa-pen"></i> Editar</button><button onclick="exc('clientes',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'CNPJ/CPF', 'Ações'], glob.cli.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome_fantasia || x.nome_razao_social}</td><td class="p-4">${x.documento_cpf_cnpj}</td><td class="p-4 text-right"><button onclick="edCli(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('clientes',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
         function limparFormCli(){ ['c_nome','c_fantasia','c_doc','c_tel','c_contato_nome','c_email','c_cep','c_logradouro','c_numero','c_bairro','c_cidade','c_estado','c_com_nome','c_com_tel','c_fin_nome','c_fin_tel','c_ope_nome','c_ope_tel'].forEach(id=>document.getElementById(id).value=''); edit.cli = null; }
         function edCli(id){ const c = glob.cli.find(x=>x.id===id); if(!c) return; document.getElementById('c_nome').value = c.nome_razao_social || ''; document.getElementById('c_fantasia').value = c.nome_fantasia || ''; document.getElementById('c_doc').value = c.documento_cpf_cnpj || ''; document.getElementById('c_tel').value = c.telefone || ''; document.getElementById('c_contato_nome').value = c.contato_nome || ''; document.getElementById('c_email').value = c.email_contato || ''; document.getElementById('c_cep').value = c.cep || ''; document.getElementById('c_logradouro').value = c.logradouro || ''; document.getElementById('c_numero').value = c.numero || ''; document.getElementById('c_bairro').value = c.bairro || ''; document.getElementById('c_cidade').value = c.cidade || ''; document.getElementById('c_estado').value = c.estado || ''; document.getElementById('c_com_nome').value = c.comercial_nome || ''; document.getElementById('c_com_tel').value = c.comercial_tel || ''; document.getElementById('c_fin_nome').value = c.financeiro_nome || ''; document.getElementById('c_fin_tel').value = c.financeiro_tel || ''; document.getElementById('c_ope_nome').value = c.operacional_nome || ''; document.getElementById('c_ope_tel').value = c.operacional_tel || ''; edit.cli = id; window.scrollTo({top: 0, behavior: 'smooth'}); }
         function salvarCliente(){ const d = { nome_razao_social: document.getElementById('c_nome').value, nome_fantasia: document.getElementById('c_fantasia').value, documento_cpf_cnpj: document.getElementById('c_doc').value, telefone: document.getElementById('c_tel').value, contato_nome: document.getElementById('c_contato_nome').value, email_contato: document.getElementById('c_email').value, cep: document.getElementById('c_cep').value, logradouro: document.getElementById('c_logradouro').value, numero: document.getElementById('c_numero').value, bairro: document.getElementById('c_bairro').value, cidade: document.getElementById('c_cidade').value, estado: document.getElementById('c_estado').value, comercial_nome: document.getElementById('c_com_nome').value, comercial_tel: document.getElementById('c_com_tel').value, financeiro_nome: document.getElementById('c_fin_nome').value, financeiro_tel: document.getElementById('c_fin_tel').value, operacional_nome: document.getElementById('c_ope_nome').value, operacional_tel: document.getElementById('c_ope_tel').value }; fetch(`${API}/clientes${edit.cli?'/'+edit.cli:''}`, {method: edit.cli?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormCli(); carregarTudo(); showToast("Cliente Salvo com Sucesso!"); }); }
-        async function buscarCep() { const cep = document.getElementById('c_cep').value.replace(/\D/g, ''); if (cep.length === 8) { try { const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`); const data = await res.json(); if (!data.erro) { document.getElementById('c_logradouro').value = data.logradouro; document.getElementById('c_bairro').value = data.bairro; document.getElementById('c_cidade').value = data.localidade; document.getElementById('c_estado').value = data.uf; document.getElementById('c_numero').focus(); showToast("Endereço preenchido!"); } } catch (e) { showToast("Erro ao buscar o CEP.", "warning"); } } }
+        async function buscarCep() { const cep = document.getElementById('c_cep').value.replace(/\D/g, ''); if (cep.length === 8) { try { const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`); const data = await res.json(); if (!data.erro) { document.getElementById('c_logradouro').value = data.logradouro; document.getElementById('c_bairro').value = data.bairro; document.getElementById('c_cidade').value = data.localidade; document.getElementById('c_estado').value = data.uf; document.getElementById('c_numero').focus(); showToast("Endereço preenchido automaticamente."); } } catch (e) { showToast("Erro ao buscar o CEP.", "warning"); } } }
 
-        // --- AVES ---
         function rendAve() { const c = document.getElementById('lista-aves'); if(viewModos.aves === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.ave.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><div class="flex justify-between"><b class="text-lg dark:text-white flex items-center gap-2"><i class="fa-solid fa-feather text-emerald-600"></i> ${x.nome}</b><span class="text-[10px] uppercase font-bold px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">${x.status_clinico || 'Sem Info'}</span></div><span class="text-xs text-zinc-500">${x.especie}</span><div class="flex gap-2 mt-4"><button onclick="edAve(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('aves',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Nome', 'Espécie', 'Anilha', 'Status', 'Ações'], glob.ave.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome}</td><td class="p-4">${x.especie}</td><td class="p-4">${x.anilha||'-'}</td><td class="p-4"><span class="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">${x.status_clinico || 'Sem Info'}</span></td><td class="p-4 text-right"><button onclick="edAve(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('aves',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
         function limparFormAve(){ ['a_nome','a_especie','a_anilha','a_min','a_max','a_doenca','a_historico','a_hist_det'].forEach(id=>document.getElementById(id).value=''); document.getElementById('a_status').value = 'Apto para Voo'; document.getElementById('a_data_aval').value = ''; document.getElementById('a_vacina').checked = true; edit.ave = null; }
         function edAve(id){ const a = glob.ave.find(x=>x.id===id); if(!a) return; document.getElementById('a_nome').value = a.nome; document.getElementById('a_especie').value = a.especie; document.getElementById('a_anilha').value = a.anilha || ''; document.getElementById('a_min').value = a.peso_minimo; document.getElementById('a_max').value = a.peso_maximo; document.getElementById('a_status').value = a.status_clinico || 'Apto para Voo'; document.getElementById('a_data_aval').value = a.ultima_avaliacao ? a.ultima_avaliacao.split('T')[0] : ''; document.getElementById('a_vacina').checked = a.vacinas_em_dia !== false; document.getElementById('a_doenca').value = a.doencas_preexistentes || ''; document.getElementById('a_historico').value = a.historico_medico || ''; document.getElementById('a_hist_det').value = a.historico_detalhado || ''; edit.ave = id; window.scrollTo({top: 0, behavior: 'smooth'}); }
         function salvarAve(){ const d = { nome: document.getElementById('a_nome').value, especie: document.getElementById('a_especie').value, peso_minimo: document.getElementById('a_min').value, peso_maximo: document.getElementById('a_max').value, anilha: document.getElementById('a_anilha').value, status_clinico: document.getElementById('a_status').value, ultima_avaliacao: document.getElementById('a_data_aval').value, vacinas_em_dia: document.getElementById('a_vacina').checked, doencas_preexistentes: document.getElementById('a_doenca').value, historico_medico: document.getElementById('a_historico').value, historico_detalhado: document.getElementById('a_hist_det').value }; fetch(`${API}/aves${edit.ave?'/'+edit.ave:''}`, {method: edit.ave?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormAve(); carregarTudo(); showToast("Ave Salva com Sucesso!"); }); }
 
-        // --- ESTOQUE ---
         function rendEst() { const c = document.getElementById('lista-estoque'); if(viewModos.estoque === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.est.map(x => { let epiInfo = x.categoria === 'EPI' && x.ca_epi ? `<div class="text-xs bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-400 p-2 rounded mt-2"><b>CA:</b> ${x.ca_epi} ${x.validade_epi ? `| <b>Validade:</b> ${new Date(x.validade_epi).toLocaleDateString('pt-BR')}` : ''}</div>` : ''; return `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><b class="text-lg dark:text-white">${x.nome_item}</b><br><span class="text-xs uppercase font-bold text-zinc-400">${x.categoria}</span>${epiInfo}<p class="text-2xl font-bold text-primary mt-2">${x.quantidade}</p><div class="flex gap-2 mt-4"><button onclick="edEst(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('estoque',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`; }).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Material', 'Categoria', 'Qtd', 'CA', 'Validade', 'Ações'], glob.est.map(x => `<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome_item}</td><td class="p-4">${x.categoria}</td><td class="p-4 font-bold ${x.quantidade < 5 ? 'text-red-500' : 'text-emerald-600'}">${x.quantidade}</td><td class="p-4">${x.ca_epi || '-'}</td><td class="p-4">${x.validade_epi ? new Date(x.validade_epi).toLocaleDateString('pt-BR') : '-'}</td><td class="p-4 text-right"><button onclick="edEst(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('estoque',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
         function limparFormEst(){ ['e_nome','e_qtd','e_ca','e_val'].forEach(id=>document.getElementById(id).value=''); document.getElementById('e_cat').value = 'EPI'; document.getElementById('e_cat').dispatchEvent(new Event('change')); edit.est = null; }
         function edEst(id){ const e = glob.est.find(x=>x.id===id); if(!e) return; document.getElementById('e_nome').value = e.nome_item; document.getElementById('e_qtd').value = e.quantidade; document.getElementById('e_cat').value = e.categoria; document.getElementById('e_ca').value = e.ca_epi || ''; document.getElementById('e_val').value = e.validade_epi ? e.validade_epi.split('T')[0] : ''; document.getElementById('e_cat').dispatchEvent(new Event('change')); edit.est = id; window.scrollTo({top: 0, behavior: 'smooth'}); }
         function salvarEstoque(){ const d = { nome_item: document.getElementById('e_nome').value, quantidade: document.getElementById('e_qtd').value, categoria: document.getElementById('e_cat').value, ca_epi: document.getElementById('e_ca').value, validade_epi: document.getElementById('e_val').value }; fetch(`${API}/estoque${edit.est?'/'+edit.est:''}`, {method: edit.est?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormEst(); carregarTudo(); showToast("Estoque Salvo!"); }); }
 
-        // --- PROPOSTAS COMERCIAIS ---
-        let stepProposta = 1;
-        function mudarStep(novoStep) { document.getElementById(`step-content-${stepProposta}`).classList.add('hidden'); document.getElementById(`step-content-${novoStep}`).classList.remove('hidden'); for(let i = 1; i <= 3; i++) { const dot = document.getElementById(`step-dot-${i}`); if(i < novoStep) { dot.className = 'w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold shadow-md z-10'; dot.innerHTML = '<i class="fa-solid fa-check"></i>'; } else if(i === novoStep) { dot.className = 'w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md transition-colors z-10'; dot.innerHTML = i; } else { dot.className = 'w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-500 flex items-center justify-center font-bold transition-colors z-10'; dot.innerHTML = i; } } document.getElementById('step-line-1').style.width = novoStep >= 2 ? '100%' : '0%'; document.getElementById('step-line-2').style.width = novoStep >= 3 ? '100%' : '0%'; stepProposta = novoStep; }
+        function imprimirProposta(id) { const p = glob.prop.find(x=>x.id===id); if(!p) return; const logo = configGlobal.logo_base64 ? `<img src="${configGlobal.logo_base64}" style="max-height:80px;">` : `<h2 style="color:#14532d">${configGlobal.nome_empresa || 'SILVESTRE'}</h2>`; const html = `<html><head><title>Proposta Comercial - ${p.cliente}</title><style>body{font-family:Arial, sans-serif; padding:40px;} .header{text-align:center; border-bottom:2px solid #14532d; padding-bottom:20px; margin-bottom:20px;} table{width:100%; border-collapse:collapse; margin-top:20px;} th,td{border:1px solid #ccc; padding:10px; text-align:left;} th{background:#f4f4f5;} .box{background:#fdfdfd; border:1px solid #eee; padding:15px; border-radius:5px; margin-top:20px;}</style></head><body onload="window.print()"> <div class="header">${logo}<h3>PROPOSTA COMERCIAL DE SERVIÇOS</h3></div> <p><b>A/C:</b> ${p.cliente}</p> <table><tr><th>Serviço Proposto</th><td>${p.tipo_servico}</td></tr><tr><th>Frequência de Visitas</th><td>${p.frequencia}</td></tr><tr><th>Investimento Mensal</th><td style="font-weight:bold; color:#14532d;">R$ ${p.valor_mensal}</td></tr></table> <div class="box"><b>Escopo e Observações Técnicas:</b><br><p>${p.observacoes || 'Execução de manejo de fauna com métodos incruentos.'}</p></div> <div class="box"><b>Condições Comerciais:</b><br><p>${p.condicoes || 'Validade da proposta: 15 dias.'}</p></div> <div style="margin-top:80px; text-align:center; border-top:1px solid #000; padding-top:10px; width:50%; margin-left:auto; margin-right:auto;">Assinatura / De Acordo</div> </body></html>`; window.open('','_blank').document.write(html); }
         function rendProp() { const c = document.getElementById('lista-propostas'); if(viewModos.propostas === 'grid') { c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.prop.map(x=>{ let corBadge = 'bg-zinc-200 text-zinc-700'; if(x.status === 'Lead') corBadge = 'bg-blue-100 text-blue-700'; if(x.status === 'Enviada') corBadge = 'bg-purple-100 text-purple-700'; if(x.status === 'Em Negociação') corBadge = 'bg-amber-100 text-amber-700'; if(x.status === 'Ganho') corBadge = 'bg-emerald-100 text-emerald-700'; if(x.status === 'Perdido') corBadge = 'bg-red-100 text-red-700'; return `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-accent shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center card"><div class="mb-4 md:mb-0"><b class="dark:text-white">${x.cliente}</b><p class="text-sm text-zinc-500">${x.tipo_servico} | R$ ${x.valor_mensal}</p><span class="text-[10px] font-bold px-2 py-1 rounded mt-2 block w-max ${corBadge}">${x.status}</span></div><div class="flex gap-2 w-full md:w-auto"><button onclick="imprimirProposta(${x.id})" class="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex-1 transition hover:bg-purple-700"><i class="fa-solid fa-file-pdf"></i> PDF</button><button onclick="edProp(${x.id})" class="bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-sm font-bold flex-1 hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('propostas',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 py-2 rounded-xl text-sm font-bold flex-1 transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`; }).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Serviço', 'Valor', 'Status', 'Ações'], glob.prop.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4">${x.tipo_servico}</td><td class="p-4 font-bold text-emerald-600">R$ ${x.valor_mensal}</td><td class="p-4"><span class="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">${x.status}</span></td><td class="p-4 text-right"><button onclick="imprimirProposta(${x.id})" class="text-purple-600 mr-3"><i class="fa-solid fa-file-pdf"></i></button><button onclick="edProp(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('propostas',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
         function limparFormProp(){ ['p_cli','p_serv','p_freq','p_val','p_obs','p_cond'].forEach(id=>document.getElementById(id).value=''); document.getElementById('p_status').value = 'Lead'; edit.prop = null; mudarStep(1); }
         function edProp(id){ const p = glob.prop.find(x=>x.id===id); if(!p) return; document.getElementById('p_cli').value = p.cliente_id; document.getElementById('p_serv').value = p.tipo_servico; document.getElementById('p_status').value = p.status; document.getElementById('p_freq').value = p.frequencia; document.getElementById('p_val').value = p.valor_mensal; document.getElementById('p_obs').value = p.observacoes; document.getElementById('p_cond').value = p.condicoes; edit.prop = id; mudarStep(1); window.scrollTo({top: 0, behavior: 'smooth'}); }
         function salvarProposta(){ const d = { cliente_id: document.getElementById('p_cli').value, tipo_servico: document.getElementById('p_serv').value, frequencia: document.getElementById('p_freq').value, valor_mensal: document.getElementById('p_val').value, observacoes: document.getElementById('p_obs').value, condicoes: document.getElementById('p_cond').value, status: document.getElementById('p_status').value }; fetch(`${API}/propostas${edit.prop?'/'+edit.prop:''}`, {method: edit.prop?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormProp(); carregarTudo(); showToast("Proposta Salva no Funil!"); }); }
-        function imprimirProposta(id) { const p = glob.prop.find(x=>x.id===id); if(!p) return; const logo = configGlobal.logo_base64 ? `<img src="${configGlobal.logo_base64}" style="max-height:80px;">` : `<h2 style="color:#14532d">${configGlobal.nome_empresa || 'SILVESTRE'}</h2>`; const html = `<html><head><title>Proposta Comercial - ${p.cliente}</title><style>body{font-family:Arial, sans-serif; padding:40px;} .header{text-align:center; border-bottom:2px solid #14532d; padding-bottom:20px; margin-bottom:20px;} table{width:100%; border-collapse:collapse; margin-top:20px;} th,td{border:1px solid #ccc; padding:10px; text-align:left;} th{background:#f4f4f5;} .box{background:#fdfdfd; border:1px solid #eee; padding:15px; border-radius:5px; margin-top:20px;}</style></head><body onload="window.print()"> <div class="header">${logo}<h3>PROPOSTA COMERCIAL DE SERVIÇOS</h3></div> <p><b>A/C:</b> ${p.cliente}</p> <table><tr><th>Serviço Proposto</th><td>${p.tipo_servico}</td></tr><tr><th>Frequência de Visitas</th><td>${p.frequencia}</td></tr><tr><th>Investimento Mensal</th><td style="font-weight:bold; color:#14532d;">R$ ${p.valor_mensal}</td></tr></table> <div class="box"><b>Escopo e Observações Técnicas:</b><br><p>${p.observacoes || 'Execução de manejo de fauna com métodos incruentos.'}</p></div> <div class="box"><b>Condições Comerciais:</b><br><p>${p.condicoes || 'Validade da proposta: 15 dias.'}</p></div> <div style="margin-top:80px; text-align:center; border-top:1px solid #000; padding-top:10px; width:50%; margin-left:auto; margin-right:auto;">Assinatura / De Acordo</div> </body></html>`; window.open('','_blank').document.write(html); }
 
-        // --- PLANOS DE AÇÃO (PDCA) ---
         function rendPDCA() { const c = document.getElementById('lista-pdca'); if(viewModos.pdca === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.pdca.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b class="dark:text-white">${x.problema}</b><span class="float-right text-xs bg-zinc-100 dark:bg-zinc-800 p-1 rounded font-bold text-zinc-600 dark:text-zinc-400">${x.status}</span><p class="text-sm text-zinc-500 my-2">${x.cliente}</p><p class="text-xs text-zinc-400">Resp: ${x.responsavel} | Prazo: ${new Date(x.prazo).toLocaleDateString()}</p><div class="flex gap-2 mt-4"><button onclick="edPDCA(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 py-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('pdca',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Problema', 'Cliente', 'Prazo', 'Status', 'Ações'], glob.pdca.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.problema}</td><td class="p-4">${x.cliente}</td><td class="p-4">${new Date(x.prazo).toLocaleDateString()}</td><td class="p-4">${x.status}</td><td class="p-4 text-right"><button onclick="edPDCA(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('pdca',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
         function limparFormPDCA(){ ['pd_cli','pd_prob','pd_causa','pd_acao','pd_resp','pd_prazo'].forEach(id=>document.getElementById(id).value=''); document.getElementById('pd_status').value = 'Pendente'; edit.pdca = null; }
         function edPDCA(id){ const p = glob.pdca.find(x=>x.id===id); if(!p) return; document.getElementById('pd_cli').value = p.cliente_id; document.getElementById('pd_prob').value = p.problema; document.getElementById('pd_causa').value = p.causa; document.getElementById('pd_acao').value = p.plano_acao; document.getElementById('pd_resp').value = p.responsavel; document.getElementById('pd_prazo').value = p.prazo.split('T')[0]; document.getElementById('pd_status').value = p.status; edit.pdca = id; window.scrollTo({top: 0, behavior: 'smooth'}); }
         function salvarPDCA(){ const d = { cliente_id: document.getElementById('pd_cli').value, problema: document.getElementById('pd_prob').value, causa: document.getElementById('pd_causa').value, plano_acao: document.getElementById('pd_acao').value, responsavel: document.getElementById('pd_resp').value, prazo: document.getElementById('pd_prazo').value, status: document.getElementById('pd_status').value }; fetch(`${API}/pdca${edit.pdca?'/'+edit.pdca:''}`, {method: edit.pdca?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ limparFormPDCA(); carregarTudo(); showToast("Ação Registrada!"); }); }
 
-        // --- OPERAÇÃO DE CAMPO ---
-        let stepOperacao = 1;
-        function mudarStepOp(novoStep) { document.getElementById(`step-op-content-${stepOperacao}`).classList.add('hidden'); document.getElementById(`step-op-content-${novoStep}`).classList.remove('hidden'); for(let i = 1; i <= 3; i++) { const dot = document.getElementById(`step-op-dot-${i}`); if(i < novoStep) { dot.className = 'w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold shadow-md z-10'; dot.innerHTML = '<i class="fa-solid fa-check"></i>'; } else if(i === novoStep) { dot.className = 'w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md transition-colors z-10'; dot.innerHTML = i; } else { dot.className = 'w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-500 flex items-center justify-center font-bold transition-colors z-10'; dot.innerHTML = i; } } document.getElementById('step-op-line-1').style.width = novoStep >= 2 ? '100%' : '0%'; document.getElementById('step-op-line-2').style.width = novoStep >= 3 ? '100%' : '0%'; stepOperacao = novoStep; }
-        function limparFormOp() { ['o_cli','o_ave','o_hin','o_hout','o_peso','o_obs','o_ativ_outros','o_nin_local','o_arm_qr'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value=''; }); ['o_int','o_cap','o_nin'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value='0'; }); ['nc_residuos','nc_doca','nc_falha','nc_pallets','nc_coletores','nc_janelas','nc_obras','nc_area_imp','nc_ninhos_nc'].forEach(id=>{ const el = document.getElementById(id); if(el) el.checked=false; }); document.querySelectorAll('input[name="o_ativ"]').forEach(cb => cb.checked = false); document.querySelectorAll('input[name="o_comp"]').forEach(cb => cb.checked = false); document.querySelectorAll('input[name="o_conc"]').forEach(cb => cb.checked = false); const elMet = document.getElementById('o_metodo'); if(elMet) elMet.value = 'Falcoaria e Armadilhamento'; const elPrg = document.getElementById('o_praga'); if(elPrg) elPrg.value = 'Pombos (Columba livia)'; const elInf = document.getElementById('v_infestacao'); if(elInf) elInf.value = 'Baixo'; const elCapM = document.getElementById('o_cap_metodo'); if(elCapM) elCapM.value = 'Não houve'; const elArmS = document.getElementById('o_arm_status'); if(elArmS) elArmS.value = 'Não avaliadas'; const elFot = document.getElementById('v_fotos'); if(elFot) elFot.value = ''; document.getElementById('preview-fotos').innerHTML = ''; fotosBase64 = []; mudarStepOp(1); }
-        function iniciarMissao(id, cliente_id, ave_id) { agendamentoAtivo = id; document.getElementById('o_cli').value = cliente_id; document.getElementById('o_ave').value = ave_id; showTab('tab-operacao'); document.getElementById('form-execucao').scrollIntoView({ behavior: 'smooth' }); }
-        function processarGravarVisita(gps) { const d = { cliente_id: document.getElementById('o_cli').value, ave_id: document.getElementById('o_ave').value, h_inicio: document.getElementById('o_hin').value, h_fim: document.getElementById('o_hout').value, peso: document.getElementById('o_peso').value, infestacao: document.getElementById('v_infestacao').value, obs: document.getElementById('o_obs').value, gps: gps, agendamento_id: agendamentoAtivo, fotos: JSON.stringify(fotosBase64), metodologia: document.getElementById('o_metodo').value, praga_alvo: document.getElementById('o_praga').value, nc_residuos: document.getElementById('nc_residuos').checked, nc_doca_aberta: document.getElementById('nc_doca').checked, nc_falha_estrutural: document.getElementById('nc_falha').checked, nc_pallets: document.getElementById('nc_pallets').checked, nc_coletores: document.getElementById('nc_coletores').checked, qtd_interacoes: document.getElementById('o_int').value || 0, qtd_capturas: document.getElementById('o_cap').value || 0, qtd_ninhos: document.getElementById('o_nin').value || 0, atividades_realizadas: getChecked('o_ativ') + (document.getElementById('o_ativ_outros').value ? ', ' + document.getElementById('o_ativ_outros').value : ''), comportamento_aves: getChecked('o_comp'), captura_metodo: document.getElementById('o_cap_metodo').value, status_armadilhas: document.getElementById('o_arm_status').value, qr_armadilha: document.getElementById('o_arm_qr').value, local_ninhos: document.getElementById('o_nin_local').value, conclusao_tecnica: getChecked('o_conc'), nc_janelas_abertas: document.getElementById('nc_janelas').checked, nc_obras: document.getElementById('nc_obras').checked, nc_area_impedida: document.getElementById('nc_area_imp').checked, nc_ninhos_nc: document.getElementById('nc_ninhos_nc').checked }; fetch(`${API}/visitas`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(d) }).then(r => { if(!r.ok) throw new Error(); showToast("Missão Sincronizada! GPS: " + gps); agendamentoAtivo = null; limparFormOp(); carregarTudo(); }).catch(e => { let offline = JSON.parse(localStorage.getItem('visitasOffline') || '[]'); offline.push(d); localStorage.setItem('visitasOffline', JSON.stringify(offline)); showToast("Sem Internet. Salvo OFFLINE."); agendamentoAtivo = null; limparFormOp(); atualizarBotaoSync(); }); }
-        function iniciarGPS() { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition((pos) => { processarGravarVisita(`LAT: ${pos.coords.latitude.toFixed(5)}, LON: ${pos.coords.longitude.toFixed(5)}`); }, (err) => { processarGravarVisita("Sinal GPS Indisponível"); }, { enableHighAccuracy: true, timeout: 5000 }); } else { processarGravarVisita("GPS Não Suportado"); } }
-        function atualizarBotaoSync() { let offline = JSON.parse(localStorage.getItem('visitasOffline') || '[]'); const btn = document.getElementById('btn-sync'); if(offline.length > 0) { btn.classList.remove('hidden'); btn.innerHTML = `<i class="fa-solid fa-rotate"></i> Sincronizar ${offline.length} Missão(ões)`; } else { btn.classList.add('hidden'); } }
-        function sincronizarOffline() { let offline = JSON.parse(localStorage.getItem('visitasOffline') || '[]'); if(offline.length === 0) return; Promise.all(offline.map(dados => fetch(`${API}/visitas`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }))).then(() => { localStorage.removeItem('visitasOffline'); showToast("Dados offline sincronizados!"); atualizarBotaoSync(); carregarTudo(); }).catch(e => showToast("Erro ao sincronizar. Tente novamente.", "warning")); }
-
-        function imprimirRelatorio(i) { const v = glob.vis[i]; let fotosHtml = ''; if(v.fotos && v.fotos !== '[]' && v.fotos !== 'null') { try { const arr = JSON.parse(v.fotos); if(arr.length > 0) { fotosHtml = `<div class="section-title">EVIDÊNCIAS FOTOGRÁFICAS</div><div style="display:flex; gap:15px; margin-bottom:20px; flex-wrap:wrap;">`; arr.forEach(img => { fotosHtml += `<img src="${img}" style="height:220px; border-radius:8px; border:1px solid #ccc; object-fit:cover;">`; }); fotosHtml += `</div>`; } } catch(e){} } const logoHtml = configGlobal.logo_base64 ? `<img src="${configGlobal.logo_base64}" style="max-height:80px; margin-bottom:10px;">` : ''; const nomeEmp = configGlobal.nome_empresa || 'SILVESTRE AMBIENTAL'; const ncs = []; if(v.nc_residuos) ncs.push("Resíduos Expostos"); if(v.nc_doca_aberta) ncs.push("Doca Aberta"); if(v.nc_falha_estrutural) ncs.push("Falha Estrutural"); if(v.nc_pallets) ncs.push("Pallets Mal Acondicionados"); if(v.nc_coletores) ncs.push("Coletores Destampados"); if(v.nc_janelas_abertas) ncs.push("Janelas Abertas"); if(v.nc_obras) ncs.push("Obras no Local"); if(v.nc_area_impedida) ncs.push("Área Impedida"); if(v.nc_ninhos_nc) ncs.push("Ninhos Presentes"); const ncHtml = ncs.length > 0 ? ncs.map(n => `<li>${n}</li>`).join('') : "<li>Nenhuma não conformidade detectada.</li>"; const win = window.open('', '_blank'); win.document.write(`<html><head><title>Laudo Técnico - ${v.cliente}</title><style>body{font-family:Arial, sans-serif; padding:40px; color:#333; line-height:1.6;} .header{text-align:center; border-bottom:3px solid #14532d; padding-bottom:15px; margin-bottom:25px;} h1{color:#14532d; font-size:20px; margin:5px 0;} .section-title{font-weight:bold; margin-top:25px; margin-bottom:10px; border-left:4px solid #14532d; padding-left:8px; text-transform:uppercase; font-size:14px;} table{width:100%; border-collapse:collapse; margin-bottom:20px;} th,td{padding:10px; text-align:left; border:1px solid #e0e0e0;} th{background:#f9f9f9; width:30%;} .box{background:#fdfdfd; border:1px solid #e0e0e0; padding:15px; border-radius:5px;} @media print{.no-print{display:none;}}</style></head><body onload="window.print()"><div class="no-print" style="text-align:center;margin-bottom:20px;"><button onclick="window.print()" style="padding:10px 20px;background:#14532d;color:white;border:none;border-radius:5px;cursor:pointer;">Imprimir Laudo Oficial</button></div><div class="header">${logoHtml}<h1>LAUDO TÉCNICO OPERACIONAL</h1><p style="font-size:12px; margin:0;">${nomeEmp}</p></div><div class="section-title">Dados da Operação</div><table><tr><th>Cliente</th><td>${v.cliente}</td></tr><tr><th>Data da Visita</th><td>${new Date(v.data_visita).toLocaleDateString('pt-BR')}</td></tr><tr><th>Horário de Atuação</th><td>${v.hora_inicio || '--:--'} às ${v.hora_fim || '--:--'}</td></tr><tr><th>Ave Utilizada</th><td>${v.ave} (Peso Operacional: ${v.peso_ave_gramas||'N/A'}g)</td></tr><tr><th>Metodologia Aplicada</th><td>${v.metodologia || '-'}</td></tr><tr><th>Praga Alvo</th><td>${v.praga_alvo || '-'} (Infestação: ${v.nivel_infestacao || '-'})</td></tr></table><div class="section-title">Atividades e Comportamento</div><table><tr><th>Atividades Realizadas</th><td>${v.atividades_realizadas || '-'}</td></tr><tr><th>Comportamento das Aves</th><td>${v.comportamento_aves || '-'}</td></tr></table><div class="section-title">Contadores e Armadilhas</div><table><tr><th>Interações / Voos</th><td><b>${v.qtd_interacoes}</b></td></tr><tr><th>Capturas Realizadas</th><td><b>${v.qtd_capturas}</b> (Método: ${v.captura_metodo || '-'})</td></tr><tr><th>Ninhos Destruídos</th><td><b>${v.qtd_ninhos}</b> (Local: ${v.local_ninhos || '-'})</td></tr><tr><th>Status das Armadilhas</th><td>${v.status_armadilhas || '-'} ${v.qr_armadilha ? '<br>QR Code: '+v.qr_armadilha : ''}</td></tr></table><div class="section-title">Análise do Local (Não Conformidades)</div><div class="box"><ul>${ncHtml}</ul></div><div class="section-title">Conclusão Técnica e Recomendações</div><div class="box"><p style="margin-top:0;"><strong>Conclusões:</strong> ${v.conclusao_tecnica || '-'}</p><p style="margin-bottom:0;"><strong>Observações do Técnico:</strong> ${v.observacoes || '-'}</p></div>${fotosHtml}<div style="margin-top:60px; font-size:11px; color:#666; text-align:center;"><p>Coordenadas do Check-in: ${v.gps_checkin || 'Sinal Indisponível'}</p><p>Relatório gerado digitalmente pela Plataforma Ártemis.</p></div></body></html>`); win.document.close(); }
         function rendVis() { const c = document.getElementById('lista-visitas'); if(viewModos.operacao === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.vis.map((x,i)=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b class="dark:text-white">${new Date(x.data_visita).toLocaleDateString()}</b><div class="float-right flex gap-1"><button onclick="imprimirRelatorio(${i})" class="bg-zinc-800 text-white p-2 rounded-xl text-xs hover:bg-zinc-700 transition"><i class="fa-solid fa-file-pdf"></i></button><button onclick="exc('visitas',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 p-2 rounded-xl text-xs hover:bg-red-100 transition"><i class="fa-solid fa-trash"></i></button></div><p class="text-sm mt-2 text-zinc-500">${x.ave} em ${x.cliente}</p><p class="text-xs bg-zinc-50 dark:bg-zinc-800 p-2 mt-2 rounded font-bold text-zinc-600 dark:text-zinc-400">📍 Interações: ${x.qtd_interacoes}</p></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Data', 'Cliente', 'Ave', 'Interações', 'Ações'], glob.vis.map((x,i)=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${new Date(x.data_visita).toLocaleDateString()}</td><td class="p-4">${x.cliente}</td><td class="p-4">${x.ave}</td><td class="p-4 font-bold text-primary">${x.qtd_interacoes}</td><td class="p-4 text-right"><button onclick="imprimirRelatorio(${i})" class="text-zinc-800 dark:text-zinc-300 mr-3"><i class="fa-solid fa-file-pdf"></i></button><button onclick="exc('visitas',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
 
-        // --- AGENDA E CALENDÁRIO ---
-        function renderCalendar() { const dataAtual = new Date(); const mes = dataAtual.getMonth(); const ano = dataAtual.getFullYear(); const primDia = new Date(ano, mes, 1).getDay(); const totDias = new Date(ano, mes + 1, 0).getDate(); const nomesMeses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']; let html = `<div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6"><h4 class="text-center font-bold text-xl mb-6 dark:text-white uppercase tracking-widest">${nomesMeses[mes]} ${ano}</h4><div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 mb-2"><div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div></div><div class="grid grid-cols-7 gap-2">`; for(let i=0; i<primDia; i++) html += `<div class="p-2 border border-transparent"></div>`; for(let dia=1; dia<=totDias; dia++) { let dataStr = `${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`; let missoes = glob.ag.filter(a => a.data_agendada && a.data_agendada.startsWith(dataStr)); let badges = missoes.map(m => `<div class="text-[10px] bg-primary text-white rounded px-1.5 py-0.5 mt-1 font-bold truncate shadow-sm" title="${m.cliente} - ${m.ave}">${m.cliente.substring(0,8)}...</div>`).join(''); let bgHj = (dia === dataAtual.getDate()) ? 'bg-amber-50 dark:bg-amber-900/20 border-accent' : 'bg-zinc-50 dark:bg-zinc-800/50 border-zinc-100 dark:border-zinc-700'; html += `<div class="min-h-[90px] p-2 border rounded-xl ${bgHj} dark:text-white flex flex-col"><span class="font-bold opacity-50 mb-1">${dia}</span>${badges}</div>`; } html += `</div></div>`; return html; }
         function rendAg() { const c = document.getElementById('lista-agenda'); if(viewModos.agenda === 'calendar') { c.className = ''; c.innerHTML = renderCalendar(); } else if(viewModos.agenda === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.ag.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border shadow-sm card"><b class="dark:text-white">${x.cliente}</b><br><span class="text-xs text-zinc-500">${new Date(x.data_agendada).toLocaleDateString()} | ${x.ave}</span><span class="float-right text-xs font-bold bg-zinc-100 dark:bg-zinc-800 p-1 rounded text-zinc-700 dark:text-zinc-400">${x.status}</span><br>${x.status==='Pendente'?`<button onclick="exc('agendamentos',${x.id})" class="mt-2 text-xs text-red-500 font-bold hover:underline">Cancelar</button>`:''}</div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Data', 'Ave', 'Status', 'Ações'], glob.ag.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4">${new Date(x.data_agendada).toLocaleDateString()}</td><td class="p-4">${x.ave}</td><td class="p-4 font-bold">${x.status}</td><td class="p-4 text-right">${x.status==='Pendente'?`<button onclick="exc('agendamentos',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button>`:''}</td></tr>`).join('')); } }
-        function salvarAgendamento(){ const d = {cliente_id: document.getElementById('ag_cli').value, ave_id: document.getElementById('ag_ave').value, data_agendada: document.getElementById('ag_data').value}; fetch(`${API}/agendamentos`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ carregarTudo(); showToast("Missão Agendada!"); }); }
 
-        // --- FINANCEIRO ---
         function rendFin() { const c = document.getElementById('lista-financeiro'); if(viewModos.financeiro === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.fin.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border-l-4 ${x.tipo==='Receita'?'border-emerald-500':'border-red-500'} shadow-sm card"><b class="text-lg dark:text-white">${x.descricao}</b><div class="float-right">${x.status==='Pendente'?`<button onclick="baixarFin(${x.id})" class="bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold hover:bg-emerald-600 transition">Baixar</button>`:`<span class="text-xs font-bold text-emerald-600 bg-emerald-50 p-1 rounded">Pago</span>`}<button onclick="exc('financeiro',${x.id})" class="ml-2 text-red-500"><i class="fa-solid fa-trash"></i></button></div><p class="text-sm mt-1 text-zinc-500">${x.cliente||'Sem Cliente'}</p><p class="text-lg font-bold mt-2 text-zinc-800 dark:text-zinc-200">R$ ${x.valor}</p></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Descrição', 'Cliente', 'Valor', 'Status', 'Ações'], glob.fin.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.descricao}</td><td class="p-4">${x.cliente||'-'}</td><td class="p-4 font-bold ${x.tipo==='Receita'?'text-emerald-600':'text-red-500'}">R$ ${x.valor}</td><td class="p-4">${x.status}</td><td class="p-4 text-right">${x.status==='Pendente'?`<button onclick="baixarFin(${x.id})" class="text-emerald-500 mr-3"><i class="fa-solid fa-check"></i></button>`:''}<button onclick="exc('financeiro',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
-        function baixarFin(id){ if(confirm("Marcar como pago?")) fetch(`${API}/financeiro/${id}/pagar`,{method:'PUT'}).then(()=>carregarTudo()); }
-        function salvarFinanceiro(){ const d = {cliente_id: document.getElementById('f_cli').value||null, tipo: document.getElementById('f_tipo').value, descricao: document.getElementById('f_desc').value, valor: document.getElementById('f_valor').value, data_vencimento: document.getElementById('f_venc').value}; fetch(`${API}/financeiro`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ document.getElementById('f_desc').value = ''; document.getElementById('f_valor').value = ''; document.getElementById('f_venc').value = ''; carregarTudo(); showToast("Lançamento Adicionado!"); }); }
 
-        // --- CONTRATOS ---
         function rendCont() { const c = document.getElementById('lista-contratos'); if(viewModos.contratos === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.cont.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border-l-4 border-accent shadow-sm card"><b class="dark:text-white">${x.cliente}</b><div class="float-right flex gap-2"><button onclick="edCont(${x.id})" class="text-zinc-500 hover:text-primary transition"><i class="fa-solid fa-pen"></i></button><button onclick="exc('contratos',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></div><p class="text-sm mt-1 text-zinc-500">R$ ${x.valor_mensal}</p></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Valor Mensal', 'Frequência', 'Término', 'Ações'], glob.cont.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4 font-bold text-emerald-600">R$ ${x.valor_mensal}</td><td class="p-4">${x.frequencia_semanal}x sem.</td><td class="p-4">${new Date(x.data_fim).toLocaleDateString()}</td><td class="p-4 text-right"><button onclick="edCont(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('contratos',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
-        function edCont(id){ const c = glob.cont.find(x=>x.id===id); if(!c) return; document.getElementById('ct_cli').value = c.cliente_id; document.getElementById('ct_ini').value = c.data_inicio.split('T')[0]; document.getElementById('ct_fim').value = c.data_fim.split('T')[0]; document.getElementById('ct_val').value = c.valor_mensal; document.getElementById('ct_freq').value = c.frequencia_semanal; edit.cont = id; window.scrollTo({top: 0, behavior:'smooth'}); }
-        function salvarContrato(){ const d = {cliente_id: document.getElementById('ct_cli').value, data_inicio: document.getElementById('ct_ini').value, data_fim: document.getElementById('ct_fim').value, valor_mensal: document.getElementById('ct_val').value, frequencia: document.getElementById('ct_freq').value}; fetch(`${API}/contratos${edit.cont?'/'+edit.cont:''}`, {method: edit.cont?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ ['ct_ini','ct_fim','ct_val','ct_freq'].forEach(id=>document.getElementById(id).value=''); edit.cont = null; carregarTudo(); showToast("Contrato Firmado!"); }); }
 
-        // --- USUÁRIOS ---
         function rendUsu() { const c = document.getElementById('lista-usuarios'); if(viewModos.usuarios === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.usu.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border shadow-sm card"><b class="text-lg dark:text-white">${x.nome}</b><br><span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-bold uppercase">${x.perfil}</span><div class="flex gap-2 mt-4"><button onclick="edUsu(${x.id})" class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold hover:text-primary transition">Editar</button><button onclick="exc('usuarios',${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Nome', 'E-mail', 'Perfil', 'Ações'], glob.usu.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"><td class="p-4 font-bold dark:text-white">${x.nome}</td><td class="p-4">${x.email}</td><td class="p-4 uppercase font-bold text-[10px]">${x.perfil}</td><td class="p-4 text-right"><button onclick="edUsu(${x.id})" class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="exc('usuarios',${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
-        function edUsu(id){ const u = glob.usu.find(x=>x.id===id); if(!u) return; document.getElementById('u_nome').value = u.nome; document.getElementById('u_email').value = u.email; document.getElementById('u_perfil').value = u.perfil; document.getElementById('u_senha').value = ''; edit.usu = id; window.scrollTo({top: 0, behavior: 'smooth'}); }
-        function salvarUsuario(){ const d = {nome: document.getElementById('u_nome').value, email: document.getElementById('u_email').value, senha: document.getElementById('u_senha').value || '123456', perfil: document.getElementById('u_perfil').value}; fetch(`${API}/usuarios${edit.usu?'/'+edit.usu:''}`, {method: edit.usu?'PUT':'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(()=>{ ['u_nome','u_email','u_senha'].forEach(id=>document.getElementById(id).value=''); edit.usu = null; carregarTudo(); showToast("Acesso Salvo!"); }); }
-        function salvarConfig() { const dados = { nome_empresa: document.getElementById('cfg_nome').value || 'Silvestre Ambiental', cnpj: document.getElementById('cfg_cnpj').value, endereco: document.getElementById('cfg_end').value, logo_base64: configGlobal.logo_base64 }; fetch(`${API}/config`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }).then(() => { showToast("Empresa atualizada!"); carregarTudo(); }); }
-        
-        const ft = document.getElementById('v_fotos'); if(ft) { ft.addEventListener('change', function(e) { fotosBase64 = []; document.getElementById('preview-fotos').innerHTML = ''; const files = e.target.files; if(files.length > 3) { showToast("Máximo de 3 fotos", "warning"); this.value = ''; return; } Array.from(files).forEach(file => { const reader = new FileReader(); reader.onload = function(event) { fotosBase64.push(event.target.result); document.getElementById('preview-fotos').innerHTML += `<img src="${event.target.result}" class="h-24 w-24 object-cover rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-700">`; }; reader.readAsDataURL(file); }); }); }
-
-        // BUSCA GLOBAL
-        const rotasSistema = [
-            { titulo: 'Operação e Check-in', tab: 'tab-operacao', icon: 'fa-location-dot', tags: 'campo visita gps laudo tecnico missao aves' },
-            { titulo: 'Agenda de Missões', tab: 'tab-agenda', icon: 'fa-calendar-days', tags: 'despacho agendamento calendario cronograma' },
-            { titulo: 'Planos de Ação', tab: 'tab-pdca', icon: 'fa-clipboard-list', tags: 'pdca problema causa acao resolucao ninhos' },
-            { titulo: 'Propostas Comerciais', tab: 'tab-propostas', icon: 'fa-briefcase', tags: 'vendas lead crm orcamento' },
-            { titulo: 'Estoque e EPIs', tab: 'tab-estoque', icon: 'fa-box', tags: 'materiais consumo inventario' },
-            { titulo: 'Gestão Financeira', tab: 'tab-financeiro', icon: 'fa-money-bill-wave', tags: 'receitas despesas nf nota fiscal contas faturamento' },
-            { titulo: 'Contratos Ativos', tab: 'tab-contratos', icon: 'fa-file-signature', tags: 'firmar recorrencia vigencia' },
-            { titulo: 'Plantel de Aves', tab: 'tab-plantel', icon: 'fa-feather', tags: 'gaviao falcao peso biometria anilha prontuario doenca vacina' },
-            { titulo: 'Carteira de Clientes', tab: 'tab-clientes', icon: 'fa-users', tags: 'cadastro cnpj razao relatorio mensal contato' },
-            { titulo: 'Acessos e Usuários', tab: 'tab-usuarios', icon: 'fa-shield-halved', tags: 'senha perfil admin tecnico' },
-            { titulo: 'Painel de Controle', tab: 'tab-dashboard', icon: 'fa-chart-column', tags: 'graficos metricas kpi inicio home dashboard' },
-            { titulo: 'Configurações Globais', tab: 'tab-config', icon: 'fa-gear', tags: 'empresa logo perfil foco modo escuro preferencias' },
-            { titulo: 'Meu Cadastro', tab: 'tab-perfil', icon: 'fa-id-badge', tags: 'senha cpf endereco perfil preferencias' }
-        ];
-        function openSearch() { document.getElementById('search-modal').classList.remove('hidden'); document.getElementById('search-modal').classList.add('flex'); setTimeout(() => document.getElementById('search-input').focus(), 100); renderSearch(''); }
-        function closeSearch() { document.getElementById('search-modal').classList.add('hidden'); document.getElementById('search-modal').classList.remove('flex'); }
-        document.getElementById('search-input').addEventListener('input', (e) => renderSearch(e.target.value));
-        function renderSearch(query) {
-            const container = document.getElementById('search-results');
-            query = query.toLowerCase();
-            const filtered = rotasSistema.filter(r => r.titulo.toLowerCase().includes(query) || r.tags.includes(query));
-            if(filtered.length === 0) { container.innerHTML = '<p class="text-center text-zinc-500 py-10"><i class="fa-solid fa-ghost text-2xl mb-2 block"></i>Nenhuma rota encontrada.</p>'; return; }
-            container.innerHTML = filtered.map(r => `
-                <div onclick="showTab('${r.tab}'); closeSearch();" class="p-4 mb-2 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-2xl cursor-pointer flex items-center gap-4 transition-all group border border-zinc-100 dark:border-zinc-700 shadow-sm">
-                    <div class="w-12 h-12 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 group-hover:bg-primary group-hover:text-white rounded-xl flex items-center justify-center transition-colors"><i class="fa-solid ${r.icon} text-lg"></i></div>
-                    <div><p class="font-bold text-zinc-800 dark:text-white text-lg leading-tight">${r.titulo}</p><p class="text-xs text-zinc-500 uppercase tracking-widest mt-1">Ir para a página</p></div>
-                    <i class="fa-solid fa-arrow-right ml-auto text-zinc-300 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-2 text-xl"></i>
-                </div>`).join('');
-        }
-        window.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); } if (e.key === 'Escape' && !document.getElementById('search-modal').classList.contains('hidden')) { closeSearch(); } });
     </script>
 </body>
 </html>

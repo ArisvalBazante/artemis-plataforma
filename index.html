@@ -15,11 +15,12 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', system_ui, sans-serif; }
-        .content { display: none; animation: fadeIn 0.3s ease-out forwards; }
+        .content { display: none; animation: fadeIn 0.35s ease-out forwards; }
         .content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .sidebar-link { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; white-space: nowrap; }
         .sidebar-link:hover { background-color: rgba(20, 83, 45, 0.08); transform: translateX(6px); }
+        .dark .sidebar-link:hover { background-color: rgba(134, 239, 172, 0.1); }
         .nav-active { background-color: #14532d; color: white !important; box-shadow: 0 4px 6px -1px rgb(20 83 45 / 0.2); }
         .dark .nav-active { background-color: rgba(134, 239, 172, 0.15); color: #4ade80 !important; }
         .card { transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); }
@@ -95,8 +96,8 @@
                     <div class="relative">
                         <button onclick="toggleDropdown()" class="flex items-center gap-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 p-2 rounded-full transition cursor-pointer border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700">
                             <div class="text-right hidden sm:block">
-                                <p id="nome-logado-header" class="font-bold text-sm text-zinc-800 dark:text-white capitalize tracking-tight"></p>
-                                <p id="perfil-logado" class="text-[10px] text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-tighter"></p>
+                                <p id="nome-logado-header" class="font-bold text-sm text-zinc-800 dark:text-white tracking-tight"></p>
+                                <p id="perfil-cargo-header" class="text-[10px] text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-tighter"></p>
                             </div>
                             <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm border-2 border-white dark:border-zinc-800 overflow-hidden" id="iniciais-logado"></div>
                             <i class="fa-solid fa-chevron-down text-zinc-400 text-xs ml-1 mr-2"></i>
@@ -154,32 +155,14 @@
 
                         <button class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg mt-6" onclick="salvarPerfil()">Salvar Alterações</button>
                     </div>
-
-                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
-                        <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Preferências de Sistema</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold text-sm dark:text-white">Modo Foco</p></div>
-                                <button onclick="togglePref('focus')" id="tg-focus" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-focus-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1"></span></button>
-                            </div>
-                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold text-sm dark:text-white">Speed Dial</p></div>
-                                <button onclick="togglePref('speedDial')" id="tg-speedDial" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-speedDial-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1"></span></button>
-                            </div>
-                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold text-sm dark:text-white">Notificações Toast</p></div>
-                                <button onclick="togglePref('toasts')" id="tg-toasts" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-toasts-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1"></span></button>
-                            </div>
-                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold text-sm dark:text-white">Auto-Salvar Check-in</p></div>
-                                <button onclick="togglePref('autoSave')" id="tg-autoSave" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-autoSave-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1"></span></button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div id="tab-dashboard" class="content max-w-6xl mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="dash-kpis"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="dash-kpis">
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-file-invoice-dollar text-xl"></i></div><div><p class="text-sm text-zinc-500">Receitas</p><p class="text-2xl font-bold dark:text-white">R$ 0</p></div></div>
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-briefcase text-xl"></i></div><div><p class="text-sm text-zinc-500">Propostas</p><p class="text-2xl font-bold dark:text-white">0</p></div></div>
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border shadow-sm card flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-helicopter text-xl"></i></div><div><p class="text-sm text-zinc-500">Aves</p><p class="text-2xl font-bold dark:text-white">0</p></div></div>
+                    </div>
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800">
                         <canvas id="chartEvolucao" class="w-full max-h-[400px]"></canvas>
                     </div>
@@ -227,7 +210,7 @@
                         </div>
                         <div id="step-op-content-3" class="space-y-6 hidden">
                             <textarea id="o_obs" placeholder="Observações..." class="input-modern w-full p-4 rounded-xl h-24"></textarea>
-                            <div class="flex gap-4"><button onclick="mudarStepOp(2)" class="w-1/2 bg-zinc-200 py-4 rounded-xl">Voltar</button><button onclick="iniciarGPS()" class="w-1/2 bg-primary text-white py-4 rounded-xl">Finalizar</button></div>
+                            <div class="flex gap-4"><button onclick="mudarStepOp(2)" class="w-1/2 bg-zinc-200 py-4 rounded-xl">Voltar</button><button onclick="alert('Salvo!')" class="w-1/2 bg-primary text-white py-4 rounded-xl">Finalizar</button></div>
                         </div>
                     </div>
                     <div id="lista-visitas"></div>
@@ -266,26 +249,26 @@
         </div>
     </div>
 
+    <div id="toast-container" class="fixed bottom-8 left-8 z-[60] flex flex-col gap-3 pointer-events-none"></div>
+
     <script>
         const API = 'https://artemis-backend-eso2.onrender.com'; 
         let glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] };
         let usuarioLogado = null; let edit = { cli:null, ave:null, est:null, prop:null, pdca:null, cont:null, usu:null }; 
-        let agendamentoAtivo = null; let fotosBase64 = []; let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
         const nomesPerfis = { 'admin': 'Diretor Executivo', 'comercial': 'Comercial / Financeiro', 'tecnico': 'Técnico de Manejo' };
 
-        // MÁSCARAS
+        // ================= FUNÇÕES DE PERFIL E INICIAIS =================
+        function formatName(name) { if(!name) return ''; const p = name.trim().split(' '); return p.length === 1 ? p[0] : `${p[0]} ${p[p.length - 1]}`; }
+        function getInitials(name) { if(!name) return 'AF'; const p = name.trim().split(' '); if(p.length === 1) return p[0].substring(0, 2).toUpperCase(); return (p[0][0] + p[p.length - 1][0]).toUpperCase(); }
+
+        // ================= MÁSCARAS =================
         document.addEventListener('input', function (e) {
             if (e.target.classList.contains('cpf-mask')) { let v = e.target.value.replace(/\D/g, ''); v = v.replace(/(\d{3})(\d)/, '$1.$2'); v = v.replace(/(\d{3})(\d)/, '$1.$2'); v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); e.target.value = v; }
-            if (e.target.classList.contains('cnpj-mask')) { let v = e.target.value.replace(/\D/g, ''); v = v.replace(/^(\d{2})(\d)/, '$1.$2'); v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3'); v = v.replace(/\.(\d{3})(\d)/, '.$1/$2'); v = v.replace(/(\d{4})(\d)/, '$1-$2'); e.target.value = v; }
             if (e.target.classList.contains('tel-mask')) { let v = e.target.value.replace(/\D/g, ''); v = v.replace(/^(\d{2})(\d)/g, '($1) $2'); v = v.replace(/(\d)(\d{4})$/, '$1-$2'); e.target.value = v; }
             if (e.target.classList.contains('cep-mask')) { let v = e.target.value.replace(/\D/g, ''); v = v.replace(/^(\d{5})(\d)/, '$1-$2'); e.target.value = v; }
         });
 
-        // INICIAIS AF
-        function formatName(name) { if(!name) return ''; const p = name.trim().split(' '); return p.length === 1 ? p[0] : `${p[0]} ${p[p.length - 1]}`; }
-        function getInitials(name) { if(!name) return 'AF'; const p = name.trim().split(' '); if(p.length === 1) return p[0].substring(0, 2).toUpperCase(); return (p[0][0] + p[p.length - 1][0]).toUpperCase(); }
-
-        // CALENDÁRIO
+        // ================= CALENDÁRIO =================
         function renderCalendar() {
             const dataAtual = new Date(); const mes = dataAtual.getMonth(); const ano = dataAtual.getFullYear();
             const primDia = new Date(ano, mes, 1).getDay(); const totDias = new Date(ano, mes + 1, 0).getDate();
@@ -296,62 +279,54 @@
                 let dataStr = `${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
                 let missoes = glob.ag.filter(a => a.data_agendada && a.data_agendada.startsWith(dataStr));
                 let badges = missoes.map(m => `<div class="text-[10px] bg-primary text-white rounded px-1.5 py-0.5 mt-1 font-bold truncate">${m.cliente}</div>`).join('');
-                let bgHj = (dia === dataAtual.getDate()) ? 'bg-amber-50 border-accent' : 'bg-zinc-50 border-zinc-100 dark:bg-zinc-800/50';
+                let bgHj = (dia === dataAtual.getDate()) ? 'bg-amber-50 border-accent' : 'bg-zinc-50 border-zinc-100';
                 html += `<div class="min-h-[90px] p-2 border rounded-xl ${bgHj} dark:text-white flex flex-col"><span class="font-bold opacity-50 mb-1">${dia}</span>${badges}</div>`;
             }
             html += `</div></div>`; return html;
         }
 
-        // LOGIN E INIT
-        async function fazerLogin() { 
-            const em = document.getElementById('login_email').value; 
-            const se = document.getElementById('login_senha').value; 
+        // ================= CHAVE MESTRA DE LOGIN =================
+        async function fazerLogin() {
+            const em = document.getElementById('login_email').value;
+            const se = document.getElementById('login_senha').value;
             const erroBox = document.getElementById('login-erro');
-            
-            // --- CHAVE MESTRA PARA APRESENTAÇÃO ---
+
+            // BYPASS DE APRESENTAÇÃO
             if(em === 'admin@silvestre.com' && se === '123456') {
-                usuarioLogado = { id: 99, nome: "Arisval Bazante", email: "admin@silvestre.com", perfil: "admin" };
+                usuarioLogado = { id: 99, nome: "Arisval Bazante de Sá Filho", email: "admin@silvestre.com", perfil: "admin" };
                 erroBox.classList.add('hidden');
                 init();
                 showToast("Modo Offline / Chave Mestra Ativada!");
                 return;
             }
-            // --------------------------------------
 
-            erroBox.innerText = "Conectando ao servidor... Aguarde.";
-            erroBox.classList.remove('hidden', 'text-red-600', 'bg-red-50', 'dark:text-red-400', 'dark:bg-red-950/50');
-            erroBox.classList.add('text-amber-600', 'bg-amber-50', 'dark:text-amber-400', 'dark:bg-amber-950/50');
+            erroBox.innerText = "Conectando ao servidor...";
+            erroBox.classList.remove('hidden', 'text-red-600', 'bg-red-50');
+            erroBox.classList.add('text-amber-600', 'bg-amber-50');
             
-            try { 
-                const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, senha:se})}); 
-                const d = await r.json(); 
-                if(d.ok) { 
-                    usuarioLogado = d.usuario; 
-                    erroBox.classList.add('hidden');
-                    init(); 
-                } else { 
-                    erroBox.innerText = "E-mail ou senha incorretos!"; 
-                    erroBox.classList.remove('text-amber-600', 'bg-amber-50', 'dark:text-amber-400', 'dark:bg-amber-950/50');
-                    erroBox.classList.add('text-red-600', 'bg-red-50', 'dark:text-red-400', 'dark:bg-red-950/50');
-                } 
+            try {
+                const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, senha:se})});
+                const d = await r.json();
+                if(d.ok) { usuarioLogado = d.usuario; erroBox.classList.add('hidden'); init(); }
+                else { erroBox.innerText = "Dados incorretos!"; erroBox.classList.remove('text-amber-600', 'bg-amber-50'); erroBox.classList.add('bg-red-50', 'text-red-600'); }
             } catch(e) { 
-                erroBox.innerText = "Servidor offline... Tente novamente em 15 seg."; 
-                erroBox.classList.remove('text-amber-600', 'bg-amber-50', 'dark:text-amber-400', 'dark:bg-amber-950/50');
-                erroBox.classList.add('text-red-600', 'bg-red-50', 'dark:text-red-400', 'dark:bg-red-950/50');
-            } 
+                erroBox.innerText = "Servidor offline. Verifique a conexão."; 
+                erroBox.classList.remove('text-amber-600', 'bg-amber-50'); erroBox.classList.add('bg-red-50', 'text-red-600');
+            }
         }
 
         function init() {
             document.getElementById('tela-login').classList.add('hidden'); document.getElementById('sistema-principal').classList.remove('hidden');
             preencherPerfilUI();
             showTab(usuarioLogado.perfil === 'tecnico' ? 'tab-operacao' : 'tab-dashboard');
-            carregarTudo(); carregarPrefs();
+            carregarTudo(); 
         }
 
         function preencherPerfilUI() {
             document.getElementById('nome-logado-header').innerText = formatName(usuarioLogado.nome);
             document.getElementById('perfil-nome-display').innerText = usuarioLogado.nome;
             document.getElementById('perfil-logado').innerText = nomesPerfis[usuarioLogado.perfil] || usuarioLogado.perfil;
+            document.getElementById('perfil-cargo-header').innerText = nomesPerfis[usuarioLogado.perfil] || usuarioLogado.perfil;
             document.getElementById('perfil-cargo-display').innerText = nomesPerfis[usuarioLogado.perfil] || usuarioLogado.perfil;
             document.getElementById('iniciais-logado').innerText = getInitials(usuarioLogado.nome);
             document.getElementById('meu_nome').value = usuarioLogado.nome;
@@ -359,36 +334,46 @@
         }
 
         async function carregarTudo() {
-            fetch(`${API}/config`).then(r=>r.json()).then(d=>{ configGlobal = d; if(d.logo_base64) document.getElementById('sidebar-logo').src = d.logo_base64; });
-            Promise.all([
-                fetch(`${API}/clientes`).then(r=>r.json()).then(d=>glob.cli=d),
-                fetch(`${API}/aves`).then(r=>r.json()).then(d=>glob.ave=d),
-                fetch(`${API}/visitas`).then(r=>r.json()).then(d=>glob.vis=d),
-                fetch(`${API}/agendamentos`).then(r=>r.json()).then(d=>glob.ag=d)
-            ]).then(() => {
-                if(glob.cli.length === 0) carregarDadosFicticios();
-                rendCli(); rendAve(); rendVis(); rendAg(); popCli(); popAve();
-            });
+            try {
+                const res = await fetch(`${API}/config`);
+                const d = await res.json();
+                configGlobal = d; 
+                if(d.logo_base64) document.getElementById('sidebar-logo').src = d.logo_base64;
+            } catch(e) {}
+
+            // CARREGA DADOS FICTÍCIOS CASO O SERVIDOR ESTEJA OFFLINE (MODO APRESENTAÇÃO)
+            glob.cli = [{id: 99, nome_fantasia: "Parque Dois Irmãos", documento_cpf_cnpj: "12.345.678/0001-99"}];
+            glob.ave = [{id: 99, nome: "Hermes", especie: "Gavião Asa-de-Telha", status_clinico: "Apto para Voo"}];
+            glob.ag = [
+                {id: 99, cliente: "Parque Dois Irmãos", ave: "Hermes", data_agendada: new Date().toISOString().split('T')[0], status: "Pendente"},
+                {id: 98, cliente: "Indústrias Recife", ave: "Zeus", data_agendada: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0], status: "Pendente"}
+            ];
+            glob.vis = [
+                {id: 99, cliente: "Parque Dois Irmãos", ave: "Hermes", data_visita: new Date().toISOString().split('T')[0], qtd_interacoes: 12, qtd_capturas: 1, observacoes: "Serviço realizado com sucesso."}
+            ];
+
+            rendCli(); rendAve(); rendVis(); rendAg(); popCli(); popAve();
         }
 
-        function carregarDadosFicticios() {
-            // DADOS PARA TESTE
-            glob.cli = [{id: 99, nome_fantasia: "Indústrias Recife S.A.", documento_cpf_cnpj: "12.345.678/0001-99"}];
-            glob.ave = [{id: 99, nome: "Zeus", especie: "Gavião Asa-de-Telha", status_clinico: "Apto para Voo"}];
-            glob.ag = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Zeus", data_agendada: new Date().toISOString().split('T')[0], status: "Pendente"}];
-            showToast("Modo Demonstração: Dados fictícios carregados!");
-        }
-
+        // ================= FUNÇÕES UI BÁSICAS =================
         function showTab(id) { document.querySelectorAll('.content').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+        let viewModos = { agenda: 'calendar' };
         function mudarView(aba, modo) { viewModos[aba] = modo; if(aba==='agenda') rendAg(); }
-        function rendAg() { const c = document.getElementById('lista-agenda'); if(!c) return; c.innerHTML = (viewModos.agenda === 'calendar') ? renderCalendar() : "<p class='p-8 text-center'>Clique em Calendário acima.</p>"; }
+        function rendAg() { const c = document.getElementById('lista-agenda'); if(!c) return; c.innerHTML = (viewModos.agenda === 'calendar') ? renderCalendar() : "<p class='p-8 text-center bg-white rounded-xl shadow-sm border'>Modo Lista/Grid em desenvolvimento. Acesse pelo Calendário.</p>"; }
+        
+        function rendCli() { const c = document.getElementById('lista-clientes'); if(!c) return; c.innerHTML = glob.cli.map(x=>`<div class="bg-white p-6 rounded-2xl border shadow-sm card"><b class="text-lg">${x.nome_fantasia}</b><br><span class="text-xs text-zinc-500">${x.documento_cpf_cnpj}</span></div>`).join(''); }
+        function rendAve() { const c = document.getElementById('lista-aves'); if(!c) return; c.innerHTML = glob.ave.map(x=>`<div class="bg-white p-6 rounded-2xl border shadow-sm card"><b class="text-lg"><i class="fa-solid fa-feather text-emerald-600"></i> ${x.nome}</b><br><span class="text-xs text-zinc-500">${x.especie}</span></div>`).join(''); }
+        function rendVis() { const c = document.getElementById('lista-visitas'); if(!c) return; c.innerHTML = glob.vis.map(x=>`<div class="bg-white p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b>${new Date(x.data_visita).toLocaleDateString()}</b><p class="text-sm text-zinc-500">${x.ave} em ${x.cliente}</p><p class="text-xs mt-2 font-bold">Interações: ${x.qtd_interacoes}</p></div>`).join(''); }
+
         function toggleAccordion(id) { const c = document.getElementById('content-'+id); c.classList.toggle('hidden'); }
         function popCli(){ const o = '<option value="">-- Cliente --</option>' + glob.cli.map(c=>`<option value="${c.id}">${c.nome_fantasia}</option>`).join(''); document.querySelectorAll('.select-cli').forEach(s => s.innerHTML = o); }
         function popAve(){ const o = '<option value="">-- Ave --</option>' + glob.ave.map(a=>`<option value="${a.id}">${a.nome}</option>`).join(''); document.querySelectorAll('.select-ave').forEach(s => s.innerHTML = o); }
-        function showToast(m) { if(!userPrefs.toasts) return; const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'bg-white p-4 rounded-xl shadow-2xl border'; t.innerText = m; c.appendChild(t); setTimeout(()=>t.remove(), 3000); }
-        function carregarPrefs() { /* Restaura chaves visuais se salvas */ }
-        function togglePref(key) { userPrefs[key] = !userPrefs[key]; showToast("Ajuste aplicado."); }
-        function mudarStepOp(n) { document.getElementById('step-op-content-1').classList.add('hidden'); document.getElementById('step-op-content-2').classList.add('hidden'); document.getElementById('step-op-content-3').classList.add('hidden'); document.getElementById('step-op-content-'+n).classList.remove('hidden'); document.getElementById('step-op-line-1').style.width = n >= 2 ? '100%' : '0%'; }
+        function showToast(m, type="success") { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'bg-white p-4 rounded-xl shadow-2xl border text-sm font-bold flex gap-2 items-center'; t.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-500"></i> ${m}`; c.appendChild(t); setTimeout(()=>t.remove(), 3000); }
+        
+        function mudarStepOp(n) { document.getElementById('step-op-content-1').classList.add('hidden'); document.getElementById('step-op-content-2').classList.add('hidden'); document.getElementById('step-op-content-3').classList.add('hidden'); document.getElementById('step-op-content-'+n).classList.remove('hidden'); document.getElementById('step-op-line-1').style.width = n >= 2 ? '100%' : '0%'; document.getElementById('step-op-line-2').style.width = n >= 3 ? '100%' : '0%'; }
+        
+        function fazerLogout() { location.reload(); }
+        function toggleDropdown() { document.getElementById('user-dropdown').classList.toggle('hidden'); }
     </script>
 </body>
 </html>

@@ -916,6 +916,229 @@
         function baixarFin(id){ if(confirm("Marcar como pago?")) fetch(`${API}/financeiro/${id}/pagar`,{method:'PUT'}).then(()=>carregarTudo()); }
         function salvarConfig() { const dados = { nome_empresa: document.getElementById('cfg_nome').value || 'Silvestre Ambiental', cnpj: document.getElementById('cfg_cnpj').value, endereco: document.getElementById('cfg_end').value, logo_base64: configGlobal.logo_base64 }; fetch(`${API}/config`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }).then(() => { showToast("Perfil Empresarial atualizado!"); carregarTudo(); }); }
         const ft = document.getElementById('v_fotos'); if(ft) { ft.addEventListener('change', function(e) { fotosBase64 = []; document.getElementById('preview-fotos').innerHTML = ''; const files = e.target.files; if(files.length > 3) { showToast("Máximo de 3 fotos", "warning"); this.value = ''; return; } Array.from(files).forEach(file => { const reader = new FileReader(); reader.onload = function(event) { fotosBase64.push(event.target.result); document.getElementById('preview-fotos').innerHTML += `<img src="${event.target.result}" class="h-24 w-24 object-cover rounded-xl shadow-sm border border-zinc-200">`; }; reader.readAsDataURL(file); }); }); }
+        // ================= FUNÇÕES DA OPERAÇÃO (STEPPER DA TARCIANA E PDF) =================
+        
+        let stepOperacao = 1;
+        
+        function mudarStepOp(novoStep) {
+            document.getElementById(`step-op-content-${stepOperacao}`).classList.add('hidden'); 
+            document.getElementById(`step-op-content-${novoStep}`).classList.remove('hidden');
+            for(let i = 1; i <= 3; i++) {
+                const dot = document.getElementById(`step-op-dot-${i}`);
+                if(i < novoStep) { dot.className = 'w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold shadow-md z-10'; dot.innerHTML = '<i class="fa-solid fa-check"></i>'; }
+                else if(i === novoStep) { dot.className = 'w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md transition-colors z-10'; dot.innerHTML = i; }
+                else { dot.className = 'w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-500 flex items-center justify-center font-bold transition-colors z-10'; dot.innerHTML = i; }
+            }
+            document.getElementById('step-op-line-1').style.width = novoStep >= 2 ? '100%' : '0%';
+            document.getElementById('step-op-line-2').style.width = novoStep >= 3 ? '100%' : '0%';
+            stepOperacao = novoStep;
+        }
+
+        function limparFormOp() {
+            ['o_cli','o_ave','o_hin','o_hout','o_peso','o_obs','o_ativ_outros','o_nin_local','o_arm_qr'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value=''; });
+            ['o_int','o_cap','o_nin'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value='0'; });
+            ['nc_residuos','nc_doca','nc_falha','nc_pallets','nc_coletores','nc_janelas','nc_obras','nc_area_imp','nc_ninhos_nc'].forEach(id=>{ const el = document.getElementById(id); if(el) el.checked=false; });
+            
+            document.querySelectorAll('input[name="o_ativ"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('input[name="o_comp"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('input[name="o_conc"]').forEach(cb => cb.checked = false);
+            
+            const elMet = document.getElementById('o_metodo'); if(elMet) elMet.value = 'Falcoaria e Armadilhamento';
+            const elPrg = document.getElementById('o_praga'); if(elPrg) elPrg.value = 'Pombos (Columba livia)';
+            const elInf = document.getElementById('v_infestacao'); if(elInf) elInf.value = 'Baixo';
+            const elCapM = document.getElementById('o_cap_metodo'); if(elCapM) elCapM.value = 'Não houve';
+            const elArmS = document.getElementById('o_arm_status'); if(elArmS) elArmS.value = 'Não avaliadas';
+            
+            const elFot = document.getElementById('v_fotos'); if(elFot) elFot.value = '';
+            document.getElementById('preview-fotos').innerHTML = '';
+            fotosBase64 = [];
+            mudarStepOp(1);
+        }
+
+        function iniciarMissao(id, cliente_id, ave_id) { 
+            agendamentoAtivo = id; 
+            document.getElementById('o_cli').value = cliente_id; 
+            document.getElementById('o_ave').value = ave_id; 
+            showTab('tab-operacao'); 
+            document.getElementById('form-execucao').scrollIntoView({ behavior: 'smooth' }); 
+        }
+
+        function processarGravarVisita(gps) { 
+            const d = { 
+                cliente_id: document.getElementById('o_cli').value, 
+                ave_id: document.getElementById('o_ave').value, 
+                h_inicio: document.getElementById('o_hin').value, 
+                h_fim: document.getElementById('o_hout').value, 
+                peso: document.getElementById('o_peso').value, 
+                infestacao: document.getElementById('v_infestacao').value, 
+                obs: document.getElementById('o_obs').value, 
+                gps: gps, 
+                agendamento_id: agendamentoAtivo, 
+                fotos: JSON.stringify(fotosBase64), 
+                metodologia: document.getElementById('o_metodo').value, 
+                praga_alvo: document.getElementById('o_praga').value, 
+                nc_residuos: document.getElementById('nc_residuos').checked, 
+                nc_doca_aberta: document.getElementById('nc_doca').checked, 
+                nc_falha_estrutural: document.getElementById('nc_falha').checked, 
+                nc_pallets: document.getElementById('nc_pallets').checked, 
+                nc_coletores: document.getElementById('nc_coletores').checked, 
+                qtd_interacoes: document.getElementById('o_int').value || 0, 
+                qtd_capturas: document.getElementById('o_cap').value || 0, 
+                qtd_ninhos: document.getElementById('o_nin').value || 0,
+                atividades_realizadas: getChecked('o_ativ') + (document.getElementById('o_ativ_outros').value ? ', ' + document.getElementById('o_ativ_outros').value : ''),
+                comportamento_aves: getChecked('o_comp'),
+                captura_metodo: document.getElementById('o_cap_metodo').value,
+                status_armadilhas: document.getElementById('o_arm_status').value,
+                qr_armadilha: document.getElementById('o_arm_qr').value,
+                local_ninhos: document.getElementById('o_nin_local').value,
+                conclusao_tecnica: getChecked('o_conc'),
+                nc_janelas_abertas: document.getElementById('nc_janelas').checked,
+                nc_obras: document.getElementById('nc_obras').checked,
+                nc_area_impedida: document.getElementById('nc_area_imp').checked,
+                nc_ninhos_nc: document.getElementById('nc_ninhos_nc').checked
+            }; 
+            
+            fetch(`${API}/visitas`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(d) }).then(r => { 
+                if(!r.ok) throw new Error(); 
+                showToast("Missão Sincronizada! GPS: " + gps); 
+                agendamentoAtivo = null; 
+                limparFormOp(); 
+                carregarTudo(); 
+            }).catch(e => { 
+                let offline = JSON.parse(localStorage.getItem('visitasOffline') || '[]'); 
+                offline.push(d); 
+                localStorage.setItem('visitasOffline', JSON.stringify(offline)); 
+                showToast("Sem Internet. Salvo OFFLINE."); 
+                agendamentoAtivo = null; 
+                limparFormOp();
+                atualizarBotaoSync(); 
+            }); 
+        }
+
+        function iniciarGPS() { 
+            if (navigator.geolocation) { 
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => { processarGravarVisita(`LAT: ${pos.coords.latitude.toFixed(5)}, LON: ${pos.coords.longitude.toFixed(5)}`); }, 
+                    (err) => { processarGravarVisita("Sinal GPS Indisponível"); }, 
+                    { enableHighAccuracy: true, timeout: 5000 }
+                ); 
+            } else { 
+                processarGravarVisita("GPS Não Suportado"); 
+            } 
+        }
+
+        function atualizarBotaoSync() { 
+            let offline = JSON.parse(localStorage.getItem('visitasOffline') || '[]'); 
+            const btn = document.getElementById('btn-sync'); 
+            if(offline.length > 0) { 
+                btn.classList.remove('hidden'); 
+                btn.innerHTML = `<i class="fa-solid fa-rotate"></i> Sincronizar ${offline.length} Missão(ões)`; 
+            } else { 
+                btn.classList.add('hidden'); 
+            } 
+        }
+
+        function sincronizarOffline() { 
+            let offline = JSON.parse(localStorage.getItem('visitasOffline') || '[]'); 
+            if(offline.length === 0) return; 
+            Promise.all(offline.map(dados => fetch(`${API}/visitas`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) }))).then(() => { 
+                localStorage.removeItem('visitasOffline'); 
+                showToast("Dados offline sincronizados!"); 
+                atualizarBotaoSync(); 
+                carregarTudo(); 
+            }).catch(e => showToast("Erro ao sincronizar. Tente novamente.", "warning")); 
+        }
+
+        function imprimirRelatorio(i) { 
+            const v = glob.vis[i]; 
+            let fotosHtml = ''; 
+            if(v.fotos && v.fotos !== '[]' && v.fotos !== 'null') { 
+                try { 
+                    const arr = JSON.parse(v.fotos); 
+                    if(arr.length > 0) { 
+                        fotosHtml = `<div class="section-title">EVIDÊNCIAS FOTOGRÁFICAS</div><div style="display:flex; gap:15px; margin-bottom:20px; flex-wrap:wrap;">`; 
+                        arr.forEach(img => { fotosHtml += `<img src="${img}" style="height:220px; border-radius:8px; border:1px solid #ccc; object-fit:cover;">`; }); 
+                        fotosHtml += `</div>`; 
+                    } 
+                } catch(e){} 
+            } 
+            
+            const logoHtml = configGlobal.logo_base64 ? `<img src="${configGlobal.logo_base64}" style="max-height:80px; margin-bottom:10px;">` : ''; 
+            const nomeEmp = configGlobal.nome_empresa || 'SILVESTRE AMBIENTAL'; 
+            
+            const ncs = [];
+            if(v.nc_residuos) ncs.push("Resíduos Expostos");
+            if(v.nc_doca_aberta) ncs.push("Doca Aberta");
+            if(v.nc_falha_estrutural) ncs.push("Falha Estrutural");
+            if(v.nc_pallets) ncs.push("Pallets Mal Acondicionados");
+            if(v.nc_coletores) ncs.push("Coletores Destampados");
+            if(v.nc_janelas_abertas) ncs.push("Janelas Abertas");
+            if(v.nc_obras) ncs.push("Obras no Local");
+            if(v.nc_area_impedida) ncs.push("Área Impedida");
+            if(v.nc_ninhos_nc) ncs.push("Ninhos Presentes");
+            const ncHtml = ncs.length > 0 ? ncs.map(n => `<li>${n}</li>`).join('') : "<li>Nenhuma não conformidade detectada.</li>";
+
+            const win = window.open('', '_blank'); 
+            win.document.write(`
+                <html><head><title>Laudo Técnico - ${v.cliente}</title>
+                <style>
+                    body{font-family:Arial, sans-serif; padding:40px; color:#333; line-height:1.6;}
+                    .header{text-align:center; border-bottom:3px solid #14532d; padding-bottom:15px; margin-bottom:25px;}
+                    h1{color:#14532d; font-size:20px; margin:5px 0;}
+                    .section-title{font-weight:bold; margin-top:25px; margin-bottom:10px; border-left:4px solid #14532d; padding-left:8px; text-transform:uppercase; font-size:14px;}
+                    table{width:100%; border-collapse:collapse; margin-bottom:20px;}
+                    th,td{padding:10px; text-align:left; border:1px solid #e0e0e0;}
+                    th{background:#f9f9f9; width:30%;}
+                    .box{background:#fdfdfd; border:1px solid #e0e0e0; padding:15px; border-radius:5px;}
+                    @media print{.no-print{display:none;}}
+                </style>
+                </head><body onload="window.print()">
+                <div class="no-print" style="text-align:center;margin-bottom:20px;"><button onclick="window.print()" style="padding:10px 20px;background:#14532d;color:white;border:none;border-radius:5px;cursor:pointer;">Imprimir Laudo Oficial</button></div>
+                <div class="header">${logoHtml}<h1>LAUDO TÉCNICO OPERACIONAL</h1><p style="font-size:12px; margin:0;">${nomeEmp}</p></div>
+                
+                <div class="section-title">Dados da Operação</div>
+                <table>
+                    <tr><th>Cliente</th><td>${v.cliente}</td></tr>
+                    <tr><th>Data da Visita</th><td>${new Date(v.data_visita).toLocaleDateString('pt-BR')}</td></tr>
+                    <tr><th>Horário de Atuação</th><td>${v.hora_inicio || '--:--'} às ${v.hora_fim || '--:--'}</td></tr>
+                    <tr><th>Ave Utilizada</th><td>${v.ave} (Peso Operacional: ${v.peso_ave_gramas||'N/A'}g)</td></tr>
+                    <tr><th>Metodologia Aplicada</th><td>${v.metodologia || '-'}</td></tr>
+                    <tr><th>Praga Alvo</th><td>${v.praga_alvo || '-'} (Infestação: ${v.nivel_infestacao || '-'})</td></tr>
+                </table>
+
+                <div class="section-title">Atividades e Comportamento</div>
+                <table>
+                    <tr><th>Atividades Realizadas</th><td>${v.atividades_realizadas || '-'}</td></tr>
+                    <tr><th>Comportamento das Aves</th><td>${v.comportamento_aves || '-'}</td></tr>
+                </table>
+                
+                <div class="section-title">Contadores e Armadilhas</div>
+                <table>
+                    <tr><th>Interações / Voos</th><td><b>${v.qtd_interacoes}</b></td></tr>
+                    <tr><th>Capturas Realizadas</th><td><b>${v.qtd_capturas}</b> (Método: ${v.captura_metodo || '-'})</td></tr>
+                    <tr><th>Ninhos Destruídos</th><td><b>${v.qtd_ninhos}</b> (Local: ${v.local_ninhos || '-'})</td></tr>
+                    <tr><th>Status das Armadilhas</th><td>${v.status_armadilhas || '-'} ${v.qr_armadilha ? '<br>QR Code: '+v.qr_armadilha : ''}</td></tr>
+                </table>
+
+                <div class="section-title">Análise do Local (Não Conformidades)</div>
+                <div class="box"><ul>${ncHtml}</ul></div>
+
+                <div class="section-title">Conclusão Técnica e Recomendações</div>
+                <div class="box">
+                    <p style="margin-top:0;"><strong>Conclusões:</strong> ${v.conclusao_tecnica || '-'}</p>
+                    <p style="margin-bottom:0;"><strong>Observações do Técnico:</strong> ${v.observacoes || '-'}</p>
+                </div>
+                
+                ${fotosHtml}
+
+                <div style="margin-top:60px; font-size:11px; color:#666; text-align:center;">
+                    <p>Coordenadas do Check-in: ${v.gps_checkin || 'Sinal Indisponível'}</p>
+                    <p>Relatório gerado digitalmente pela Plataforma Ártemis.</p>
+                </div>
+                </body></html>
+            `); 
+            win.document.close(); 
+        }
     </script>
 </body>
 </html>

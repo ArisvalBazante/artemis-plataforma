@@ -30,7 +30,6 @@
         .input-modern:focus { box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); border-color: #f59e0b; outline: none; }
         .gradient-bg { background: linear-gradient(135deg, #14532d 0%, #166534 100%); }
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
         .cb-label { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e4e4e7; border-radius: 0.75rem; cursor: pointer; transition: all 0.2s; }
@@ -38,8 +37,6 @@
         body.tabela-compacta td, body.tabela-compacta th { padding: 6px 12px !important; font-size: 0.8rem; }
         body.alto-contraste .text-zinc-500 { color: #27272a !important; font-weight: 600; }
         body.alto-contraste.dark .text-zinc-500 { color: #d4d4d8 !important; font-weight: 600; }
-        body.alto-contraste .border-zinc-200 { border-color: #a1a1aa !important; }
-        body.alto-contraste.dark .border-zinc-700 { border-color: #52525b !important; }
     </style>
 </head>
 <body class="bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen flex overflow-hidden">
@@ -130,7 +127,6 @@
                                 <p class="text-zinc-500 uppercase text-xs font-bold mt-1" id="perfil-cargo-display">Carregando...</p>
                             </div>
                         </div>
-
                         <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm"><i class="fa-solid fa-id-badge text-primary mr-2"></i> Identificação</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">Nome Completo</label><input type="text" id="meu_nome" class="input-modern w-full p-4 rounded-xl"></div>
@@ -141,42 +137,39 @@
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">WhatsApp Pessoal</label><input type="text" id="meu_wpp" placeholder="(00) 00000-0000" class="input-modern w-full p-4 rounded-xl tel-mask" maxlength="15"></div>
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">Início das Atividades</label><input type="text" value="Fevereiro/2026" class="input-modern w-full p-4 rounded-xl opacity-60 cursor-not-allowed" disabled></div>
                         </div>
-
                         <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-house text-primary mr-2"></i> Endereço Residencial</h4>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                             <input type="text" id="p_cep" placeholder="CEP (00000-000)" class="input-modern w-full p-4 rounded-xl cep-mask" onblur="buscarCepPerfil()" maxlength="9">
                             <input type="text" id="p_logradouro" placeholder="Logradouro" class="input-modern w-full p-4 rounded-xl md:col-span-2">
                             <input type="text" id="p_numero" placeholder="Nº" class="input-modern w-full p-4 rounded-xl">
                         </div>
-
                         <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm border-t border-zinc-100 dark:border-zinc-800 pt-6"><i class="fa-solid fa-notes-medical text-red-500 mr-2"></i> Prontuário Médico</h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">Sangue / Fator RH</label><input type="text" id="p_sangue" placeholder="Ex: O+" class="input-modern w-full p-4 rounded-xl"></div>
-                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Contato Emergência</label><input type="text" id="p_emergencia_nome" placeholder="Nome do familiar" class="input-modern w-full p-4 rounded-xl"></div>
+                            <div><label class="text-xs text-zinc-500 ml-1 font-bold">Contato Emergência</label><input type="text" id="p_emergencia_nome" placeholder="Nome familiar" class="input-modern w-full p-4 rounded-xl"></div>
                             <div><label class="text-xs text-zinc-500 ml-1 font-bold">WhatsApp Emergência</label><input type="text" id="p_emergencia_tel" placeholder="Telefone" class="input-modern w-full p-4 rounded-xl tel-mask"></div>
                         </div>
-
                         <button class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg mt-6" onclick="salvarPerfil()">Salvar Alterações</button>
                     </div>
 
                     <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
                         <h3 class="text-xl font-bold text-primary dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Preferências de Sistema</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold text-sm dark:text-white">Modo Foco</p></div>
-                                <button onclick="togglePref('focus')" id="tg-focus" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-focus-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1"></span></button>
+                            <div class="flex items-center justify-between p-4 border rounded-2xl bg-zinc-50">
+                                <div><p class="font-bold text-sm">Modo Foco</p></div>
+                                <button onclick="togglePref('focus')" id="tg-focus" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-focus-knob" class="relative z-10 w-6 h-6 bg-white rounded-full transition-transform translate-x-1"></span></button>
                             </div>
-                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold text-sm dark:text-white">Speed Dial</p></div>
-                                <button onclick="togglePref('speedDial')" id="tg-speedDial" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-speedDial-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1"></span></button>
+                            <div class="flex items-center justify-between p-4 border rounded-2xl bg-zinc-50">
+                                <div><p class="font-bold text-sm">Speed Dial</p></div>
+                                <button onclick="togglePref('speedDial')" id="tg-speedDial" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-speedDial-knob" class="relative z-10 w-6 h-6 bg-white rounded-full transition-transform translate-x-1"></span></button>
                             </div>
-                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold text-sm dark:text-white">Notificações Toast</p></div>
-                                <button onclick="togglePref('toasts')" id="tg-toasts" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-toasts-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1"></span></button>
+                            <div class="flex items-center justify-between p-4 border rounded-2xl bg-zinc-50">
+                                <div><p class="font-bold text-sm">Notificações Toast</p></div>
+                                <button onclick="togglePref('toasts')" id="tg-toasts" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-toasts-knob" class="relative z-10 w-6 h-6 bg-white rounded-full transition-transform translate-x-1"></span></button>
                             </div>
-                            <div class="flex items-center justify-between p-4 border border-zinc-100 dark:border-zinc-800 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50">
-                                <div><p class="font-bold text-sm dark:text-white">Auto-Salvar Check-in</p></div>
-                                <button onclick="togglePref('autoSave')" id="tg-autoSave" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-autoSave-knob" class="relative z-10 flex items-center justify-center w-6 h-6 transform bg-white rounded-full transition-transform translate-x-1"></span></button>
+                            <div class="flex items-center justify-between p-4 border rounded-2xl bg-zinc-50">
+                                <div><p class="font-bold text-sm text-amber-600">Auto-Salvar Check-in</p></div>
+                                <button onclick="togglePref('autoSave')" id="tg-autoSave" class="relative inline-flex items-center h-8 w-16 rounded-full bg-zinc-300"><span id="tg-autoSave-knob" class="relative z-10 w-6 h-6 bg-white rounded-full transition-transform translate-x-1"></span></button>
                             </div>
                         </div>
                     </div>
@@ -196,10 +189,7 @@
                 <div id="tab-clientes" class="content max-w-5xl mx-auto">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-bold text-primary dark:text-emerald-400">Clientes</h3>
-                        <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                            <button onclick="mudarView('clientes', 'grid')" id="btn-view-grid-clientes" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i></button>
-                            <button onclick="mudarView('clientes', 'list')" id="btn-view-list-clientes" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i></button>
-                        </div>
+                        <div class="flex bg-zinc-200 p-1 rounded-lg"><button onclick="mudarView('clientes', 'grid')" id="btn-view-grid-clientes" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i></button><button onclick="mudarView('clientes', 'list')" id="btn-view-list-clientes" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i></button></div>
                     </div>
                     <div id="lista-clientes"></div>
                 </div>
@@ -207,10 +197,7 @@
                 <div id="tab-plantel" class="content max-w-5xl mx-auto">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-bold text-primary dark:text-emerald-400">Plantel</h3>
-                        <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                            <button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i></button>
-                            <button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i></button>
-                        </div>
+                        <div class="flex bg-zinc-200 p-1 rounded-lg"><button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-border-all"></i></button><button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-list"></i></button></div>
                     </div>
                     <div id="lista-aves"></div>
                 </div>
@@ -219,8 +206,8 @@
                     <div id="container-missoes" class="mb-8"><div id="lista-missoes-pendentes" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div></div>
                     <div id="form-execucao" class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
                         <div class="flex items-center mb-10 px-4">
-                            <div id="step-op-dot-1" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold z-10">1</div><div class="flex-1 h-1.5 bg-zinc-200 dark:bg-zinc-700 relative"><div id="step-op-line-1" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
-                            <div id="step-op-dot-2" class="w-10 h-10 rounded-full bg-zinc-200 text-zinc-500 flex items-center justify-center font-bold z-10">2</div><div class="flex-1 h-1.5 bg-zinc-200 dark:bg-zinc-700 relative"><div id="step-op-line-2" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
+                            <div id="step-op-dot-1" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold z-10">1</div><div class="flex-1 h-1.5 bg-zinc-200 relative"><div id="step-op-line-1" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
+                            <div id="step-op-dot-2" class="w-10 h-10 rounded-full bg-zinc-200 text-zinc-500 flex items-center justify-center font-bold z-10">2</div><div class="flex-1 h-1.5 bg-zinc-200 relative"><div id="step-op-line-2" class="absolute top-0 left-0 h-full bg-primary w-0 transition-all duration-300"></div></div>
                             <div id="step-op-dot-3" class="w-10 h-10 rounded-full bg-zinc-200 text-zinc-500 flex items-center justify-center font-bold z-10">3</div>
                         </div>
                         <div id="step-op-content-1" class="space-y-6">
@@ -244,7 +231,7 @@
                 <div id="tab-agenda" class="content max-w-5xl mx-auto">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-bold text-primary dark:text-emerald-400">Cronograma</h3>
-                        <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                        <div class="flex bg-zinc-200 p-1 rounded-lg">
                             <button onclick="mudarView('agenda', 'calendar')" id="btn-view-calendar-agenda" class="px-3 py-1 text-sm font-bold rounded-md bg-white transition"><i class="fa-solid fa-calendar-alt"></i></button>
                             <button onclick="mudarView('agenda', 'grid')" id="btn-view-grid-agenda" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 transition"><i class="fa-solid fa-border-all"></i></button>
                         </div>
@@ -274,11 +261,12 @@
         </div>
     </div>
 
+    <div id="toast-container" class="fixed bottom-8 left-8 z-[60] flex flex-col gap-3 pointer-events-none"></div>
+
     <script>
         const API = 'https://artemis-backend-eso2.onrender.com'; 
         let glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] };
-        let usuarioLogado = null; let edit = { cli:null, ave:null, est:null, prop:null, pdca:null, cont:null, usu:null }; 
-        let agendamentoAtivo = null; let fotosBase64 = []; let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
+        let usuarioLogado = null; let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
         const nomesPerfis = { 'admin': 'Diretor Executivo', 'comercial': 'Comercial / Financeiro', 'tecnico': 'Técnico de Manejo' };
 
         // MÁSCARAS
@@ -289,7 +277,7 @@
             if (e.target.classList.contains('cep-mask')) { let v = e.target.value.replace(/\D/g, ''); v = v.replace(/^(\d{5})(\d)/, '$1-$2'); e.target.value = v; }
         });
 
-        // INICIAIS AF
+        // INICIAIS
         function formatName(name) { if(!name) return ''; const p = name.trim().split(' '); return p.length === 1 ? p[0] : `${p[0]} ${p[p.length - 1]}`; }
         function getInitials(name) { if(!name) return 'AF'; const p = name.trim().split(' '); if(p.length === 1) return p[0].substring(0, 2).toUpperCase(); return (p[0][0] + p[p.length - 1][0]).toUpperCase(); }
 
@@ -298,29 +286,27 @@
             const dataAtual = new Date(); const mes = dataAtual.getMonth(); const ano = dataAtual.getFullYear();
             const primDia = new Date(ano, mes, 1).getDay(); const totDias = new Date(ano, mes + 1, 0).getDate();
             const nomesMeses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-            let html = `<div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6"><h4 class="text-center font-bold text-xl mb-6 dark:text-white uppercase tracking-widest">${nomesMeses[mes]} ${ano}</h4><div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 mb-2"><div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div></div><div class="grid grid-cols-7 gap-2">`;
+            let html = `<div class="bg-white p-6 rounded-3xl border"><h4 class="text-center font-bold text-xl mb-6 uppercase">${nomesMeses[mes]} ${ano}</h4><div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 mb-2"><div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div></div><div class="grid grid-cols-7 gap-2">`;
             for(let i=0; i<primDia; i++) html += `<div class="p-2 border border-transparent"></div>`;
             for(let dia=1; dia<=totDias; dia++) {
                 let dataStr = `${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
                 let missoes = (glob.ag||[]).filter(a => a.data_agendada && a.data_agendada.startsWith(dataStr));
                 let badges = missoes.map(m => `<div class="text-[10px] bg-primary text-white rounded px-1.5 py-0.5 mt-1 font-bold truncate">${m.cliente}</div>`).join('');
-                let bgHj = (dia === dataAtual.getDate()) ? 'bg-amber-50 border-accent' : 'bg-zinc-50 border-zinc-100 dark:bg-zinc-800/50';
-                html += `<div class="min-h-[90px] p-2 border rounded-xl ${bgHj} dark:text-white flex flex-col"><span class="font-bold opacity-50 mb-1">${dia}</span>${badges}</div>`;
+                let bgHj = (dia === dataAtual.getDate()) ? 'bg-amber-50 border-accent' : 'bg-zinc-50 border-zinc-100';
+                html += `<div class="min-h-[90px] p-2 border rounded-xl ${bgHj} flex flex-col"><span class="font-bold opacity-50 mb-1">${dia}</span>${badges}</div>`;
             }
             html += `</div></div>`; return html;
         }
 
-        // LOGIN COM CHAVE MESTRA
+        // LOGIN
         async function fazerLogin() {
             const em = document.getElementById('login_email').value; const se = document.getElementById('login_senha').value;
             const erroBox = document.getElementById('login-erro'); erroBox.innerText = "Conectando..."; erroBox.classList.remove('hidden');
             
-            // CHAVE MESTRA PARA APRESENTAÇÃO E TESTES SEM FALHAS!
             if(em === 'admin@silvestre.com' && se === '123456') {
                 usuarioLogado = { id: 99, nome: "Arisval Bazante de Sá Filho", email: "admin@silvestre.com", perfil: "admin" };
                 erroBox.classList.add('hidden');
-                init();
-                return;
+                init(); return;
             }
 
             try {
@@ -328,11 +314,17 @@
                 const d = await r.json();
                 if(d.ok) { usuarioLogado = d.usuario; erroBox.classList.add('hidden'); init(); }
                 else { erroBox.innerText = "Dados incorretos!"; erroBox.classList.add('bg-red-50', 'text-red-600'); }
-            } catch(e) { erroBox.innerText = "Erro no servidor. Tente usar a chave mestra admin@silvestre.com / 123456"; erroBox.classList.add('bg-red-50', 'text-red-600'); }
+            } catch(e) { erroBox.innerText = "Erro no servidor. Tente usar a chave mestra (admin@silvestre.com / 123456)"; erroBox.classList.add('bg-red-50', 'text-red-600'); }
         }
 
+        // INIT
         function init() {
-            document.getElementById('tela-login').classList.add('hidden'); document.getElementById('sistema-principal').classList.remove('hidden');
+            document.getElementById('tela-login').classList.add('hidden'); 
+            
+            // O SEGREDO DO FLEX ESTÁ AQUI:
+            document.getElementById('sistema-principal').classList.remove('hidden');
+            document.getElementById('sistema-principal').classList.add('flex');
+            
             preencherPerfilUI();
             showTab(usuarioLogado.perfil === 'tecnico' ? 'tab-operacao' : 'tab-dashboard');
             carregarTudo(); carregarPrefs();
@@ -349,46 +341,58 @@
             const elMeuEmail = document.getElementById('meu_email'); if(elMeuEmail) elMeuEmail.value = usuarioLogado.email;
         }
 
+        // CARREGA DADOS DEMO
         async function carregarTudo() {
-            try {
-                const res = await fetch(`${API}/config`);
-                const d = await res.json();
-                configGlobal = d; 
-                if(d.logo_base64) document.getElementById('sidebar-logo').src = d.logo_base64;
-            } catch(e) {}
-
-            // CARREGA DADOS FICTÍCIOS (MODO DEMONSTRAÇÃO) CASO ESTEJA VAZIO OU OFFLINE
-            glob.cli = [{id: 99, nome_fantasia: "Indústrias Recife S.A.", documento_cpf_cnpj: "12.345.678/0001-99"}];
-            glob.ave = [{id: 99, nome: "Zeus", especie: "Gavião Asa-de-Telha", status_clinico: "Apto para Voo"}];
-            glob.ag = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Zeus", data_agendada: new Date().toISOString().split('T')[0], status: "Pendente"}];
-            glob.vis = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Zeus", data_visita: new Date().toISOString().split('T')[0], qtd_interacoes: 5, qtd_capturas: 0, observacoes: "Check-in fictício para teste de relatório."}];
+            glob.cli = [{id: 99, nome_fantasia: "Parque Dois Irmãos", documento_cpf_cnpj: "12.345.678/0001-99"}];
+            glob.ave = [{id: 99, nome: "Hermes", especie: "Gavião Asa-de-Telha", status_clinico: "Apto para Voo"}];
+            glob.ag = [
+                {id: 99, cliente: "Parque Dois Irmãos", ave: "Hermes", data_agendada: new Date().toISOString().split('T')[0], status: "Pendente"},
+                {id: 98, cliente: "Indústrias Recife", ave: "Zeus", data_agendada: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0], status: "Pendente"}
+            ];
+            glob.vis = [{id: 99, cliente: "Parque Dois Irmãos", ave: "Hermes", data_visita: new Date().toISOString().split('T')[0], qtd_interacoes: 12, qtd_capturas: 1, observacoes: "Serviço realizado com sucesso."}];
 
             rendCli(); rendAve(); rendVis(); rendAg(); popCli(); popAve(); updDash();
         }
 
         function updDash() { 
-            const elRec = document.getElementById('dash-kpi-receita'); const elARec = document.getElementById('dash-kpi-areceber'); const elProp = document.getElementById('dash-kpi-propostas'); const elAve = document.getElementById('dash-kpi-aves'); const elCont = document.getElementById('dash-kpi-contratos'); const elAg = document.getElementById('dash-kpi-agenda'); 
-            if(elRec) elRec.innerText = 'R$ ' + (glob.fin||[]).filter(f=>f.tipo==='Receita'&&f.status==='Pago').reduce((a,b)=>a+parseFloat(b.valor),0).toFixed(2); 
-            if(elARec) elARec.innerText = 'R$ ' + (glob.fin||[]).filter(f=>f.tipo==='Receita'&&f.status==='Pendente').reduce((a,b)=>a+parseFloat(b.valor),0).toFixed(2); 
-            if(elProp) elProp.innerText = (glob.prop||[]).filter(p=>p.status==='Em Negociação'||p.status==='Enviada').length; 
-            if(elAve) elAve.innerText = (glob.ave||[]).filter(a=>a.status_clinico==='Apto para Voo').length; 
-            if(elCont) elCont.innerText = (glob.cont||[]).length; 
-            if(elAg) elAg.innerText = (glob.ag||[]).filter(a=>a.status==='Pendente').length; 
+            const elProp = document.getElementById('dash-kpi-propostas'); const elAve = document.getElementById('dash-kpi-aves');
+            if(elProp) elProp.innerText = "5"; if(elAve) elAve.innerText = "2"; 
         }
 
+        // UX BASE
         function showTab(id) { document.querySelectorAll('.content').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+        
+        let viewModos = { agenda: 'calendar' };
         function mudarView(aba, modo) { viewModos[aba] = modo; if(aba==='agenda') rendAg(); }
-        function rendAg() { const c = document.getElementById('lista-agenda'); if(!c) return; c.innerHTML = (viewModos.agenda === 'calendar') ? renderCalendar() : "<p class='p-8 text-center'>Clique em Calendário acima.</p>"; }
+        
         function toggleAccordion(id) { const c = document.getElementById('content-'+id); c.classList.toggle('hidden'); }
+        function toggleDropdown() { document.getElementById('user-dropdown').classList.toggle('hidden'); }
+        function toggleDarkMode() { document.documentElement.classList.toggle('dark'); }
+        function fazerLogout() { location.reload(); }
+        
+        function showToast(m) { 
+            if(!userPrefs.toasts) return; 
+            const c = document.getElementById('toast-container'); const t = document.createElement('div'); 
+            t.className = 'bg-white p-4 rounded-xl shadow-2xl border text-sm font-bold flex gap-2 items-center'; 
+            t.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-500"></i> ${m}`; 
+            c.appendChild(t); setTimeout(()=>t.remove(), 3000); 
+        }
+
+        // RENDER FUNCTIONS
         function popCli(){ const o = '<option value="">-- Cliente --</option>' + (glob.cli||[]).map(c=>`<option value="${c.id}">${c.nome_fantasia}</option>`).join(''); document.querySelectorAll('.select-cli').forEach(s => s.innerHTML = o); }
         function popAve(){ const o = '<option value="">-- Ave --</option>' + (glob.ave||[]).map(a=>`<option value="${a.id}">${a.nome}</option>`).join(''); document.querySelectorAll('.select-ave').forEach(s => s.innerHTML = o); }
-        function showToast(m) { if(!userPrefs.toasts) return; const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'bg-white p-4 rounded-xl shadow-2xl border'; t.innerText = m; c.appendChild(t); setTimeout(()=>t.remove(), 3000); }
-        function carregarPrefs() { /* Restaura chaves visuais se salvas */ }
-        function togglePref(key) { userPrefs[key] = !userPrefs[key]; showToast("Ajuste aplicado."); }
-        function mudarStepOp(n) { document.getElementById('step-op-content-1').classList.add('hidden'); document.getElementById('step-op-content-2').classList.add('hidden'); document.getElementById('step-op-content-3').classList.add('hidden'); document.getElementById('step-op-content-'+n).classList.remove('hidden'); document.getElementById('step-op-line-1').style.width = n >= 2 ? '100%' : '0%'; document.getElementById('step-op-line-2').style.width = n >= 3 ? '100%' : '0%'; }
+        
         function rendCli() { const c = document.getElementById('lista-clientes'); if(!c) return; c.innerHTML = (glob.cli||[]).map(x=>`<div class="bg-white p-6 rounded-2xl border shadow-sm card"><b class="text-lg">${x.nome_fantasia}</b><br><span class="text-xs text-zinc-500">${x.documento_cpf_cnpj}</span></div>`).join(''); }
         function rendAve() { const c = document.getElementById('lista-aves'); if(!c) return; c.innerHTML = (glob.ave||[]).map(x=>`<div class="bg-white p-6 rounded-2xl border shadow-sm card"><b class="text-lg"><i class="fa-solid fa-feather text-emerald-600"></i> ${x.nome}</b><br><span class="text-xs text-zinc-500">${x.especie}</span></div>`).join(''); }
         function rendVis() { const c = document.getElementById('lista-visitas'); if(!c) return; c.innerHTML = (glob.vis||[]).map(x=>`<div class="bg-white p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b>${new Date(x.data_visita).toLocaleDateString()}</b><p class="text-sm text-zinc-500">${x.ave} em ${x.cliente}</p><p class="text-xs mt-2 font-bold">Interações: ${x.qtd_interacoes}</p></div>`).join(''); }
+        function rendAg() { const c = document.getElementById('lista-agenda'); if(!c) return; c.innerHTML = (viewModos.agenda === 'calendar') ? renderCalendar() : "<p class='p-8 text-center'>Clique em Calendário acima.</p>"; }
+
+        function mudarStepOp(n) { document.getElementById('step-op-content-1').classList.add('hidden'); document.getElementById('step-op-content-2').classList.add('hidden'); document.getElementById('step-op-content-3').classList.add('hidden'); document.getElementById('step-op-content-'+n).classList.remove('hidden'); document.getElementById('step-op-line-1').style.width = n >= 2 ? '100%' : '0%'; document.getElementById('step-op-line-2').style.width = n >= 3 ? '100%' : '0%'; }
+
+        // PREFERENCES
+        let userPrefs = { focus: false, speedDial: true, toasts: true, animacoes: true, autoSave: true };
+        function carregarPrefs() { /* Stub */ }
+        function togglePref(key) { userPrefs[key] = !userPrefs[key]; showToast("Configuração alterada!"); }
     </script>
 </body>
 </html>

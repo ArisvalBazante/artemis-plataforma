@@ -842,17 +842,62 @@ function carregarFotoPerfil(event) {
     reader.readAsDataURL(file);
 }
 
-function salvarPerfil() {
+async function salvarPerfil() {
     if(!usuarioLogado) return;
-    usuarioLogado.nome = document.getElementById('meu_nome').value;
-    usuarioLogado.cpf = document.getElementById('meu_cpf').value;
-    usuarioLogado.telefone = document.getElementById('meu_wpp').value;
-    usuarioLogado.cep = document.getElementById('p_cep').value;
-    usuarioLogado.sangue = document.getElementById('p_sangue').value;
     
-    localStorage.setItem('artemis_user', JSON.stringify(usuarioLogado));
-    preencherPerfilUI(); 
-    showToast("Seus dados foram salvos com sucesso!");
+    // Puxa os dados digitados na tela
+    const nome = document.getElementById('meu_nome').value;
+    const cpf = document.getElementById('meu_cpf').value;
+    const tel = document.getElementById('meu_wpp').value;
+    const cep = document.getElementById('p_cep').value;
+    const sangue = document.getElementById('p_sangue').value;
+    const senha1 = document.getElementById('p_senha1').value;
+    const senha2 = document.getElementById('p_senha2').value;
+
+    if(senha1 !== senha2) { showToast("As senhas não coincidem!", "erro"); return; }
+
+    showToast("Salvando na nuvem...");
+
+    try {
+        // Dispara a requisição real para o seu servidor no Render
+        const res = await fetch(`${API}/usuarios/${usuarioLogado.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nome: nome,
+                email: usuarioLogado.email,
+                senha: senha1 || null,
+                perfil: usuarioLogado.perfil,
+                cpf: cpf,
+                telefone: tel,
+                cep: cep,
+                sangue: sangue,
+                foto_base64: usuarioLogado.foto_base64 // A foto em base64 já fica armazenada aqui quando você seleciona o arquivo
+            })
+        });
+
+        const data = await res.json();
+        
+        if(data.ok) {
+            // Se o servidor confirmou, atualizamos o armazenamento local e a tela
+            usuarioLogado.nome = nome;
+            usuarioLogado.cpf = cpf;
+            usuarioLogado.telefone = tel;
+            usuarioLogado.cep = cep;
+            usuarioLogado.sangue = sangue;
+            
+            localStorage.setItem('artemis_user', JSON.stringify(usuarioLogado));
+            preencherPerfilUI(); 
+            showToast("Perfil de desenvolvedor salvo com sucesso!");
+            
+            document.getElementById('p_senha1').value = '';
+            document.getElementById('p_senha2').value = '';
+        } else {
+            showToast("Falha ao salvar no banco de dados.", "erro");
+        }
+    } catch(e) {
+        showToast("Erro de conexão. Verifique o servidor.", "erro");
+    }
 }
 
 function salvarMemoria() { localStorage.setItem('artemis_dados', JSON.stringify(glob)); }

@@ -690,7 +690,7 @@
     <div id="toast-container" class="fixed bottom-8 left-8 z-[60] flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
-    const API = 'https://artemis-backend-eso2.onrender.com'; 
+const API = 'https://artemis-backend-eso2.onrender.com'; 
 let glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] };
 let usuarioLogado = null; 
 let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
@@ -759,7 +759,7 @@ async function fazerLogin() {
         if(userSalvo) {
             usuarioLogado = JSON.parse(userSalvo);
         } else {
-            usuarioLogado = { id: 99, nome: "Arisval Bazante de Sá Filho", email: "admin@silvestre.com", perfil: "admin", cpf: "", wpp: "", cep: "", sangue: "" };
+            usuarioLogado = { id: 99, nome: "Arisval Bazante de Sá Filho", email: "admin@silvestre.com", perfil: "admin", cpf: "", wpp: "", cep: "", sangue: "", foto_base64: null };
         }
         erroBox.classList.add('hidden');
         init();
@@ -813,18 +813,94 @@ function limparNotificacoes() { notificacoes = []; renderNotificacoes(); documen
 // SALVAMENTO REAL DO PERFIL E DADOS
 function preencherPerfilUI() {
     if(!usuarioLogado) return;
-    document.getElementById('nome-logado-header').innerText = formatName(usuarioLogado.nome);
-    document.getElementById('perfil-nome-display').innerText = usuarioLogado.nome;
-    document.getElementById('perfil-cargo-header').innerText = nomesPerfis[usuarioLogado.perfil];
-    document.getElementById('perfil-cargo-display').innerText = nomesPerfis[usuarioLogado.perfil];
-    document.getElementById('iniciais-logado').innerText = getInitials(usuarioLogado.nome);
     
+    // Atualiza elementos do Header
+    document.getElementById('nome-logado-header').innerText = formatName(usuarioLogado.nome);
+    document.getElementById('perfil-cargo-header').innerText = nomesPerfis[usuarioLogado.perfil];
+    
+    // Atualiza elementos da aba Perfil
+    document.getElementById('perfil-nome-display').innerText = usuarioLogado.nome;
+    document.getElementById('perfil-cargo-display').innerText = nomesPerfis[usuarioLogado.perfil];
+    
+    // Gerencia Foto vs Iniciais (Header e Aba Perfil)
+    const imgHeader = document.getElementById('foto-logado-header');
+    const iniciaisHeader = document.getElementById('iniciais-logado');
+    const imgDisplay = document.getElementById('perfil-foto-display'); // Imagem grande na aba perfil
+
+    if (usuarioLogado.foto_base64) {
+        // Mostra foto no header
+        if(imgHeader) { imgHeader.src = usuarioLogado.foto_base64; imgHeader.classList.remove('hidden'); }
+        if(iniciaisHeader) iniciaisHeader.classList.add('hidden');
+        
+        // Mostra foto na aba perfil
+        if(imgDisplay) imgDisplay.src = usuarioLogado.foto_base64;
+    } else {
+        // Mostra iniciais no header
+        if(imgHeader) imgHeader.classList.add('hidden');
+        if(iniciaisHeader) {
+            iniciaisHeader.innerText = getInitials(usuarioLogado.nome);
+            iniciaisHeader.classList.remove('hidden');
+        }
+        // Mostra placeholder na aba perfil (ou mantém o padrão do HTML)
+        if(imgDisplay) imgDisplay.src = "https://via.placeholder.com/150?text=Sua+Foto";
+    }
+    
+    // Preenche os campos do formulário
     document.getElementById('meu_nome').value = usuarioLogado.nome || '';
     document.getElementById('meu_email').value = usuarioLogado.email || '';
     document.getElementById('meu_cpf').value = usuarioLogado.cpf || '';
     document.getElementById('meu_wpp').value = usuarioLogado.telefone || '';
     document.getElementById('p_cep').value = usuarioLogado.cep || '';
     document.getElementById('p_sangue').value = usuarioLogado.sangue || '';
+}
+
+// CORREÇÃO E IMPLEMENTAÇÃO REAL DA FOTO
+function carregarFotoPerfil(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validação simples de tipo
+    if (!file.type.startsWith('image/')) {
+        showToast("Por favor, selecione um arquivo de imagem válido.", "erro");
+        return;
+    }
+
+    // Validação de tamanho (ex: max 2MB para não estourar o LocalStorage)
+    if (file.size > 2 * 1024 * 1024) {
+        showToast("A imagem é muito grande. Máximo 2MB.", "erro");
+        return;
+    }
+
+    const reader = new FileReader();
+    
+    // Esta função roda QUANDO o navegador terminar de ler o arquivo
+    reader.onload = function(e) {
+        const base64Image = e.target.result; // Este é o texto da imagem
+
+        // 1. Atualiza a interface IMEDIATAMENTE (Feedback visual)
+        const imgDisplay = document.getElementById('perfil-foto-display'); // Imagem grande na aba
+        const imgHeader = document.getElementById('foto-logado-header'); // Imagem pequena no header
+        const iniciaisHeader = document.getElementById('iniciais-logado');
+
+        if(imgDisplay) imgDisplay.src = base64Image;
+        
+        if(imgHeader && iniciaisHeader) {
+            imgHeader.src = base64Image;
+            imgHeader.classList.remove('hidden');
+            iniciaisHeader.classList.add('hidden');
+        }
+
+        // 2. Salva temporariamente no objeto global
+        if (usuarioLogado) {
+            usuarioLogado.foto_base64 = base64Image;
+            // Salva no LocalStorage para persistir
+            localStorage.setItem('artemis_user', JSON.stringify(usuarioLogado));
+            showToast("Foto do perfil atualizada!");
+        }
+    };
+
+    // Inicia a leitura do arquivo como uma URL Base64
+    reader.readAsDataURL(file);
 }
 
 function salvarPerfil() {
@@ -835,8 +911,10 @@ function salvarPerfil() {
     usuarioLogado.cep = document.getElementById('p_cep').value;
     usuarioLogado.sangue = document.getElementById('p_sangue').value;
     
+    // Nota: A foto já é salva imediatamente na função carregarFotoPerfil
+    
     localStorage.setItem('artemis_user', JSON.stringify(usuarioLogado));
-    preencherPerfilUI();
+    preencherPerfilUI(); // Atualiza nomes e cargos se mudaram
     showToast("Seus dados foram salvos com sucesso!");
 }
 
@@ -950,7 +1028,24 @@ function updDash() { const elProp = document.getElementById('dash-kpi-propostas'
 function popCli(){ const o = '<option value="">-- Cliente --</option>' + (glob.cli||[]).map(c=>`<option value="${c.id}">${c.nome_fantasia || c.nome_razao_social}</option>`).join(''); document.querySelectorAll('.select-cli').forEach(s => s.innerHTML = o); }
 function popAve(){ const o = '<option value="">-- Ave --</option>' + (glob.ave||[]).map(a=>`<option value="${a.id}">${a.nome}</option>`).join(''); document.querySelectorAll('.select-ave').forEach(s => s.innerHTML = o); }
 
-function showToast(m) { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'bg-white p-4 rounded-xl shadow-2xl border text-sm font-bold flex gap-2 items-center dark:bg-zinc-800 dark:text-white dark:border-zinc-700'; t.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-500"></i> ${m}`; c.appendChild(t); setTimeout(()=>t.remove(), 3000); }
+// showToast melhorado para aceitar tipo 'erro'
+function showToast(m, tipo = 'sucesso') { 
+    const c = document.getElementById('toast-container'); 
+    const t = document.createElement('div'); 
+    
+    // Define cores baseadas no tipo
+    let borderClass = 'border-zinc-200 dark:border-zinc-700';
+    let iconClass = 'fa-check-circle text-emerald-500';
+    if(tipo === 'erro') {
+        borderClass = 'border-red-500';
+        iconClass = 'fa-circle-xmark text-red-500';
+    }
+
+    t.className = `bg-white p-4 rounded-xl shadow-2xl border ${borderClass} text-sm font-bold flex gap-2 items-center dark:bg-zinc-800 dark:text-white`; 
+    t.innerHTML = `<i class="fa-solid ${iconClass}"></i> ${m}`; 
+    c.appendChild(t); 
+    setTimeout(()=>t.remove(), 3000); 
+}
 
 function getSelectText(id) { const el = document.getElementById(id); return el && el.options.length > 0 && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : 'Não Informado'; }
 
@@ -1033,7 +1128,6 @@ function iniciarGPS() {
 }
 function filtrarLista(tipo, termo) { if(termo.length > 2) showToast(`Pesquisando em ${tipo}...`); }
 function openSearch() { showToast("Abrindo Busca Global..."); }
-function carregarFotoPerfil(e) { showToast("Sua foto foi alterada!"); }
 function sincronizarOffline() { showToast("Sincronizando banco local..."); }
 function toggleAccordion(id) { const c = document.getElementById('content-'+id); if(c) c.classList.toggle('hidden'); }
 function toggleDropdown() { document.getElementById('user-dropdown').classList.toggle('hidden'); }

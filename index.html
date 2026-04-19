@@ -810,7 +810,7 @@ function renderNotificacoes() {
 function toggleNotif() { document.getElementById('notif-dropdown').classList.toggle('hidden'); }
 function limparNotificacoes() { notificacoes = []; renderNotificacoes(); document.getElementById('notif-dropdown').classList.add('hidden'); showToast("Todos os alertas foram lidos!"); }
 
-// SALVAMENTO REAL DO PERFIL (Local Storage)
+// SALVAMENTO REAL DO PERFIL E DADOS
 function preencherPerfilUI() {
     if(!usuarioLogado) return;
     document.getElementById('nome-logado-header').innerText = formatName(usuarioLogado.nome);
@@ -836,8 +836,13 @@ function salvarPerfil() {
     usuarioLogado.sangue = document.getElementById('p_sangue').value;
     
     localStorage.setItem('artemis_user', JSON.stringify(usuarioLogado));
-    preencherPerfilUI(); // Atualiza a tela instantaneamente
+    preencherPerfilUI();
     showToast("Seus dados foram salvos com sucesso!");
+}
+
+// FUNÇÃO MESTRA PARA SALVAR TUDO NA MEMÓRIA DO NAVEGADOR
+function salvarMemoria() {
+    localStorage.setItem('artemis_dados', JSON.stringify(glob));
 }
 
 // INTEGRAÇÃO BRASIL API (CNPJ E CEP)
@@ -899,19 +904,29 @@ async function buscarCepPerfil() {
     } catch(e) {}
 }
 
-// RESTANTE DAS FUNÇÕES ORIGINAIS
+// RESTANTE DAS FUNÇÕES ORIGINAIS ADAPTADAS PARA O SALVAMENTO REAL
 async function carregarTudo() { 
-    glob.cli = [{id: 99, nome_fantasia: "Indústrias Recife S.A.", documento_cpf_cnpj: "12.345.678/0001-99", contato_nome: "João Diretor"}];
-    glob.ave = [{id: 99, nome: "Hermes", especie: "Gavião Asa-de-Telha", status_clinico: "Apto para Voo", peso_minimo: 680, peso_maximo: 720}];
-    glob.est = [{id: 99, nome_item: "Luva de Raspa", categoria: "EPI", quantidade: 15, ca_epi: "45678"}];
-    glob.prop = [{id: 99, cliente: "Indústrias Recife S.A.", tipo_servico: "Manejo de Pombos", valor_mensal: "4500.00", status: "Em Negociação"}];
-    glob.pdca = [{id: 99, problema: "Retorno constante de pombos na doca", cliente: "Indústrias Recife S.A.", responsavel: "Arisval", prazo: new Date().toISOString(), status: "Pendente"}];
-    glob.vis = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Hermes", data_visita: new Date().toISOString(), qtd_interacoes: 12, qtd_capturas: 0, observacoes: "Serviço realizado."}];
-    glob.ag = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Hermes", data_agendada: new Date().toISOString().split('T')[0], status: "Pendente"}];
-    glob.fin = [{id: 99, descricao: "Fatura Mensalidade", cliente: "Indústrias Recife S.A.", valor: "4500.00", tipo: "Receita", status: "Pago"}];
-    glob.cont = [{id: 99, cliente: "Indústrias Recife S.A.", valor_mensal: "4500.00", frequencia_semanal: 2, data_fim: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()}];
+    // Verifica se já tem dados salvos na memória do navegador
+    let dadosSalvos = localStorage.getItem('artemis_dados');
+    
+    if (dadosSalvos) {
+        // Se tiver, usa os dados reais que você cadastrou!
+        glob = JSON.parse(dadosSalvos);
+    } else {
+        // Se for a primeira vez abrindo, cria os dados de demonstração
+        glob.cli = [{id: 99, nome_fantasia: "Indústrias Recife S.A.", documento_cpf_cnpj: "12.345.678/0001-99", contato_nome: "João Diretor"}];
+        glob.ave = [{id: 99, nome: "Hermes", especie: "Gavião Asa-de-Telha", status_clinico: "Apto para Voo", peso_minimo: 680, peso_maximo: 720}];
+        glob.est = [{id: 99, nome_item: "Luva de Raspa", categoria: "EPI", quantidade: 15, ca_epi: "45678"}];
+        glob.prop = [{id: 99, cliente: "Indústrias Recife S.A.", tipo_servico: "Manejo de Pombos", valor_mensal: "4500.00", status: "Em Negociação"}];
+        glob.pdca = [{id: 99, problema: "Retorno constante de pombos na doca", cliente: "Indústrias Recife S.A.", responsavel: "Arisval", prazo: new Date().toISOString(), status: "Pendente"}];
+        glob.vis = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Hermes", data_visita: new Date().toISOString(), qtd_interacoes: 12, qtd_capturas: 0, observacoes: "Serviço realizado."}];
+        glob.ag = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Hermes", data_agendada: new Date().toISOString().split('T')[0], status: "Pendente"}];
+        glob.fin = [{id: 99, descricao: "Fatura Mensalidade", cliente: "Indústrias Recife S.A.", valor: "4500.00", tipo: "Receita", status: "Pago"}];
+        glob.cont = [{id: 99, cliente: "Indústrias Recife S.A.", valor_mensal: "4500.00", frequencia_semanal: 2, data_fim: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()}];
+        salvarMemoria(); // Salva esse início para não perder
+    }
 
-    rendCli(); rendAve(); rendEst(); rendProp(); rendPDCA(); rendVis(); rendAg(); rendFin(); rendCont(); popCli(); popAve();
+    rendCli(); rendAve(); rendEst(); rendProp(); rendPDCA(); rendVis(); rendAg(); rendFin(); rendCont(); popCli(); popAve(); updDash();
 }
 
 function showTab(id) { document.querySelectorAll('.content').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('nav-active')); const b = document.getElementById('btn-'+id); if(b) b.classList.add('nav-active');}
@@ -930,6 +945,7 @@ function rendVis() { const c = document.getElementById('lista-visitas'); if(!c) 
 function rendAg() { const c = document.getElementById('lista-agenda'); if(!c) return; if(viewModos.agenda === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.ag.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl shadow-sm card"><b class="dark:text-white">${x.cliente}</b><br><span class="text-xs text-zinc-500">${new Date(x.data_agendada).toLocaleDateString()} | ${x.ave}</span></div>`).join(''); } }
 function rendFin() { const c = document.getElementById('lista-financeiro'); if(!c) return; if(viewModos.financeiro === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.fin.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border-l-4 ${x.tipo==='Receita'?'border-emerald-500':'border-red-500'} shadow-sm card"><b class="text-lg dark:text-white">${x.descricao}</b><p class="text-sm text-zinc-500">${x.cliente||'Sem Cliente'}</p><p class="text-lg font-bold text-zinc-800 dark:text-zinc-200">R$ ${x.valor}</p></div>`).join(''); } }
 function rendCont() { const c = document.getElementById('lista-contratos'); if(!c) return; if(viewModos.contratos === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.cont.map(x=>`<div class="bg-white dark:bg-zinc-900 p-5 rounded-2xl border-l-4 border-accent shadow-sm card"><b class="dark:text-white">${x.cliente}</b><p class="text-sm mt-1 text-zinc-500">R$ ${x.valor_mensal}</p></div>`).join(''); } }
+function updDash() { const elProp = document.getElementById('dash-kpi-propostas'); const elAve = document.getElementById('dash-kpi-aves'); if(elProp) elProp.innerText = glob.prop.length.toString(); if(elAve) elAve.innerText = glob.ave.length.toString(); }
 
 function popCli(){ const o = '<option value="">-- Cliente --</option>' + (glob.cli||[]).map(c=>`<option value="${c.id}">${c.nome_fantasia || c.nome_razao_social}</option>`).join(''); document.querySelectorAll('.select-cli').forEach(s => s.innerHTML = o); }
 function popAve(){ const o = '<option value="">-- Ave --</option>' + (glob.ave||[]).map(a=>`<option value="${a.id}">${a.nome}</option>`).join(''); document.querySelectorAll('.select-ave').forEach(s => s.innerHTML = o); }
@@ -943,6 +959,7 @@ function salvarCliente() {
     const doc = document.getElementById('c_doc').value;
     if(!nome) { showToast("Por favor, preencha a Razão Social ou Nome Fantasia!"); return; }
     glob.cli.push({id: Date.now(), nome_fantasia: nome, nome_razao_social: nome, documento_cpf_cnpj: doc || '00.000.000/0000-00'});
+    salvarMemoria();
     rendCli(); popCli(); showToast("Cliente adicionado à carteira!"); document.querySelectorAll('#tab-clientes input').forEach(i => i.value = '');
 }
 function limparFormCli() { document.querySelectorAll('#tab-clientes input').forEach(i => i.value = ''); }
@@ -951,6 +968,7 @@ function salvarAve() {
     const nome = document.getElementById('a_nome').value;
     if(!nome) { showToast("Por favor, preencha o nome da ave!"); return; }
     glob.ave.push({id: Date.now(), nome: nome, especie: document.getElementById('a_especie').value || 'Não informada', status_clinico: document.getElementById('a_status').value});
+    salvarMemoria();
     rendAve(); popAve(); showToast("Ave salva com sucesso!"); document.querySelectorAll('#tab-plantel input, #tab-plantel textarea').forEach(i => i.value = '');
 }
 function limparFormAve() { document.querySelectorAll('#tab-plantel input, #tab-plantel textarea').forEach(i => i.value = ''); }
@@ -959,6 +977,7 @@ function salvarEstoque() {
     const nome = document.getElementById('e_nome').value;
     if(!nome) { showToast("O item de estoque precisa de um nome."); return; }
     glob.est.push({id: Date.now(), nome_item: nome, categoria: document.getElementById('e_cat').value, quantidade: document.getElementById('e_qtd').value || 0});
+    salvarMemoria();
     rendEst(); showToast("Material guardado!"); document.querySelectorAll('#tab-estoque input').forEach(i => i.value = '');
 }
 function limparFormEst() { document.querySelectorAll('#tab-estoque input').forEach(i => i.value = ''); }
@@ -967,7 +986,8 @@ function mudarStep(n) { [1,2,3].forEach(i => { const el = document.getElementByI
 
 function salvarProposta() {
     glob.prop.push({id: Date.now(), cliente: getSelectText('p_cli'), tipo_servico: document.getElementById('p_serv').value || 'Serviço', valor_mensal: document.getElementById('p_val').value || "0.00", status: document.getElementById('p_status').value});
-    rendProp(); showToast("Proposta enviada!"); document.querySelectorAll('#tab-propostas input, #tab-propostas textarea').forEach(i => i.value = ''); mudarStep(1);
+    salvarMemoria();
+    rendProp(); showToast("Proposta enviada!"); document.querySelectorAll('#tab-propostas input, #tab-propostas textarea').forEach(i => i.value = ''); mudarStep(1); updDash();
 }
 function limparFormProp() { document.querySelectorAll('#tab-propostas input, #tab-propostas textarea').forEach(i => i.value = ''); }
 
@@ -975,6 +995,7 @@ function salvarPDCA() {
     const prob = document.getElementById('pd_prob').value;
     if(!prob) { showToast("Informe qual é o problema."); return; }
     glob.pdca.push({id: Date.now(), problema: prob, cliente: getSelectText('pd_cli'), responsavel: document.getElementById('pd_resp').value || 'Técnico', prazo: document.getElementById('pd_prazo').value || new Date().toISOString(), status: document.getElementById('pd_status').value});
+    salvarMemoria();
     rendPDCA(); showToast("Ação registrada!"); document.querySelectorAll('#tab-pdca input, #tab-pdca textarea').forEach(i => i.value = '');
 }
 
@@ -982,6 +1003,7 @@ function salvarAgendamento() {
     const data = document.getElementById('ag_data').value;
     if(!data) { showToast("Defina uma data válida!"); return; }
     glob.ag.push({id: Date.now(), cliente: getSelectText('ag_cli'), ave: getSelectText('ag_ave'), data_agendada: data, status: "Pendente"});
+    salvarMemoria();
     rendAg(); showToast("Missão enviada para a agenda!"); document.getElementById('ag_data').value = '';
 }
 
@@ -989,6 +1011,7 @@ function salvarFinanceiro() {
     const desc = document.getElementById('f_desc').value;
     if(!desc) { showToast("Preencha descrição e valor."); return; }
     glob.fin.push({id: Date.now(), descricao: desc, cliente: getSelectText('f_cli'), valor: document.getElementById('f_valor').value, tipo: document.getElementById('f_tipo').value, status: "Pago"});
+    salvarMemoria();
     rendFin(); showToast("Caixa atualizado!"); document.querySelectorAll('#tab-financeiro input').forEach(i => i.value = '');
 }
 
@@ -996,13 +1019,18 @@ function salvarContrato() {
     const val = document.getElementById('ct_val').value;
     if(!val) { showToast("Informe o valor do contrato."); return; }
     glob.cont.push({id: Date.now(), cliente: getSelectText('ct_cli'), valor_mensal: val, frequencia_semanal: document.getElementById('ct_freq').value || 1, data_fim: document.getElementById('ct_fim').value || new Date().toISOString()});
+    salvarMemoria();
     rendCont(); showToast("Contrato selado!"); document.querySelectorAll('#tab-contratos input').forEach(i => i.value = '');
 }
 
 function salvarUsuario() { showToast("Novo acesso concedido."); document.querySelectorAll('#tab-usuarios input').forEach(i => i.value = ''); }
 function salvarConfig() { showToast("Informações da empresa salvas."); }
 function limparFormOp() { document.querySelectorAll('#tab-operacao input, #tab-operacao textarea').forEach(i => { if(i.type==='checkbox' || i.type==='radio') i.checked=false; else i.value=''; }); showToast("Relatório zerado."); }
-function iniciarGPS() { showToast("Check-in enviado!"); mudarStepOp(1); limparFormOp(); }
+function iniciarGPS() { 
+    glob.vis.push({id: Date.now(), cliente: getSelectText('o_cli'), ave: getSelectText('o_ave'), data_visita: new Date().toISOString(), qtd_interacoes: document.getElementById('o_int').value || 0, qtd_capturas: document.getElementById('o_cap').value || 0, observacoes: document.getElementById('o_obs').value});
+    salvarMemoria();
+    rendVis(); showToast("Check-in enviado!"); mudarStepOp(1); limparFormOp(); 
+}
 function filtrarLista(tipo, termo) { if(termo.length > 2) showToast(`Pesquisando em ${tipo}...`); }
 function openSearch() { showToast("Abrindo Busca Global..."); }
 function carregarFotoPerfil(e) { showToast("Sua foto foi alterada!"); }

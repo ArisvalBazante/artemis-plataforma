@@ -690,10 +690,14 @@
     <div id="toast-container" class="fixed bottom-8 left-8 z-[60] flex flex-col gap-3 pointer-events-none"></div>
 
     <script>
-from pathlib import Path
-p = Path('output/index_script_replacement.txt')
-p.parent.mkdir(exist_ok=True)
-text = '''const API = 'https://artemis-backend-eso2.onrender.com'; 
+const API = 'https://artemis-backend-eso2.onrender.com';
+let glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] };
+let usuarioLogado = null;
+let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
+let notificacoes = [
+  { id: 1, texto: "Contrato de Indústrias Recife S.A. vence em 15 dias" },
+  { id: 2, texto: "Hermes (Gavião) com vacinação pendente" }
+];
 let glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] };
 let usuarioLogado = null; 
 let configGlobal = { nome_empresa: 'Silvestre Ambiental' };

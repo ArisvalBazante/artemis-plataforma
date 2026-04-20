@@ -735,12 +735,12 @@ window.onload = () => { carregarTema(); document.getElementById('tela-login').cl
 function carregarTema() { if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark'); }
 
 async function fazerLogin() {
-  // Lembre-se de colocar o underline (_) no id do email e da senha!
-  const em = document.getElementById('login_email').value.trim();
-  const se = document.getElementById('login_senha').value.trim();
+    const em = document.getElementById('login_email').value.trim();
+    const se = document.getElementById('login_senha').value.trim();
+    const erroBox = document.getElementById('login-erro'); // <-- Foi essa linha que sumiu!
 
-  erroBox.classList.add('hidden');
-  erroBox.classList.remove('text-red-600', 'bg-red-50', 'text-amber-600', 'bg-amber-50');
+    erroBox.classList.add('hidden');
+    erroBox.classList.remove('text-red-600', 'bg-red-50', 'text-amber-600', 'bg-amber-50');
 
   if (!em || !se) {
     erroBox.innerText = 'Preencha e-mail e senha.';

@@ -83,7 +83,7 @@
                 <div onclick="showTab('tab-clientes')" id="btn-tab-clientes" class="aba-menu admin comercial sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-users w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Clientes</span></div>
                 <div onclick="showTab('tab-contratos')" id="btn-tab-contratos" class="aba-menu admin comercial sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-file-signature w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Contratos</span></div>
                 <div onclick="showTab('tab-financeiro')" id="btn-tab-financeiro" class="aba-menu admin comercial sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-money-bill-wave w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Financeiro</span></div>
-                <div onclick="showTab('tab-plantel')" id="btn-tab-plantel" class="aba-menu admin comercial sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-feather w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Plantel de Aves</span></div>
+                <div onclick="showTab('tab-plantel')" id="btn-tab-plantel" class="aba-menu admin tecnico comercial sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-feather w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Plantel de Aves</span></div>
                 <div onclick="showTab('tab-estoque')" id="btn-tab-estoque" class="aba-menu admin comercial sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-box w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Estoque & EPIs</span></div>
                 <div onclick="showTab('tab-usuarios')" id="btn-tab-usuarios" class="aba-menu admin sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-shield-halved w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Acessos</span></div>
                 <div onclick="showTab('tab-config')" id="btn-tab-config" class="aba-menu admin sidebar-link flex items-center gap-4 px-6 py-4 rounded-3xl cursor-pointer text-zinc-700 dark:text-zinc-300"><i class="fa-solid fa-gear w-5 h-5 text-center shrink-0"></i><span class="font-medium menu-text transition-opacity">Configurações</span></div>
@@ -336,150 +336,68 @@
                 </div>
 
                 <div id="tab-plantel" class="content max-w-5xl mx-auto">
-    
-    <div id="msg-vet" class="hidden bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-6 flex items-start gap-3">
-        <i class="fa-solid fa-user-doctor text-blue-500 mt-1"></i>
-        <p class="text-sm text-blue-800 dark:text-blue-300"><b>Modo Clínico:</b> Você tem permissão para lançar novos prontuários e editar seus próprios registros nas últimas 24h.</p>
-    </div>
-
-    <div id="bloco-admin-ave" class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8 admin-only">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-id-card"></i> Registro de Identidade (Acesso ADM)</h3>
-            <button onclick="limparFormAve()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <input type="text" id="a_nome" placeholder="Nome da Ave" class="input-modern w-full p-4 rounded-xl">
-            <input type="text" id="a_especie" placeholder="Espécie" class="input-modern w-full p-4 rounded-xl">
-            <input type="text" id="a_anilha" placeholder="Número da Anilha" class="input-modern w-full p-4 rounded-xl">
-        </div>
-        <div class="grid grid-cols-3 gap-4 mb-6">
-            <input type="number" id="a_min" placeholder="Peso Mín ideal (g)" class="input-modern w-full p-4 rounded-xl">
-            <input type="number" id="a_max" placeholder="Peso Máx ideal (g)" class="input-modern w-full p-4 rounded-xl">
-            <input type="number" id="a_idade" placeholder="Idade (Anos)" class="input-modern w-full p-4 rounded-xl">
-        </div>
-        <button onclick="showToast('Modo de Visualização: O banco será conectado depois!')" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2 transition"><i class="fa-solid fa-floppy-disk"></i> Cadastrar Nova Ave</button>
-    </div>
-
-    <div class="bg-emerald-50 dark:bg-emerald-900/10 p-8 rounded-3xl shadow-sm border border-emerald-100 dark:border-emerald-800/30 mb-8">
-        <h3 class="text-xl font-bold text-emerald-800 dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-notes-medical"></i> Novo Prontuário Clínico</h3>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div class="md:col-span-2">
-                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Selecione o Animal</label>
-                <select id="pr_ave" class="input-modern w-full p-4 rounded-xl border-emerald-200 select-ave"><option>Floquinho</option></select>
-            </div>
-            <div>
-                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Data da Avaliação</label>
-                <input type="date" id="pr_data" class="input-modern w-full p-4 rounded-xl border-emerald-200">
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div>
-                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Peso Atual (g)</label>
-                <input type="number" id="pr_peso" placeholder="Ex: 710" class="input-modern w-full p-4 rounded-xl border-emerald-200">
-            </div>
-            <div>
-                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Status Clínico</label>
-                <select id="pr_status" class="input-modern w-full p-4 rounded-xl border-emerald-200"><option value="Apto para Voo">Apto para Voo</option><option value="Em Tratamento">Em Tratamento</option><option value="Muda de Penas">Muda de Penas (Inapto)</option><option value="Óbito">Óbito</option></select>
-            </div>
-            <div class="flex items-end pb-1">
-                <label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-emerald-200 dark:border-emerald-700/50 rounded-xl cursor-pointer w-full hover:border-primary transition">
-                    <input type="checkbox" id="pr_vacina_hoje" class="w-5 h-5 text-primary rounded">
-                    <span class="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Dose Aplicada Hoje</span>
-                </label>
-            </div>
-        </div>
-        
-        <textarea id="pr_obs" placeholder="Detalhamento (Sintomas, medicações aplicadas, observações de comportamento...)" class="input-modern w-full p-4 rounded-xl h-24 mb-6 border-emerald-200"></textarea>
-        
-        <button onclick="showToast('Modo de Visualização!')" class="w-full bg-primary hover:bg-green-800 text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2 shadow-lg transition"><i class="fa-solid fa-stethoscope"></i> Anexar ao Histórico da Ave</button>
-    </div>
-
-    <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Plantel e Histórico Clínico</h3>
-        <div class="flex items-center gap-2">
-            <div class="relative hidden sm:block">
-                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
-                <input type="text" onkeyup="filtrarLista('aves', this.value)" placeholder="Filtrar aves..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
-            </div>
-            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
-                <button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
-                <button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="lista-aves"></div>
-
-</div>
-        
-        <textarea id="pr_obs" placeholder="Detalhamento (Sintomas, medicações aplicadas, observações de comportamento...)" class="input-modern w-full p-4 rounded-xl h-24 mb-6 border-emerald-200"></textarea>
-        
-        <button onclick="showToast('Modo de Visualização!')" class="w-full bg-primary hover:bg-green-800 text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2 shadow-lg transition"><i class="fa-solid fa-stethoscope"></i> Anexar ao Histórico da Ave</button>
-    </div>
-
-    <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Plantel e Histórico Clínico</h3>
-    </div>
-    
-    <div class="grid grid-cols-1 gap-4">
-        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row gap-6">
-            <div class="md:w-1/3 border-b md:border-b-0 md:border-r border-zinc-100 dark:border-zinc-800 pb-4 md:pb-0 md:pr-6">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-dove"></i></div>
-                    <div><h4 class="font-bold text-lg dark:text-white">Floquinho</h4><p class="text-xs text-zinc-500">Coruja Buraqueira • Anilha: 98765</p></div>
-                </div>
-                <div class="mt-4 space-y-2">
-                    <div class="flex justify-between text-sm"><span class="text-zinc-500">Idade:</span><span class="font-semibold dark:text-white">3 anos</span></div>
-                    <div class="flex justify-between text-sm"><span class="text-zinc-500">Peso Ideal:</span><span class="font-semibold dark:text-white">200g - 250g</span></div>
-                    <div class="flex justify-between text-sm"><span class="text-zinc-500">Próx. Vacina:</span><span class="font-semibold text-red-500"><i class="fa-solid fa-triangle-exclamation"></i> Vencida (10/03/26)</span></div>
-                </div>
-            </div>
-            <div class="md:w-2/3">
-                <h5 class="text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-3"><i class="fa-solid fa-clock-rotate-left"></i> Últimos Registros Médicos</h5>
-                <div class="space-y-3">
-                    <div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-700 rounded-xl relative group">
-                        <div class="flex justify-between items-start mb-1"><span class="text-xs font-bold text-zinc-500"><i class="fa-regular fa-calendar"></i> Hoje, 14:30 • por Dr. Paulo (Vet)</span><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[10px] font-bold">Apto para Voo</span></div>
-                        <p class="text-sm text-zinc-700 dark:text-zinc-300">Peso: 230g. Animal ativo. Ferimento na asa esquerda cicatrizado.</p>
-                        <button class="absolute top-3 right-3 text-primary hidden group-hover:block" title="Editar (Ainda no prazo de 24h)"><i class="fa-solid fa-pen"></i></button>
+                    
+                    <div id="msg-vet" class="hidden bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-6 flex items-start gap-3">
+                        <i class="fa-solid fa-user-doctor text-blue-500 mt-1"></i>
+                        <p class="text-sm text-blue-800 dark:text-blue-300"><b>Modo Clínico:</b> Você tem permissão para lançar novos prontuários e editar seus próprios registros nas últimas 24h.</p>
                     </div>
-                    <div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-700 rounded-xl relative">
-                        <div class="flex justify-between items-start mb-1"><span class="text-xs font-bold text-zinc-500"><i class="fa-regular fa-calendar"></i> 10/04/2026 • por Arisval (ADM)</span><span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-bold">Em Tratamento</span></div>
-                        <p class="text-sm text-zinc-700 dark:text-zinc-300">Peso: 195g (Abaixo do ideal). Iniciado antibiótico.</p>
-                        <i class="fa-solid fa-lock absolute top-4 right-4 text-zinc-300 dark:text-zinc-600 text-sm" title="Registro Fechado (> 24h)"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+                    <div id="bloco-admin-ave" class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8 admin-only">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-id-card"></i> Registro de Identidade (Acesso ADM)</h3>
+                            <button onclick="limparFormAve()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                            <input type="text" id="a_nome" placeholder="Nome" class="input-modern w-full p-4 rounded-xl">
+                            <input type="text" id="a_nome" placeholder="Nome da Ave" class="input-modern w-full p-4 rounded-xl">
                             <input type="text" id="a_especie" placeholder="Espécie" class="input-modern w-full p-4 rounded-xl">
                             <input type="text" id="a_anilha" placeholder="Número da Anilha" class="input-modern w-full p-4 rounded-xl">
                         </div>
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <input type="number" id="a_min" placeholder="Peso Mínimo (g)" class="input-modern w-full p-4 rounded-xl">
-                            <input type="number" id="a_max" placeholder="Peso Máximo (g)" class="input-modern w-full p-4 rounded-xl">
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <input type="number" id="a_min" placeholder="Peso Mín ideal (g)" class="input-modern w-full p-4 rounded-xl">
+                            <input type="number" id="a_max" placeholder="Peso Máx ideal (g)" class="input-modern w-full p-4 rounded-xl">
+                            <input type="number" id="a_idade" placeholder="Idade (Anos)" class="input-modern w-full p-4 rounded-xl">
                         </div>
-                        <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-700 mb-6">
-                            <h4 class="font-bold text-zinc-700 dark:text-zinc-300 mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-notes-medical text-primary"></i> Prontuário Médico</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-                                <div>
-                                    <label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Status Clínico</label>
-                                    <select id="a_status" class="input-modern w-full p-4 rounded-xl"><option value="Apto para Voo">Apto para Voo</option><option value="Em Tratamento">Em Tratamento</option><option value="Muda de Penas">Muda de Penas (Inapto)</option><option value="Óbito">Óbito</option></select>
-                                </div>
-                                <div><label class="text-xs font-bold text-zinc-500 ml-1 mb-1 block">Última Avaliação</label><input type="date" id="a_data_aval" class="input-modern w-full p-4 rounded-xl"></div>
-                                <div class="flex items-end pb-1"><label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl cursor-pointer w-full hover:border-primary transition"><input type="checkbox" id="a_vacina" class="w-5 h-5 text-primary rounded" checked><span class="text-sm font-semibold dark:text-zinc-200">Vacinas em Dia</span></label></div>
-                            </div>
-                            <input type="text" id="a_doenca" placeholder="Doenças Preexistentes / Alergias" class="input-modern w-full p-4 rounded-xl mb-4">
-                            <textarea id="a_hist_det" placeholder="Detalhamento Completo (Histórico, Consultas...)" class="input-modern w-full p-4 rounded-xl h-24"></textarea>
-                        </div>
-                        <button id="btn-ave" onclick="salvarAve()" class="w-full bg-primary text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Salvar Ave</button>
+                        <button onclick="showToast('Modo de Visualização: O banco será conectado depois!')" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2 transition"><i class="fa-solid fa-floppy-disk"></i> Cadastrar Nova Ave</button>
                     </div>
+
+                    <div class="bg-emerald-50 dark:bg-emerald-900/10 p-8 rounded-3xl shadow-sm border border-emerald-100 dark:border-emerald-800/30 mb-8">
+                        <h3 class="text-xl font-bold text-emerald-800 dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-notes-medical"></i> Novo Prontuário Clínico</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="md:col-span-2">
+                                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Selecione o Animal</label>
+                                <select id="pr_ave" class="input-modern w-full p-4 rounded-xl border-emerald-200 select-ave"><option>Floquinho</option></select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Data da Avaliação</label>
+                                <input type="date" id="pr_data" class="input-modern w-full p-4 rounded-xl border-emerald-200">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Peso Atual (g)</label>
+                                <input type="number" id="pr_peso" placeholder="Ex: 710" class="input-modern w-full p-4 rounded-xl border-emerald-200">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Status Clínico</label>
+                                <select id="pr_status" class="input-modern w-full p-4 rounded-xl border-emerald-200"><option value="Apto para Voo">Apto para Voo</option><option value="Em Tratamento">Em Tratamento</option><option value="Muda de Penas">Muda de Penas (Inapto)</option><option value="Óbito">Óbito</option></select>
+                            </div>
+                            <div class="flex items-end pb-1">
+                                <label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-emerald-200 dark:border-emerald-700/50 rounded-xl cursor-pointer w-full hover:border-primary transition">
+                                    <input type="checkbox" id="pr_vacina_hoje" class="w-5 h-5 text-primary rounded">
+                                    <span class="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Dose Aplicada Hoje</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <textarea id="pr_obs" placeholder="Detalhamento (Sintomas, medicações aplicadas, observações de comportamento...)" class="input-modern w-full p-4 rounded-xl h-24 mb-6 border-emerald-200"></textarea>
+                        
+                        <button onclick="showToast('Modo de Visualização!')" class="w-full bg-primary hover:bg-green-800 text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2 shadow-lg transition"><i class="fa-solid fa-stethoscope"></i> Anexar ao Histórico da Ave</button>
+                    </div>
+
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Plantel Registrado</h3>
+                        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Plantel e Histórico Clínico</h3>
                         <div class="flex items-center gap-2">
                             <div class="relative hidden sm:block">
                                 <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
@@ -491,6 +409,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div id="lista-aves"></div>
                 </div>
 
@@ -850,7 +769,7 @@ function carregarTema() { if (window.matchMedia && window.matchMedia('(prefers-c
 async function fazerLogin() {
     const em = document.getElementById('login_email').value.trim();
     const se = document.getElementById('login_senha').value.trim();
-    const erroBox = document.getElementById('login-erro'); // <-- Foi essa linha que sumiu!
+    const erroBox = document.getElementById('login-erro');
 
     erroBox.classList.add('hidden');
     erroBox.classList.remove('text-red-600', 'bg-red-50', 'text-amber-600', 'bg-amber-50');
@@ -905,6 +824,12 @@ function init() {
     Object.keys(viewModos).forEach(k => mudarView(k, viewModos[k])); 
     carregarPrefs(); 
     carregarTudo(); 
+
+    // LÓGICA DE PERMISSÃO DO VETERINÁRIO (TÉCNICO)
+    if (usuarioLogado && usuarioLogado.perfil === 'tecnico') {
+        document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
+        document.getElementById('msg-vet').classList.remove('hidden');
+    }
 }
 
 function atualizarFotosUI(base64Image) {
@@ -1040,7 +965,7 @@ function showTab(id) { document.querySelectorAll('.content').forEach(c => c.clas
 function mudarView(aba, modo) { viewModos[aba] = modo; ['grid', 'list', 'calendar'].forEach(b => { const btn = document.getElementById(`btn-view-${b}-${aba}`); if(btn) btn.className = modo === b ? 'px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition' : 'px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition'; }); if(aba==='clientes') rendCli(); if(aba==='aves') rendAve(); if(aba==='estoque') rendEst(); if(aba==='propostas') rendProp(); if(aba==='pdca') rendPDCA(); if(aba==='operacao') rendVis(); if(aba==='agenda') rendAg(); if(aba==='financeiro') rendFin(); if(aba==='contratos') rendCont(); }
 function tableTpl(heads, bodyHtml) { return `<div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm text-zinc-600 dark:text-zinc-400 whitespace-nowrap"><thead class="bg-zinc-50 dark:bg-zinc-800/50 text-zinc-800 dark:text-zinc-200 font-bold"><tr>${heads.map(h=>`<th class="p-4">${h}</th>`).join('')}</tr></thead><tbody>${bodyHtml}</tbody></table></div>`; }
 function rendCli() { const c = document.getElementById('lista-clientes'); if(!c) return; if(viewModos.clientes === 'grid') { c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.cli.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><b class="text-lg dark:text-white">${x.nome_fantasia || x.nome_razao_social}</b><br><span class="text-xs text-zinc-500">${x.documento_cpf_cnpj || ''}</span><div class="flex gap-2 mt-4"><button class="flex-1 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl text-xs font-bold hover:text-primary transition"><i class="fa-solid fa-pen"></i> Editar</button><button onclick="deletarItem('cli', ${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'CNPJ/CPF', 'Ações'], glob.cli.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800"><td class="p-4 font-bold dark:text-white">${x.nome_fantasia || x.nome_razao_social}</td><td class="p-4">${x.documento_cpf_cnpj || ''}</td><td class="p-4 text-right"><button class="text-primary mr-3"><i class="fa-solid fa-pen"></i></button><button onclick="deletarItem('cli', ${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
-function rendAve() { const c = document.getElementById('lista-aves'); if(!c) return; if(viewModos.aves === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.ave.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm card"><div class="flex justify-between"><b class="text-lg dark:text-white flex items-center gap-2"><i class="fa-solid fa-feather text-emerald-600"></i> ${x.nome}</b></div><span class="text-xs text-zinc-500">${x.especie}</span><div class="flex gap-2 mt-4"><button onclick="deletarItem('ave', ${x.id})" class="bg-red-50 dark:bg-red-900/20 text-red-600 px-4 rounded-xl transition hover:bg-red-100"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Nome', 'Espécie', 'Status', 'Ações'], glob.ave.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800"><td class="p-4 font-bold dark:text-white">${x.nome}</td><td class="p-4">${x.especie}</td><td class="p-4">${x.status_clinico || 'Sem Info'}</td><td class="p-4 text-right"><button onclick="deletarItem('ave', ${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
+function rendAve() { const c = document.getElementById('lista-aves'); if(!c) return; if(viewModos.aves === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.ave.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row gap-6"><div class="md:w-1/3 border-b md:border-b-0 md:border-r border-zinc-100 dark:border-zinc-800 pb-4 md:pb-0 md:pr-6"><div class="flex items-center gap-3 mb-2"><div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-dove"></i></div><div><h4 class="font-bold text-lg dark:text-white">${x.nome}</h4><p class="text-xs text-zinc-500">${x.especie} • Anilha: ${x.anilha||'S/N'}</p></div></div><div class="mt-4 space-y-2"><div class="flex justify-between text-sm"><span class="text-zinc-500">Peso Ideal:</span><span class="font-semibold dark:text-white">${x.peso_min||0}g - ${x.peso_max||0}g</span></div></div><button onclick="deletarItem('ave', ${x.id})" class="mt-4 w-full bg-red-50 dark:bg-red-900/20 text-red-600 px-4 py-2 rounded-xl transition hover:bg-red-100 admin-only"><i class="fa-solid fa-trash"></i> Excluir Registro</button></div><div class="md:w-2/3"><h5 class="text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-3"><i class="fa-solid fa-clock-rotate-left"></i> Últimos Registros Médicos</h5><div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-700 rounded-xl relative group"><div class="flex justify-between items-start mb-1"><span class="text-xs font-bold text-zinc-500"><i class="fa-regular fa-calendar"></i> Recém-adicionado</span><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[10px] font-bold">${x.status_clinico}</span></div><p class="text-sm text-zinc-700 dark:text-zinc-300">Banco de Dados ainda não possui histórico. (Apenas Visualização)</p></div></div></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Nome', 'Espécie', 'Status Atual', 'Ações'], glob.ave.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800"><td class="p-4 font-bold dark:text-white">${x.nome}</td><td class="p-4">${x.especie}</td><td class="p-4">${x.status_clinico || 'Sem Info'}</td><td class="p-4 text-right"><button onclick="deletarItem('ave', ${x.id})" class="text-red-500 admin-only"><i class="fa-solid fa-trash"></i></button></td></tr>`).join('')); } }
 function rendEst() { const c = document.getElementById('lista-estoque'); if(!c) return; if(viewModos.estoque === 'grid'){ c.className = 'grid grid-cols-1 md:grid-cols-2 gap-4'; c.innerHTML = glob.est.map(x => `<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm card"><b class="text-lg dark:text-white">${x.nome_item}</b><br><span class="text-xs text-zinc-400">${x.categoria}</span><p class="text-2xl font-bold text-primary mt-2">${x.quantidade}</p><button onclick="deletarItem('est', ${x.id})" class="mt-3 text-xs text-red-500 font-bold"><i class="fa-solid fa-trash"></i> Excluir</button></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Item', 'Qtd', 'Ações'], glob.est.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800"><td class="p-4 font-bold dark:text-white">${x.nome_item}</td><td class="p-4">${x.quantidade}</td><td class="p-4 text-right"><button onclick="deletarItem('est', ${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join(''));} }
 function rendProp() { const c = document.getElementById('lista-propostas'); if(!c) return; if(viewModos.propostas === 'grid') { c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.prop.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-accent shadow-sm card"><b class="dark:text-white">${x.cliente}</b><p class="text-sm text-zinc-500">${x.tipo_servico} | R$ ${x.valor_mensal}</p><button onclick="deletarItem('prop', ${x.id})" class="mt-3 text-xs text-red-500 font-bold"><i class="fa-solid fa-trash"></i></button></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Cliente', 'Valor', 'Ações'], glob.prop.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800"><td class="p-4 font-bold dark:text-white">${x.cliente}</td><td class="p-4">${x.valor_mensal}</td><td class="p-4 text-right"><button onclick="deletarItem('prop', ${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join(''));} }
 function rendPDCA() { const c = document.getElementById('lista-pdca'); if(!c) return; if(viewModos.pdca === 'grid'){ c.className = 'grid grid-cols-1 gap-4'; c.innerHTML = glob.pdca.map(x=>`<div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border-l-4 border-primary shadow-sm card"><b class="dark:text-white">${x.problema}</b><p class="text-sm text-zinc-500">${x.cliente}</p><button onclick="deletarItem('pdca', ${x.id})" class="mt-3 text-xs text-red-500 font-bold"><i class="fa-solid fa-trash"></i></button></div>`).join(''); } else { c.className = ''; c.innerHTML = tableTpl(['Problema', 'Ações'], glob.pdca.map(x=>`<tr class="border-t border-zinc-100 dark:border-zinc-800"><td class="p-4 font-bold dark:text-white">${x.problema}</td><td class="p-4 text-right"><button onclick="deletarItem('pdca', ${x.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td></tr>`).join(''));} }
@@ -1080,7 +1005,7 @@ async function deletarItem(tipo, id) {
   }
 }
 function limparFormCli() { const ids = ['c_id','c_doc','c_tel','c_nome','c_fantasia','c_contato_nome','c_email','c_cep','c_logradouro','c_numero','c_bairro','c_cidade','c_estado','c_com_nome','c_com_tel','c_fin_nome','c_fin_tel','c_ope_nome','c_ope_tel']; ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; }); const btn = document.getElementById('btn-salvar-cliente'); if (btn) btn.textContent = 'Salvar Cliente'; }
-// 1. A NOVA FUNÇÃO DE SALVAR
+
 async function salvarAve() {
   const nome = document.getElementById('a_nome').value;
   if(!nome) { showToast("Preencha o nome da ave!", "erro"); return; }
@@ -1093,11 +1018,11 @@ async function salvarAve() {
     anilha: document.getElementById('a_anilha').value || null,
     peso_min: document.getElementById('a_min').value || null,
     peso_max: document.getElementById('a_max').value || null,
-    status_clinico: document.getElementById('a_status').value,
-    ultima_avaliacao: document.getElementById('a_data_aval').value || null,
-    vacina_em_dia: document.getElementById('a_vacina').checked,
-    doencas: document.getElementById('a_doenca').value || null,
-    historico_detalhado: document.getElementById('a_hist_det').value || null
+    status_clinico: "Apto para Voo",
+    ultima_avaliacao: null,
+    vacina_em_dia: true,
+    doencas: null,
+    historico_detalhado: null
   };
 
   try {
@@ -1119,7 +1044,6 @@ async function salvarAve() {
   }
 }
 
-// 2. A FUNÇÃO DE CARREGAR AS AVES AO ENTRAR
 async function carregarAves() {
   try {
     const r = await fetch(`${API}/aves`);
@@ -1132,6 +1056,7 @@ async function carregarAves() {
     }
   } catch(e) {}
 }
+
 function limparFormAve() { document.querySelectorAll('#tab-plantel input, #tab-plantel textarea').forEach(i => i.value = ''); }
 function salvarEstoque() { const nome = document.getElementById('e_nome').value; if(!nome) { showToast("Informe um nome.", "erro"); return; } glob.est.push({id: Date.now(), nome_item: nome, categoria: document.getElementById('e_cat').value, quantidade: document.getElementById('e_qtd').value || 0}); salvarMemoria(); rendEst(); showToast("Material guardado!"); limparFormEst(); }
 function limparFormEst() { document.querySelectorAll('#tab-estoque input').forEach(i => i.value = ''); }

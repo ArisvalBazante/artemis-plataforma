@@ -941,10 +941,84 @@ function popAve(){ const o = '<option value="">-- Ave --</option>' + (glob.ave||
 function showToast(m, tipo = 'sucesso') { const c = document.getElementById('toast-container'); const t = document.createElement('div'); let borderClass = 'border-zinc-200 dark:border-zinc-700'; let iconClass = 'fa-check-circle text-emerald-500'; if(tipo === 'erro') { borderClass = 'border-red-500'; iconClass = 'fa-circle-xmark text-red-500'; } t.className = `bg-white p-4 rounded-xl shadow-2xl border ${borderClass} text-sm font-bold flex gap-2 items-center dark:bg-zinc-800 dark:text-white`; t.innerHTML = `<i class="fa-solid ${iconClass}"></i> ${m}`; c.appendChild(t); setTimeout(()=>t.remove(), 3000); }
 function getSelectText(id) { const el = document.getElementById(id); return el && el.options.length > 0 && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : 'Não Informado'; }
 async function carregarClientes() { try { const r = await fetch(`${API}/clientes`); const j = await r.json(); if(j.ok) { glob.cli = j.clientes || []; popCli(); rendCli(); } } catch(e) {} }
-async function salvarCliente() { const id = document.getElementById('c_id')?.value?.trim(); const payload = { documento_cpf_cnpj: document.getElementById('c_doc')?.value?.trim() || null, telefone_principal: document.getElementById('c_tel')?.value?.trim() || null, nome_razao_social: document.getElementById('c_nome')?.value?.trim() || '', nome_fantasia: document.getElementById('c_fantasia')?.value?.trim() || null, contato_nome: document.getElementById('c_contato_nome')?.value?.trim() || null, email_principal: document.getElementById('c_email')?.value?.trim() || null, cep: document.getElementById('c_cep')?.value?.trim() || null, logradouro: document.getElementById('c_logradouro')?.value?.trim() || null, numero: document.getElementById('c_numero')?.value?.trim() || null, bairro: document.getElementById('c_bairro')?.value?.trim() || null, cidade: document.getElementById('c_cidade')?.value?.trim() || null, estado: document.getElementById('c_estado')?.value?.trim() || null, contato_comercial_nome: document.getElementById('c_com_nome')?.value?.trim() || null, contato_comercial_tel: document.getElementById('c_com_tel')?.value?.trim() || null, contato_financeiro_nome: document.getElementById('c_fin_nome')?.value?.trim() || null, contato_financeiro_tel: document.getElementById('c_fin_tel')?.value?.trim() || null, contato_operacional_nome: document.getElementById('c_ope_nome')?.value?.trim() || null, contato_operacional_tel: document.getElementById('c_ope_tel')?.value?.trim() || null }; if(!payload.nome_razao_social) { showToast('Informe a razão social.', 'erro'); return; } try { const r = await fetch(id ? `${API}/clientes/${id}` : `${API}/clientes`, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const j = await r.json(); if(!j.ok) { showToast(j.msg || 'Erro ao salvar cliente.', 'erro'); return; } showToast(id ? 'Cliente atualizado com sucesso!' : 'Cliente salvo com sucesso!'); limparFormCli(); await carregarClientes(); } catch(e) { showToast('Erro de conexão ao salvar cliente.', 'erro'); } }
-async function deletarItem(tipo, id) { if(tipo !== 'cli') { glob[tipo] = (glob[tipo] || []).filter(x => x.id !== id); salvarMemoria(); if(tipo==='ave'){rendAve(); popAve();} if(tipo==='est')rendEst(); if(tipo==='prop')rendProp(); if(tipo==='pdca')rendPDCA(); if(tipo==='vis')rendVis(); if(tipo==='ag')rendAg(); if(tipo==='fin')rendFin(); if(tipo==='cont')rendCont(); showToast('Removido com sucesso!', 'erro'); return; } if(!confirm('Deseja realmente excluir este cliente?')) return; try { const r = await fetch(`${API}/clientes/${id}`, { method: 'DELETE' }); const j = await r.json(); if(!j.ok) { showToast(j.msg || 'Erro ao excluir cliente.', 'erro'); return; } showToast('Cliente excluído com sucesso!'); await carregarClientes(); } catch(e) { showToast('Erro de conexão ao excluir cliente.', 'erro'); } }
+async function salvarCliente() { const id = document.getElementById('c_id')?.value?.trim(); const payload = { documento_cpf_cnpj: document.getElementById('c_doc')?.value?.trim() || null, telefone_principal: document.getElementById('c_tel')?.value?.trim() || null, nome_razao_social: document.getElementById('c_nome')?.value?.trim() || '', nome_fantasia: document.getElementById('c_fantasia')?.value?.trim() || null, contato_nome: document.getElementById('c_contato_nome')?.value?.trim() || null, email_principal: document.getElementById('c_email')?.value?.trim() || null, cep: document.getElementById('c_cep')?.value?.trim() || null, logradouro: document.getElementById('c_logradouro')?.value?.trim() || null, numero: document.getElementById('c_numero')?.value?.trim() || null, bairro: document.getElementById('c_bairro')?.value?.trim() || null, cidade: document.getElementById('c_cidade')?.value?.trim() || null, estado: document.getElementById('c_estado')?.value?.trim() || null, contato_comercial_nome: document.getElementById('c_com_nome')?.value?.trim() || null, contato_comercial_tel: document.getElementById('c_com_tel')?.value?.trim() || null, contato_financeiro_nome: document.getElementById('c_fin_nome')?.value?.trim() || null, contato_financeiro_tel: document.getElementById('c_fin_tel')?.value?.trim() || null, contato_operacional_nome: document.getElementById('c_ope_nome')?.value?.trim() || null, contato_operacional_tel: document.getElementById('c_ope_tel')?.value?.trim() || null }; if(!payload.nome_razao_social) { showToast('Informe a razão social.', 'erro'); return; } try { const r = await fetch(id ? `${API}/clientes/${id}` : `${API}/clientes`, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const j = await r.json(); if(!j.ok) { showToast(j.msg || 'Erro ao salvar cliente.', 'erro'); return; } showToast(id ? 'Cliente atualizado com sucesso!' : 'Cliente salvo com sucesso!'); limparFormCli(); await carregarClientes(); await carregarAves();} catch(e) { showToast('Erro de conexão ao salvar cliente.', 'erro'); } }
+async function deletarItem(tipo, id) { 
+  if(tipo === 'cli') {
+    if(!confirm('Deseja realmente excluir este cliente?')) return; 
+    try { 
+      const r = await fetch(`${API}/clientes/${id}`, { method: 'DELETE' }); 
+      const j = await r.json(); 
+      if(j.ok) { showToast('Cliente excluído!'); await carregarClientes(); } 
+    } catch(e) { showToast('Erro', 'erro'); } 
+    
+  } else if (tipo === 'ave') {
+    if(!confirm('Deseja realmente excluir esta ave?')) return; 
+    try { 
+      const r = await fetch(`${API}/aves/${id}`, { method: 'DELETE' }); 
+      const j = await r.json(); 
+      if(j.ok) { showToast('Ave excluída da nuvem!'); await carregarAves(); } 
+    } catch(e) { showToast('Erro', 'erro'); } 
+    
+  } else {
+    glob[tipo] = (glob[tipo] || []).filter(x => x.id !== id); 
+    salvarMemoria(); 
+    if(tipo==='est')rendEst(); if(tipo==='prop')rendProp(); if(tipo==='pdca')rendPDCA(); if(tipo==='vis')rendVis(); if(tipo==='ag')rendAg(); if(tipo==='fin')rendFin(); if(tipo==='cont')rendCont(); 
+    showToast('Removido localmente!', 'erro'); 
+  }
+}
 function limparFormCli() { const ids = ['c_id','c_doc','c_tel','c_nome','c_fantasia','c_contato_nome','c_email','c_cep','c_logradouro','c_numero','c_bairro','c_cidade','c_estado','c_com_nome','c_com_tel','c_fin_nome','c_fin_tel','c_ope_nome','c_ope_tel']; ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; }); const btn = document.getElementById('btn-salvar-cliente'); if (btn) btn.textContent = 'Salvar Cliente'; }
-function salvarAve() { const nome = document.getElementById('a_nome').value; if(!nome) { showToast("Preencha o nome da ave!", "erro"); return; } glob.ave.push({id: Date.now(), nome: nome, especie: document.getElementById('a_especie').value || 'Não informada', status_clinico: document.getElementById('a_status').value}); salvarMemoria(); rendAve(); popAve(); showToast("Ave salva!"); limparFormAve(); }
+// 1. A NOVA FUNÇÃO DE SALVAR
+async function salvarAve() {
+  const nome = document.getElementById('a_nome').value;
+  if(!nome) { showToast("Preencha o nome da ave!", "erro"); return; }
+  
+  showToast("Enviando para a nuvem...");
+  
+  const payload = {
+    nome: nome,
+    especie: document.getElementById('a_especie').value || null,
+    anilha: document.getElementById('a_anilha').value || null,
+    peso_min: document.getElementById('a_min').value || null,
+    peso_max: document.getElementById('a_max').value || null,
+    status_clinico: document.getElementById('a_status').value,
+    ultima_avaliacao: document.getElementById('a_data_aval').value || null,
+    vacina_em_dia: document.getElementById('a_vacina').checked,
+    doencas: document.getElementById('a_doenca').value || null,
+    historico_detalhado: document.getElementById('a_hist_det').value || null
+  };
+
+  try {
+    const r = await fetch(`${API}/aves`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const j = await r.json();
+    if(j.ok) {
+      showToast("Ave cadastrada na nuvem com sucesso!");
+      limparFormAve();
+      await carregarAves(); 
+    } else {
+      showToast("Erro: " + j.msg, "erro");
+    }
+  } catch(e) {
+    showToast("Erro de conexão.", "erro");
+  }
+}
+
+// 2. A FUNÇÃO DE CARREGAR AS AVES AO ENTRAR
+async function carregarAves() {
+  try {
+    const r = await fetch(`${API}/aves`);
+    const j = await r.json();
+    if(j.ok) {
+      glob.ave = j.aves || [];
+      popAve();
+      rendAve();
+      updDash();
+    }
+  } catch(e) {}
+}
 function limparFormAve() { document.querySelectorAll('#tab-plantel input, #tab-plantel textarea').forEach(i => i.value = ''); }
 function salvarEstoque() { const nome = document.getElementById('e_nome').value; if(!nome) { showToast("Informe um nome.", "erro"); return; } glob.est.push({id: Date.now(), nome_item: nome, categoria: document.getElementById('e_cat').value, quantidade: document.getElementById('e_qtd').value || 0}); salvarMemoria(); rendEst(); showToast("Material guardado!"); limparFormEst(); }
 function limparFormEst() { document.querySelectorAll('#tab-estoque input').forEach(i => i.value = ''); }

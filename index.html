@@ -347,8 +347,8 @@
             <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-id-card"></i> Registro de Identidade (Acesso ADM)</h3>
             <button onclick="limparFormAve()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-            <input type="text" id="a_nome" placeholder="Nome da Ave" class="input-modern w-full p-4 rounded-xl md:col-span-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <input type="text" id="a_nome" placeholder="Nome da Ave" class="input-modern w-full p-4 rounded-xl">
             <input type="text" id="a_especie" placeholder="Espécie" class="input-modern w-full p-4 rounded-xl">
             <input type="text" id="a_anilha" placeholder="Número da Anilha" class="input-modern w-full p-4 rounded-xl">
         </div>
@@ -390,6 +390,29 @@
                 </label>
             </div>
         </div>
+        
+        <textarea id="pr_obs" placeholder="Detalhamento (Sintomas, medicações aplicadas, observações de comportamento...)" class="input-modern w-full p-4 rounded-xl h-24 mb-6 border-emerald-200"></textarea>
+        
+        <button onclick="showToast('Modo de Visualização!')" class="w-full bg-primary hover:bg-green-800 text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2 shadow-lg transition"><i class="fa-solid fa-stethoscope"></i> Anexar ao Histórico da Ave</button>
+    </div>
+
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Plantel e Histórico Clínico</h3>
+        <div class="flex items-center gap-2">
+            <div class="relative hidden sm:block">
+                <i class="fa-solid fa-search absolute left-3 top-3 text-zinc-400"></i>
+                <input type="text" onkeyup="filtrarLista('aves', this.value)" placeholder="Filtrar aves..." class="pl-9 pr-4 py-2 rounded-lg text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:border-primary">
+            </div>
+            <div class="flex bg-zinc-200 dark:bg-zinc-800 p-1 rounded-lg">
+                <button onclick="mudarView('aves', 'grid')" id="btn-view-grid-aves" class="px-3 py-1 text-sm font-bold rounded-md bg-white dark:bg-zinc-600 shadow-sm text-zinc-800 dark:text-white transition"><i class="fa-solid fa-border-all"></i> Cards</button>
+                <button onclick="mudarView('aves', 'list')" id="btn-view-list-aves" class="px-3 py-1 text-sm font-bold rounded-md text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"><i class="fa-solid fa-list"></i> Tabela</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="lista-aves"></div>
+
+</div>
         
         <textarea id="pr_obs" placeholder="Detalhamento (Sintomas, medicações aplicadas, observações de comportamento...)" class="input-modern w-full p-4 rounded-xl h-24 mb-6 border-emerald-200"></textarea>
         

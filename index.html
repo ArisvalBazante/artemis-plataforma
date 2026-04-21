@@ -736,20 +736,39 @@ async function fazerLogin() {
   }
 }
 
-function init() { 
-    document.getElementById('tela-login').classList.add('hidden'); document.getElementById('tela-login').classList.remove('flex');
+async function init() { 
+    document.getElementById('tela-login').classList.add('hidden'); 
+    document.getElementById('tela-login').classList.remove('flex');
     document.getElementById('sistema-principal').classList.remove('hidden'); 
     document.getElementById('sistema-principal').classList.add('flex'); 
-    document.querySelectorAll('.aba-menu').forEach(a => { a.style.display = a.classList.contains(usuarioLogado.perfil) ? 'flex' : 'none'; }); 
+    
+    // Filtra o menu por perfil
+    document.querySelectorAll('.aba-menu').forEach(a => { 
+        a.style.display = a.classList.contains(usuarioLogado.perfil) ? 'flex' : 'none'; 
+    }); 
     
     preencherPerfilUI();
     renderNotificacoes();
+    carregarPrefs();
+    
+    // Define a aba inicial
     showTab(usuarioLogado.perfil === 'tecnico' ? 'tab-operacao' : 'tab-dashboard'); 
-    Object.keys(viewModos).forEach(k => mudarView(k, viewModos[k])); 
-    carregarPrefs(); 
-    carregarTudo(); 
+    
+    // Carrega os dados do LocalStorage primeiro (para não ficar em branco)
+    try {
+        let dadosSalvos = localStorage.getItem('artemisdados');
+        if (dadosSalvos) glob = JSON.parse(dadosSalvos);
+    } catch (e) {}
 
-    // LÓGICA DE PERMISSÃO DO VETERINÁRIO (TÉCNICO)
+    // Renderiza o que tiver na memória
+    Object.keys(viewModos).forEach(k => mudarView(k, viewModos[k])); 
+
+    // AGORA A MÁGICA: Acorda o servidor e busca os dados reais
+    showToast("Sincronizando com a nuvem...");
+    await carregarAves();
+    await carregarProntuarios();
+    
+    // Lógica de permissão visual para o Veterinário
     if (usuarioLogado && usuarioLogado.perfil === 'tecnico') {
         document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
         document.getElementById('msg-vet').classList.remove('hidden');
@@ -1115,11 +1134,13 @@ async function carregarAves() {
     const j = await r.json();
     if(j.ok) {
       glob.ave = j.aves || [];
-      popAve();
-      rendAve();
-      updDash();
+      popAve(); // Atualiza os seletores (dropdowns)
+      rendAve(); // Desenha os cards na tela
+      updDash(); // Atualiza os números no painel
     }
-  } catch(e) {}
+  } catch(e) {
+      console.error("Erro ao conectar com o servidor Render:", e);
+  }
 }
 
 function limparFormAve() { document.querySelectorAll('#tab-plantel input, #tab-plantel textarea').forEach(i => i.value = ''); }

@@ -335,12 +335,102 @@
                     <div id="lista-clientes"></div>
                 </div>
 
-                <div id="tab-plantel" class="content max-w-4xl mx-auto">
-                    <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-feather"></i> Cadastro de Ave</h3>
-                            <button onclick="limparFormAve()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
-                        </div>
+                <div id="tab-plantel" class="content max-w-5xl mx-auto">
+    
+    <div id="msg-vet" class="hidden bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-6 flex items-start gap-3">
+        <i class="fa-solid fa-user-doctor text-blue-500 mt-1"></i>
+        <p class="text-sm text-blue-800 dark:text-blue-300"><b>Modo Clínico:</b> Você tem permissão para lançar novos prontuários e editar seus próprios registros nas últimas 24h.</p>
+    </div>
+
+    <div id="bloco-admin-ave" class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8 admin-only">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-primary dark:text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-id-card"></i> Registro de Identidade (Acesso ADM)</h3>
+            <button onclick="limparFormAve()" class="text-sm font-bold text-zinc-400 hover:text-red-500 transition"><i class="fa-solid fa-eraser"></i> Limpar</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <input type="text" id="a_nome" placeholder="Nome da Ave" class="input-modern w-full p-4 rounded-xl md:col-span-2">
+            <input type="text" id="a_especie" placeholder="Espécie" class="input-modern w-full p-4 rounded-xl">
+            <input type="text" id="a_anilha" placeholder="Número da Anilha" class="input-modern w-full p-4 rounded-xl">
+        </div>
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <input type="number" id="a_min" placeholder="Peso Mín ideal (g)" class="input-modern w-full p-4 rounded-xl">
+            <input type="number" id="a_max" placeholder="Peso Máx ideal (g)" class="input-modern w-full p-4 rounded-xl">
+            <input type="number" id="a_idade" placeholder="Idade (Anos)" class="input-modern w-full p-4 rounded-xl">
+        </div>
+        <button onclick="showToast('Modo de Visualização: O banco será conectado depois!')" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2 transition"><i class="fa-solid fa-floppy-disk"></i> Cadastrar Nova Ave</button>
+    </div>
+
+    <div class="bg-emerald-50 dark:bg-emerald-900/10 p-8 rounded-3xl shadow-sm border border-emerald-100 dark:border-emerald-800/30 mb-8">
+        <h3 class="text-xl font-bold text-emerald-800 dark:text-emerald-400 mb-6 flex items-center gap-2"><i class="fa-solid fa-notes-medical"></i> Novo Prontuário Clínico</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="md:col-span-2">
+                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Selecione o Animal</label>
+                <select id="pr_ave" class="input-modern w-full p-4 rounded-xl border-emerald-200 select-ave"><option>Floquinho</option></select>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Data da Avaliação</label>
+                <input type="date" id="pr_data" class="input-modern w-full p-4 rounded-xl border-emerald-200">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Peso Atual (g)</label>
+                <input type="number" id="pr_peso" placeholder="Ex: 710" class="input-modern w-full p-4 rounded-xl border-emerald-200">
+            </div>
+            <div>
+                <label class="text-xs font-bold text-emerald-700 dark:text-emerald-500 ml-1 block mb-1">Status Clínico</label>
+                <select id="pr_status" class="input-modern w-full p-4 rounded-xl border-emerald-200"><option value="Apto para Voo">Apto para Voo</option><option value="Em Tratamento">Em Tratamento</option><option value="Muda de Penas">Muda de Penas (Inapto)</option><option value="Óbito">Óbito</option></select>
+            </div>
+            <div class="flex items-end pb-1">
+                <label class="flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 border border-emerald-200 dark:border-emerald-700/50 rounded-xl cursor-pointer w-full hover:border-primary transition">
+                    <input type="checkbox" id="pr_vacina_hoje" class="w-5 h-5 text-primary rounded">
+                    <span class="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Dose Aplicada Hoje</span>
+                </label>
+            </div>
+        </div>
+        
+        <textarea id="pr_obs" placeholder="Detalhamento (Sintomas, medicações aplicadas, observações de comportamento...)" class="input-modern w-full p-4 rounded-xl h-24 mb-6 border-emerald-200"></textarea>
+        
+        <button onclick="showToast('Modo de Visualização!')" class="w-full bg-primary hover:bg-green-800 text-white font-bold py-4 rounded-xl flex justify-center items-center gap-2 shadow-lg transition"><i class="fa-solid fa-stethoscope"></i> Anexar ao Histórico da Ave</button>
+    </div>
+
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Plantel e Histórico Clínico</h3>
+    </div>
+    
+    <div class="grid grid-cols-1 gap-4">
+        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row gap-6">
+            <div class="md:w-1/3 border-b md:border-b-0 md:border-r border-zinc-100 dark:border-zinc-800 pb-4 md:pb-0 md:pr-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-dove"></i></div>
+                    <div><h4 class="font-bold text-lg dark:text-white">Floquinho</h4><p class="text-xs text-zinc-500">Coruja Buraqueira • Anilha: 98765</p></div>
+                </div>
+                <div class="mt-4 space-y-2">
+                    <div class="flex justify-between text-sm"><span class="text-zinc-500">Idade:</span><span class="font-semibold dark:text-white">3 anos</span></div>
+                    <div class="flex justify-between text-sm"><span class="text-zinc-500">Peso Ideal:</span><span class="font-semibold dark:text-white">200g - 250g</span></div>
+                    <div class="flex justify-between text-sm"><span class="text-zinc-500">Próx. Vacina:</span><span class="font-semibold text-red-500"><i class="fa-solid fa-triangle-exclamation"></i> Vencida (10/03/26)</span></div>
+                </div>
+            </div>
+            <div class="md:w-2/3">
+                <h5 class="text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-3"><i class="fa-solid fa-clock-rotate-left"></i> Últimos Registros Médicos</h5>
+                <div class="space-y-3">
+                    <div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-700 rounded-xl relative group">
+                        <div class="flex justify-between items-start mb-1"><span class="text-xs font-bold text-zinc-500"><i class="fa-regular fa-calendar"></i> Hoje, 14:30 • por Dr. Paulo (Vet)</span><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[10px] font-bold">Apto para Voo</span></div>
+                        <p class="text-sm text-zinc-700 dark:text-zinc-300">Peso: 230g. Animal ativo. Ferimento na asa esquerda cicatrizado.</p>
+                        <button class="absolute top-3 right-3 text-primary hidden group-hover:block" title="Editar (Ainda no prazo de 24h)"><i class="fa-solid fa-pen"></i></button>
+                    </div>
+                    <div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-700 rounded-xl relative">
+                        <div class="flex justify-between items-start mb-1"><span class="text-xs font-bold text-zinc-500"><i class="fa-regular fa-calendar"></i> 10/04/2026 • por Arisval (ADM)</span><span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-bold">Em Tratamento</span></div>
+                        <p class="text-sm text-zinc-700 dark:text-zinc-300">Peso: 195g (Abaixo do ideal). Iniciado antibiótico.</p>
+                        <i class="fa-solid fa-lock absolute top-4 right-4 text-zinc-300 dark:text-zinc-600 text-sm" title="Registro Fechado (> 24h)"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                             <input type="text" id="a_nome" placeholder="Nome" class="input-modern w-full p-4 rounded-xl">
                             <input type="text" id="a_especie" placeholder="Espécie" class="input-modern w-full p-4 rounded-xl">

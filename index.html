@@ -968,44 +968,7 @@ async function deletarItem(tipo, id) {
 }
 function limparFormCli() { const ids = ['c_id','c_doc','c_tel','c_nome','c_fantasia','c_contato_nome','c_email','c_cep','c_logradouro','c_numero','c_bairro','c_cidade','c_estado','c_com_nome','c_com_tel','c_fin_nome','c_fin_tel','c_ope_nome','c_ope_tel']; ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; }); const btn = document.getElementById('btn-salvar-cliente'); if (btn) btn.textContent = 'Salvar Cliente'; }
 
-async function salvarAve() {
-  const nome = document.getElementById('a_nome').value;
-  if(!nome) { showToast("Preencha o nome da ave!", "erro"); return; }
-  
-  showToast("Enviando para a nuvem...");
-  
-  const payload = {
-    nome: nome,
-    especie: document.getElementById('a_especie').value || null,
-    anilha: document.getElementById('a_anilha').value || null,
-    peso_min: document.getElementById('a_min').value || null,
-    peso_max: document.getElementById('a_max').value || null,
-    idade: document.getElementById('a_idade').value || null,
-    status_clinico: "Apto para Voo",
-    ultima_avaliacao: null,
-    vacina_em_dia: true,
-    doencas: null,
-    historico_detalhado: null
-  };
-
-  try {
-    const r = await fetch(`${API}/aves`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const j = await r.json();
-    if(j.ok) {
-      showToast("Ave cadastrada na nuvem com sucesso!");
-      limparFormAve();
-      await carregarAves(); 
-    } else {
-      showToast("Erro: " + j.msg, "erro");
-    }
-  } catch(e) {
-    showToast("Erro de conexão.", "erro");
-  }
-}
+async function salvarAve(){const nome=document.getElementById('a_nome').value;if(!nome){showToast("Preencha o nome da ave!","erro");return;}showToast("Enviando para a nuvem...");const payload={nome:nome,especie:document.getElementById('a_especie').value||null,anilha:document.getElementById('a_anilha').value||null,peso_min:document.getElementById('a_min').value||null,peso_max:document.getElementById('a_max').value||null,idade:document.getElementById('a_idade').value||null,status_clinico:"Apto para Voo",ultima_avaliacao:null,vacina_em_dia:true,doencas:null,historico_detalhado:null};try{const r=await fetch(`${API}/aves`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const j=await r.json();if(j.ok){showToast("Ave cadastrada na nuvem com sucesso!");limparFormAve();await carregarAves();}else{showToast("Erro: "+j.msg,"erro");}}catch(e){showToast("Erro de conexão.","erro");}}
 
 
 async function salvarProntuario(){const id=document.getElementById('pr_ave').value;if(!id||id==='Carregando aves...'){showToast("Selecione uma ave válida!","erro");return;}showToast("Assinando prontuário...");let m=[];document.querySelectorAll('.cb-med:checked').forEach(cb=>m.push(cb.parentElement.innerText.trim()));let sol=[];document.querySelectorAll('.cb-ex-sol:checked').forEach(cb=>sol.push(cb.parentElement.innerText.trim()));let rea=[];document.querySelectorAll('.cb-ex-rea:checked').forEach(cb=>rea.push(cb.parentElement.innerText.trim()));let vx=[];document.querySelectorAll('.cb-vax:checked').forEach(cb=>vx.push(cb.parentElement.innerText.trim()));let tx="";if(sol.length>0)tx+="[PENDENTE - SOLICITADOS]: "+sol.join(', ')+"\n";if(rea.length>0)tx+="[REALIZADOS HOJE]: "+rea.join(', ')+"\n";if(vx.length>0)tx+="[IMUNIZAÇÃO E PROFILAXIA]: "+vx.join(', ')+"\n";if(tx.length>0)tx+="\n";const nut=document.getElementById('pr_nutricao').value;const p={ave_id:parseInt(id),veterinario_nome:usuarioLogado.nome,data_consulta:document.getElementById('pr_data').value||new Date().toISOString().split('T')[0],motivo:document.getElementById('pr_motivo').value==='Outros'?document.getElementById('pr_motivo_outro').value:document.getElementById('pr_motivo').value,peso_atual:parseInt(document.getElementById('pr_peso').value)||0,historico:document.getElementById('pr_historico').value,escore_corporal:document.getElementById('pr_escore').value,hidratacao:document.getElementById('pr_hidratacao').value,risco:document.getElementById('pr_risco').value,observacoes_exame:"MARCAÇÕES: "+m.join(' | ')+"\n"+(document.getElementById('pr_observacoes').value||''),diagnostico:document.getElementById('pr_diagnostico').value,tratamento:(nut?"MANEJO E DIETA: "+nut+"\n\n":"")+tx+document.getElementById('pr_tratamento').value};try{const r=await fetch(`${API}/prontuarios`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});const j=await r.json();if(j.ok){showToast("Prontuário assinado com sucesso!");mudarStepPr(1);document.querySelectorAll('#tab-plantel textarea, #tab-plantel input:not([type=button])').forEach(i=>i.value='');document.getElementById('pr_motivo_outro').style.display='none';document.querySelectorAll('input[type="checkbox"]').forEach(cb=>cb.checked=false);await carregarProntuarios();await carregarAves();}else{showToast("Erro ao salvar: "+j.msg,"erro")}}catch(e){showToast("Erro de conexão","erro")}}

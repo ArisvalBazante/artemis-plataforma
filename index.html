@@ -359,51 +359,7 @@ function getInitials(name) {
 window.onload = () => { carregarTema(); document.getElementById('tela-login').classList.remove('hidden'); document.getElementById('tela-login').classList.add('flex'); };
 function carregarTema() { if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark'); }
 
-async function fazerLogin() {
-    const em = document.getElementById('login_email').value.trim();
-    const se = document.getElementById('login_senha').value.trim();
-    const erroBox = document.getElementById('login-erro');
-
-    erroBox.classList.add('hidden');
-    erroBox.classList.remove('text-red-600', 'bg-red-50', 'text-amber-600', 'bg-amber-50');
-
-  if (!em || !se) {
-    erroBox.innerText = 'Preencha e-mail e senha.';
-    erroBox.classList.remove('hidden');
-    erroBox.classList.add('text-red-600', 'bg-red-50');
-    return;
-  }
-
-  try {
-    showToast('Validando acesso...');
-
-    const res = await fetch(`${API}/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: em, senha: se })
-    });
-
-    const data = await res.json();
-
-    if (data.ok && data.usuario) {
-      usuarioLogado = data.usuario;
-
-      localStorage.setItem('artemisuser', JSON.stringify(usuarioLogado));
-
-      init();
-      showToast(`Bem-vindo, ${usuarioLogado.nome || 'usuário'}!`);
-      return;
-    }
-
-    erroBox.innerText = data.msg || 'E-mail ou senha inválidos.';
-    erroBox.classList.remove('hidden');
-    erroBox.classList.add('text-red-600', 'bg-red-50');
-  } catch (e) {
-    erroBox.innerText = 'Erro de conexão com o servidor.';
-    erroBox.classList.remove('hidden');
-    erroBox.classList.add('text-red-600', 'bg-red-50');
-  }
-}
+async function fazerLogin(){const em=document.getElementById('login_email').value.trim();const se=document.getElementById('login_senha').value.trim();const erroBox=document.getElementById('login-erro');erroBox.classList.add('hidden');erroBox.classList.remove('text-red-600','bg-red-50','text-amber-600','bg-amber-50');if(!em||!se){erroBox.innerText='Preencha e-mail e senha.';erroBox.classList.remove('hidden');erroBox.classList.add('text-red-600','bg-red-50');return;}try{showToast('Validando acesso...');const res=await fetch(`${API}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,senha:se})});const data=await res.json();if(data.ok&&data.usuario){usuarioLogado=data.usuario;localStorage.setItem('artemisuser',JSON.stringify(usuarioLogado));init();showToast(`Bem-vindo, ${usuarioLogado.nome||'usuário'}!`);return;}erroBox.innerText=data.msg||'E-mail ou senha inválidos.';erroBox.classList.remove('hidden');erroBox.classList.add('text-red-600','bg-red-50');}catch(e){erroBox.innerText='Erro de conexão com o servidor.';erroBox.classList.remove('hidden');erroBox.classList.add('text-red-600','bg-red-50');}}
 
 async function carregarVisitas(){try{const r=await fetch(`${API}/visitas`);const j=await r.json();if(j.ok){glob.vis=j.visitas||[];rendVis();}}catch(e){console.error("Erro",e);}} 
 async function carregarPropostas(){try{const r=await fetch(`${API}/propostas`);const j=await r.json();if(j.ok){glob.propostas=j.propostas||[];rendProp();}}catch(e){console.error(e);}} 

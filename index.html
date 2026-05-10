@@ -453,36 +453,10 @@ function carregarFotoPerfil(event) {
     reader.readAsDataURL(file);
 }
 
-async function salvarPerfil() {
-    if(!usuarioLogado) return;
-    const nome = document.getElementById('meu_nome').value;
-    const cpf = document.getElementById('meu_cpf').value;
-    const tel = document.getElementById('meu_wpp').value;
-    const cep = document.getElementById('p_cep').value;
-    const sangue = document.getElementById('p_sangue').value;
-    const senha1 = document.getElementById('p_senha1').value;
-    const senha2 = document.getElementById('p_senha2').value;
-    if(senha1 !== senha2) { showToast("As senhas não coincidem!", "erro"); return; }
-    showToast("Salvando na nuvem...");
-    try {
-        const res = await fetch(`${API}/usuarios/${usuarioLogado.id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, email: usuarioLogado.email, senha: senha1 || null, perfil: usuarioLogado.perfil, cpf, telefone: tel, cep, sangue, foto_base64: usuarioLogado.foto_base64 })
-        });
-        const data = await res.json();
-        if(data.ok) {
-            usuarioLogado.nome = nome; usuarioLogado.cpf = cpf; usuarioLogado.telefone = tel; usuarioLogado.cep = cep; usuarioLogado.sangue = sangue;
-            localStorage.setItem('artemis_user', JSON.stringify(usuarioLogado));
-            preencherPerfilUI(); showToast("Perfil de desenvolvedor salvo com sucesso!");
-            document.getElementById('p_senha1').value = ''; document.getElementById('p_senha2').value = '';
-        } else { showToast("Falha ao salvar no banco de dados.", "erro"); }
-    } catch(e) { showToast("Erro de conexão. Verifique o servidor.", "erro"); }
-}
 
+async function salvarPerfil(){if(!usuarioLogado)return;const nome=document.getElementById('meu_nome').value;const cpf=document.getElementById('meu_cpf').value;const tel=document.getElementById('meu_wpp').value;const cep=document.getElementById('p_cep').value;const sangue=document.getElementById('p_sangue').value;const senha1=document.getElementById('p_senha1').value;const senha2=document.getElementById('p_senha2').value;if(senha1!==senha2){showToast("As senhas não coincidem!","erro");return;}showToast("Salvando na nuvem...");try{const res=await fetch(`${API}/usuarios/${usuarioLogado.id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome,email:usuarioLogado.email,senha:senha1||null,perfil:usuarioLogado.perfil,cpf,telefone:tel,cep,sangue,foto_base64:usuarioLogado.foto_base64})});const data=await res.json();if(data.ok){usuarioLogado.nome=nome;usuarioLogado.cpf=cpf;usuarioLogado.telefone=tel;usuarioLogado.cep=cep;usuarioLogado.sangue=sangue;localStorage.setItem('artemis_user',JSON.stringify(usuarioLogado));preencherPerfilUI();showToast("Perfil de desenvolvedor salvo com sucesso!");document.getElementById('p_senha1').value='';document.getElementById('p_senha2').value='';}else{showToast("Falha ao salvar no banco de dados.","erro");}}catch(e){showToast("Erro de conexão. Verifique o servidor.","erro");}}
 function salvarMemoria() { localStorage.setItem('artemis_dados', JSON.stringify(glob)); }
 function gerarDadosDemonstracao() { glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] }; glob.cli = [{id: 99, nome_fantasia: "Indústrias Recife S.A.", documento_cpf_cnpj: "12.345.678/0001-99", contato_nome: "João Diretor"}]; glob.ave = [{id: 99, nome: "Hermes", especie: "Gavião Asa-de-Telha", status_clinico: "Apto para Voo", peso_minimo: 680, peso_maximo: 720}]; glob.est = [{id: 99, nome_item: "Luva de Raspa", categoria: "EPI", quantidade: 15, ca_epi: "45678"}]; glob.prop = [{id: 99, cliente: "Indústrias Recife S.A.", tipo_servico: "Manejo de Pombos", valor_mensal: "4500.00", status: "Em Negociação"}]; glob.pdca = [{id: 99, problema: "Retorno constante de pombos na doca", cliente: "Indústrias Recife S.A.", responsavel: "Arisval", prazo: new Date().toISOString(), status: "Pendente"}]; glob.vis = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Hermes", data_visita: new Date().toISOString(), qtd_interacoes: 12, qtd_capturas: 0, observacoes: "Serviço realizado."}]; glob.ag = [{id: 99, cliente: "Indústrias Recife S.A.", ave: "Hermes", data_agendada: new Date().toISOString().split('T')[0], status: "Pendente"}]; glob.fin = [{id: 99, descricao: "Fatura Mensalidade", cliente: "Indústrias Recife S.A.", valor: "4500.00", tipo: "Receita", status: "Pago"}]; glob.cont = [{id: 99, cliente: "Indústrias Recife S.A.", valor_mensal: "4500.00", frequencia_semanal: 2, data_fim: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()}]; salvarMemoria(); }
-
 async function carregarTudo(){try{let dadosSalvos=localStorage.getItem('artemisdados');if(dadosSalvos){glob=JSON.parse(dadosSalvos);}else{glob={cli:[],ave:[],est:[],prop:[],pdca:[],vis:[],ag:[],fin:[],cont:[],usu:[]};}}catch(e){glob={cli:[],ave:[],est:[],prop:[],pdca:[],vis:[],ag:[],fin:[],cont:[],usu:[]};}rendCli();rendAve();rendEst();rendProp();rendPDCA();rendVis();rendAg();rendFin();rendCont();popCli();popAve();updDash();await carregarAves();await carregarProntuarios();}
 function renderNotificacoes() { const list = document.getElementById('notif-list'); const empty = document.getElementById('notif-empty'); const badge = document.getElementById('notif-badge'); list.innerHTML = ''; if(notificacoes.length === 0) { list.classList.add('hidden'); empty.classList.remove('hidden'); badge.classList.add('scale-0'); } else { list.classList.remove('hidden'); empty.classList.add('hidden'); badge.innerText = notificacoes.length; badge.classList.remove('scale-0'); notificacoes.forEach(n => { list.innerHTML += `<div class="p-4 border-b border-zinc-100 dark:border-zinc-700 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition cursor-pointer"><i class="fa-solid fa-circle-exclamation text-amber-500 mr-2"></i> ${n.texto}</div>`; }); } }
 function toggleNotif() { document.getElementById('notif-dropdown').classList.toggle('hidden'); }

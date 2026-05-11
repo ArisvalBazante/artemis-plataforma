@@ -303,59 +303,20 @@
 
     
     <script>
-    const API = 'https://artemis-backend-eso2.onrender.com';
+const API = 'https://artemis-backend-eso2.onrender.com';
 let glob = { cli:[], ave:[], est:[], prop:[], pdca:[], vis:[], ag:[], fin:[], cont:[], usu:[] };
 let usuarioLogado = null;
 let configGlobal = { nome_empresa: 'Silvestre Ambiental' };
-let notificacoes = [
-  { id: 1, texto: "Contrato de Indústrias Recife S.A. vence em 15 dias" },
-  { id: 2, texto: "Hermes (Gavião) com vacinação pendente" }
-];
-
+let notificacoes = [{ id: 1, texto: "Contrato de Indústrias Recife S.A. vence em 15 dias" }, { id: 2, texto: "Hermes (Gavião) com vacinação pendente" }];
 const nomesPerfis = { 'admin': 'Desenvolvedor', 'comercial': 'Comercial / Financeiro', 'tecnico': 'Técnico de Manejo' };
-
 let userPrefs = { focus: false, speedDial: true, toasts: true, animacoes: true, altoContraste: false, tabelas: false, autoSave: true };
 let viewModos = { clientes:'grid', aves:'grid', estoque:'grid', propostas:'grid', pdca:'grid', operacao:'grid', agenda:'grid', financeiro:'grid', contratos:'grid', usuarios:'grid' };
 
 function carregarPrefs() { const s = localStorage.getItem('artemis_prefs'); if(s) userPrefs = { ...userPrefs, ...JSON.parse(s) }; aplicarPrefs(); }
 function togglePref(key) { userPrefs[key] = !userPrefs[key]; localStorage.setItem('artemis_prefs', JSON.stringify(userPrefs)); aplicarPrefs(); showToast("Configuração salva!"); }
-function aplicarPrefs() {
-    Object.keys(userPrefs).forEach(key => {
-        const bg = document.getElementById(`tg-${key}`); const knob = document.getElementById(`tg-${key}-knob`); const on = document.getElementById(`tg-${key}-on`); const off = document.getElementById(`tg-${key}-off`);
-        if(bg && knob && on && off) {
-            if(userPrefs[key]) {
-                bg.classList.remove('bg-zinc-300', 'dark:bg-zinc-700'); bg.classList.add('bg-emerald-500', 'dark:bg-emerald-500');
-                knob.classList.remove('translate-x-1'); knob.classList.add('translate-x-9');
-                on.classList.remove('opacity-0'); on.classList.add('opacity-100');
-                off.classList.remove('opacity-100'); off.classList.add('opacity-0');
-            } else {
-                bg.classList.remove('bg-emerald-500', 'dark:bg-emerald-500'); bg.classList.add('bg-zinc-300', 'dark:bg-zinc-700');
-                knob.classList.remove('translate-x-9'); knob.classList.add('translate-x-1');
-                on.classList.remove('opacity-100'); on.classList.add('opacity-0');
-                off.classList.remove('opacity-0'); off.classList.add('opacity-100');
-            }
-        }
-    });
-    const sb = document.getElementById('sidebar'); const txts = document.querySelectorAll('.menu-text'); const log = document.getElementById('sidebar-logo'); const tit = document.getElementById('sidebar-title');
-    if(userPrefs.focus) { sb.className='w-24 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log)log.classList.add('hidden'); if(tit)tit.classList.add('opacity-0'); txts.forEach(t=>t.classList.add('hidden')); } 
-    else { sb.className='w-72 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log&&configGlobal.logo_base64)log.classList.remove('hidden'); if(tit)tit.classList.remove('opacity-0'); txts.forEach(t=>{t.classList.remove('hidden');}); }
-    const fab = document.getElementById('speed-dial'); if(fab) fab.style.display = userPrefs.speedDial ? 'block' : 'none';
-    if(userPrefs.altoContraste) document.body.classList.add('alto-contraste'); else document.body.classList.remove('alto-contraste');
-    if(userPrefs.tabelas) document.body.classList.add('tabela-compacta'); else document.body.classList.remove('tabela-compacta');
-}
-
-// Funções de formatação que o sistema estava pedindo
-function formatName(name) {
-    if (!name) return "Usuário";
-    return name.split(' ').map(w => w[0].toUpperCase() + w.substring(1).toLowerCase()).join(' ');
-}
-
-function getInitials(name) {
-    if (!name) return "??";
-    const parts = name.split(' ');
-    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
+function aplicarPrefs() { Object.keys(userPrefs).forEach(key => { const bg = document.getElementById(`tg-${key}`), knob = document.getElementById(`tg-${key}-knob`), on = document.getElementById(`tg-${key}-on`), off = document.getElementById(`tg-${key}-off`); if(bg && knob && on && off) { if(userPrefs[key]) { bg.classList.remove('bg-zinc-300', 'dark:bg-zinc-700'); bg.classList.add('bg-emerald-500', 'dark:bg-emerald-500'); knob.classList.remove('translate-x-1'); knob.classList.add('translate-x-9'); on.classList.remove('opacity-0'); on.classList.add('opacity-100'); off.classList.remove('opacity-100'); off.classList.add('opacity-0'); } else { bg.classList.remove('bg-emerald-500', 'dark:bg-emerald-500'); bg.classList.add('bg-zinc-300', 'dark:bg-zinc-700'); knob.classList.remove('translate-x-9'); knob.classList.add('translate-x-1'); on.classList.remove('opacity-100'); on.classList.add('opacity-0'); off.classList.remove('opacity-0'); off.classList.add('opacity-100'); } } }); const sb = document.getElementById('sidebar'), txts = document.querySelectorAll('.menu-text'), log = document.getElementById('sidebar-logo'), tit = document.getElementById('sidebar-title'); if(userPrefs.focus) { if(sb) sb.className='w-24 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log)log.classList.add('hidden'); if(tit)tit.classList.add('opacity-0'); txts.forEach(t=>t.classList.add('hidden')); } else { if(sb) sb.className='w-72 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 flex flex-col transition-all duration-300 relative z-20 shrink-0'; if(log&&configGlobal.logo_base64)log.classList.remove('hidden'); if(tit)tit.classList.remove('opacity-0'); txts.forEach(t=>{t.classList.remove('hidden');}); } const fab = document.getElementById('speed-dial'); if(fab) fab.style.display = userPrefs.speedDial ? 'block' : 'none'; if(userPrefs.altoContraste) document.body.classList.add('alto-contraste'); else document.body.classList.remove('alto-contraste'); if(userPrefs.tabelas) document.body.classList.add('tabela-compacta'); else document.body.classList.remove('tabela-compacta'); }
+function formatName(name) { if (!name) return "Usuário"; return name.split(' ').map(w => w[0].toUpperCase() + w.substring(1).toLowerCase()).join(' '); }
+function getInitials(name) { if (!name) return "??"; const parts = name.split(' '); if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase(); return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase(); }
 
 window.onload = () => { carregarTema(); document.getElementById('tela-login').classList.remove('hidden'); document.getElementById('tela-login').classList.add('flex'); };
 function carregarTema() { if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark'); }
